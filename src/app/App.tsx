@@ -1,4 +1,6 @@
 import { Suspense, lazy, useSyncExternalStore } from 'react';
+import { PlannerProvider } from './store';
+import { Desktop } from '../screens/desktop/Desktop';
 import styles from './App.module.css';
 
 // The prototype ships two artifacts: desktop at 1440×900 and phone at 412×892.
@@ -47,5 +49,10 @@ export function App() {
     );
   }
 
-  return <div className={isDesktop ? styles.desktop : styles.phone} />;
+  return (
+    <PlannerProvider>
+      {/* The phone layout lands in step 7. */}
+      {isDesktop ? <Desktop /> : <div className={styles.phone} />}
+    </PlannerProvider>
+  );
 }

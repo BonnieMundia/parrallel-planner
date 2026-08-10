@@ -1,0 +1,618 @@
+/* Shared by all three columns — the header, the rows, and the closing note. */
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px;
+}
+
+.dot {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.headName {
+  font: var(--f-label);
+  letter-spacing: 0.01em;
+  color: var(--ink);
+}
+
+.headCount {
+  font: 400 13px/1 var(--font);
+  color: var(--ink-quiet);
+}
+
+.note {
+  padding: 0 6px;
+  font: 400 12.5px/1.4 var(--font);
+  color: var(--ink-quiet);
+  text-wrap: pretty;
+}
+
+/* --- rows --------------------------------------------------------------------- */
+
+.row {
+  position: relative;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  transition: background var(--t-block) ease;
+}
+
+.row:hover {
+  background: rgba(110, 128, 132, 0.12);
+}
+
+.rowOpen {
+  background: rgba(110, 128, 132, 0.18);
+}
+
+.rowTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.rowTitleWrap {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.title {
+  font: var(--f-body);
+  letter-spacing: var(--ls-body);
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.rowTools {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 3px;
+}
+
+.remove {
+  width: 20px;
+  height: 20px;
+  border: 0;
+  border-radius: var(--r-chip);
+  background: transparent;
+  color: var(--ink-faint);
+  font: 400 15px/1 var(--font);
+  cursor: pointer;
+  opacity: 0.4;
+  transition:
+    opacity var(--t-color) ease,
+    background var(--t-color) ease;
+}
+
+.remove:hover,
+.remove:focus-visible {
+  opacity: 1;
+  background: rgba(245, 64, 94, 0.22);
+  color: var(--alarm-ink-2);
+}
+
+/* --- clock row ---------------------------------------------------------------- */
+
+.countRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.count {
+  font: var(--f-count);
+  letter-spacing: var(--ls-count);
+}
+
+.countUnit {
+  font: 400 12.5px/1 var(--font);
+  color: rgba(233, 240, 240, 0.56);
+}
+
+.foot {
+  display: flex;
+  justify-content: space-between;
+  font: 400 12.5px/1.3 var(--font);
+  color: var(--ink-3);
+}
+
+.footRight {
+  color: var(--ink-quiet);
+}
+
+.sleep {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 11px;
+  border-radius: var(--r-control);
+  background: rgba(240, 169, 59, 0.16);
+  font: 400 12.5px/1.35 var(--font);
+  color: var(--amber-ink);
+}
+
+.blinkDot {
+  flex: none;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--workshop);
+  animation: blink 1.6s infinite;
+}
+
+/* --- expanded panel ------------------------------------------------------------ */
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  padding: 13px;
+  margin-top: 2px;
+  border-radius: var(--r-panel);
+  background: var(--inset);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: default;
+}
+
+.notes {
+  font: 400 12.5px/1.5 var(--font);
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 12px;
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.cellLabel {
+  font: 590 10.5px/1 var(--font);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.cellValue {
+  font: 400 13px/1.3 var(--font);
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.cellNote {
+  font: 400 11.5px/1.2 var(--font);
+  color: var(--ink-quiet);
+}
+
+.panelActions {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+  padding-top: 2px;
+}
+
+.setBy {
+  font: 400 12px/1.2 var(--font);
+  color: var(--ink-quiet);
+}
+
+.ghost {
+  padding: 5px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 7px;
+  background: transparent;
+  color: var(--ink-2);
+  font: 590 11.5px/1.2 var(--font);
+  cursor: pointer;
+  transition: background var(--t-color) ease;
+}
+
+.ghost:hover {
+  background: rgba(53, 214, 160, 0.2);
+  color: var(--green-ink);
+}
+
+.focus {
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: rgba(255, 122, 92, 0.24);
+  color: var(--link-hover);
+  font: 590 11.5px/1.2 var(--font);
+  cursor: pointer;
+}
+
+.missed {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 10px 12px;
+  border-radius: var(--r-control);
+  background: rgba(245, 64, 94, 0.16);
+  border: 1px solid rgba(245, 64, 94, 0.28);
+}
+
+.missedText {
+  font: 400 12.5px/1.35 var(--font);
+  color: var(--alarm-ink);
+  text-wrap: pretty;
+}
+
+.missedButtons {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.take {
+  padding: 6px 11px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--alarm);
+  color: var(--ink);
+  font: 590 11.5px/1.2 var(--font);
+  cursor: pointer;
+}
+
+.leave {
+  padding: 6px 11px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--control-strong);
+  color: rgba(233, 240, 240, 0.78);
+  font: 590 11.5px/1.2 var(--font);
+  cursor: pointer;
+}
+
+/* --- place column -------------------------------------------------------------- */
+
+.trip {
+  border-radius: var(--r-card);
+  overflow: hidden;
+  background: rgba(240, 169, 59, 0.12);
+  border: 1px solid rgba(240, 169, 59, 0.24);
+}
+
+.tripHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 15px;
+}
+
+.tripLabel {
+  font: 590 13px/1.2 var(--font);
+  color: var(--amber-ink);
+}
+
+.tripTotal {
+  font: 400 12px/1 var(--font);
+  color: var(--ink-3);
+}
+
+.tripStop {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 9px 15px;
+  border-top: 1px solid var(--border);
+}
+
+.tripStopName {
+  font: 400 13.5px/1.3 var(--font);
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.tripStopLine {
+  font: 400 12px/1.3 var(--font);
+  color: var(--ink-3);
+  text-wrap: pretty;
+}
+
+.tripFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 15px;
+  border-top: 1px solid var(--border);
+}
+
+.tripBack {
+  font: 400 12.5px/1.35 var(--font);
+  color: rgba(233, 240, 240, 0.66);
+  text-wrap: pretty;
+}
+
+.tripPlan {
+  flex: none;
+  padding: 8px 13px;
+  border: 0;
+  border-radius: var(--r-control);
+  background: var(--workshop);
+  color: #241802;
+  font: 590 12.5px/1 var(--font);
+  cursor: pointer;
+}
+
+.group {
+  border-radius: var(--r-card);
+  overflow: hidden;
+  backdrop-filter: var(--blur-card);
+  transition:
+    transform var(--t-card) var(--ease-lift),
+    box-shadow var(--t-card) ease,
+    border-color var(--t-card) ease,
+    opacity 0.2s ease;
+}
+
+.group:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--sh-card-hover);
+  opacity: 1 !important;
+}
+
+.groupHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 15px;
+}
+
+.groupName {
+  font: 590 13px/1.2 var(--font);
+}
+
+.groupStatus {
+  flex: none;
+  font: 400 12px/1 var(--font);
+  color: var(--ink-3);
+}
+
+.groupDot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.placeRow {
+  padding: 13px 15px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.placeBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.placeTitle {
+  font: 400 14.5px/1.3 var(--font);
+  letter-spacing: var(--ls-body);
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.whenRow {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.whenAt {
+  font: 590 12.5px/1.2 var(--font);
+}
+
+.whenIn {
+  font: 400 12.5px/1.2 var(--font);
+  opacity: 0.8;
+}
+
+.placeMeta {
+  font: 400 12px/1.2 var(--font);
+  color: rgba(233, 240, 240, 0.56);
+}
+
+.leaveBy {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 590 12px/1.2 var(--font);
+}
+
+.leaveDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.repeat {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  padding-top: 1px;
+}
+
+.weekly {
+  padding: 3px 8px;
+  border-radius: var(--r-chip);
+  background: rgba(79, 209, 197, 0.16);
+  font: 590 11px/1.3 var(--font);
+  color: var(--teal-ink);
+}
+
+.repeatBtn {
+  padding: 3px 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-chip);
+  background: transparent;
+  color: rgba(233, 240, 240, 0.66);
+  font: 590 11px/1.3 var(--font);
+  cursor: pointer;
+  transition: background var(--t-color) ease;
+}
+
+.repeatBtn:hover {
+  background: rgba(240, 169, 59, 0.2);
+  color: var(--amber-ink);
+}
+
+.endBtn:hover {
+  background: rgba(245, 64, 94, 0.2);
+  color: var(--alarm-ink-2);
+}
+
+.ended {
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(110, 128, 132, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.endedHead {
+  padding: 10px 14px;
+  font: 590 12.5px/1 var(--font);
+  color: rgba(233, 240, 240, 0.66);
+}
+
+.endedRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.endedBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.endedTitle {
+  font: 400 13px/1.3 var(--font);
+  color: rgba(233, 240, 240, 0.7);
+  text-wrap: pretty;
+}
+
+.endedWhen {
+  font: 400 11.5px/1.2 var(--font);
+  color: var(--ink-faint);
+}
+
+.resume {
+  flex: none;
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: rgba(53, 214, 160, 0.22);
+  color: var(--green-ink);
+  font: 590 11.5px/1.2 var(--font);
+  cursor: pointer;
+}
+
+/* --- none column --------------------------------------------------------------- */
+
+.defence {
+  background: rgba(53, 214, 160, 0.14);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(53, 214, 160, 0.2);
+  border-radius: var(--r-card);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.defenceHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.defenceLabel {
+  font: var(--f-label);
+  color: var(--green-ink);
+}
+
+.defenceValue {
+  font: var(--f-stat);
+  color: var(--ink);
+}
+
+.defenceNote {
+  font: 400 12.5px/1.42 var(--font);
+  color: rgba(233, 240, 240, 0.66);
+  text-wrap: pretty;
+}
+
+.noneRow {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.stale {
+  font: 590 12px/1 var(--font);
+}
+
+.noneSub {
+  font: 400 12.5px/1.3 var(--font);
+  color: rgba(233, 240, 240, 0.56);
+}
+
+.defend {
+  padding: 9px 0;
+  border: 0;
+  border-radius: var(--r-control);
+  cursor: pointer;
+  font: 590 13.5px/1 var(--font);
+  transition: transform var(--t-block) ease;
+}
+
+.defend:hover {
+  transform: translateY(-1px);
+}

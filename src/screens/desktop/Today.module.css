@@ -1,0 +1,84 @@
+.today {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  padding: 22px 24px 28px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  gap: 24px;
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.eyebrow {
+  font: var(--f-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--link);
+}
+
+.date {
+  font: var(--f-display);
+  letter-spacing: var(--ls-display);
+  color: var(--ink);
+}
+
+.summary {
+  font: 400 14px/1.35 var(--font);
+  color: var(--ink-3);
+}
+
+.late {
+  color: var(--amber-ink);
+}
+
+.committed {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 210px;
+  flex: none;
+}
+
+.committedHead {
+  display: flex;
+  justify-content: space-between;
+  font: 400 12px/1 var(--font);
+  color: var(--ink-3);
+}
+
+.committedValue {
+  color: var(--ink);
+}
+
+.committedBar {
+  height: 7px;
+  border-radius: 4px;
+  background: var(--control-strong);
+  display: flex;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+  align-items: start;
+}

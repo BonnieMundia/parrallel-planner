@@ -1,0 +1,135 @@
+.rail {
+  width: 300px;
+  flex: none;
+  border-left: 1px solid var(--border);
+  background: var(--rail);
+  backdrop-filter: var(--blur-rail);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.head {
+  padding: 18px 18px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.title {
+  font: var(--f-panel);
+  letter-spacing: var(--ls-panel);
+  color: var(--ink);
+}
+
+.range {
+  font: 400 12px/1 var(--font);
+  color: var(--ink-quiet);
+}
+
+.scroller {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 6px 16px 20px;
+}
+
+.track {
+  position: relative;
+}
+
+.hour {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hourLabel {
+  width: 24px;
+  flex: none;
+  font: 400 11px/1 var(--font);
+  color: var(--ink-quiet);
+  text-align: right;
+}
+
+.rule {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.block {
+  position: absolute;
+  box-sizing: border-box;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition:
+    transform var(--t-block) var(--ease-lift),
+    box-shadow var(--t-block) ease;
+}
+
+.block:hover {
+  transform: translateY(-2px) scale(1.014);
+  box-shadow: var(--sh-block-hover);
+}
+
+.blockTitle {
+  font: 590 12px/1.25 var(--font);
+  color: var(--ink);
+}
+
+.blockTime {
+  font: 400 11px/1 var(--font);
+}
+
+.now {
+  position: absolute;
+  left: 24px;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.nowDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--alarm);
+}
+
+.nowLine {
+  flex: 1;
+  height: 1.5px;
+  background: var(--alarm);
+}
+
+.late {
+  margin-top: 14px;
+  padding: 13px 15px;
+  border-radius: 12px;
+  background: rgba(240, 169, 59, 0.14);
+  border: 1px solid rgba(240, 169, 59, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lateHead {
+  font: var(--f-label);
+  color: var(--amber-ink);
+}
+
+.lateNote {
+  font: 400 12.5px/1.42 var(--font);
+  color: rgba(233, 240, 240, 0.66);
+  text-wrap: pretty;
+}

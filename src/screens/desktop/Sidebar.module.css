@@ -1,0 +1,200 @@
+.sidebar {
+  position: relative;
+  width: 252px;
+  flex: none;
+  background: var(--sidebar);
+  backdrop-filter: var(--blur-sidebar);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 18px 0 14px;
+  min-height: 0;
+}
+
+.brand {
+  padding: 0 18px 18px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.wordmark {
+  font: var(--f-brand);
+  letter-spacing: var(--ls-brand);
+  color: var(--ink);
+}
+
+.whereBox {
+  padding: 0 14px 16px;
+}
+
+.sectionLabel {
+  padding: 0 4px 7px;
+  font: var(--f-eyebrow);
+  letter-spacing: 0.02em;
+  color: var(--ink-quiet);
+}
+
+.streamsLabel {
+  padding: 0 18px 7px;
+}
+
+.where {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  text-align: left;
+  background: rgba(110, 128, 132, 0.22);
+  transition:
+    border-color var(--t-card) ease,
+    background var(--t-card) ease;
+}
+
+.where:hover {
+  border-color: rgba(255, 255, 255, 0.24);
+  background: rgba(110, 128, 132, 0.3);
+}
+
+.whereDot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--build);
+}
+
+.whereText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.whereName {
+  font: 590 13.5px/1.2 var(--font);
+  color: var(--ink);
+}
+
+.whereNote {
+  font: 400 11.5px/1.2 var(--font);
+  color: var(--ink-quiet);
+}
+
+.caret {
+  flex: none;
+  font: var(--f-badge);
+  font-weight: 400;
+  color: var(--ink-quiet);
+}
+
+.streams {
+  margin: 0 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.stream {
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  align-items: center;
+  gap: 11px;
+  padding: 8px 9px;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  background: transparent;
+  transition: background var(--t-block) ease;
+}
+
+.stream:hover {
+  background: rgba(110, 128, 132, 0.2);
+}
+
+.streamOn {
+  background: rgba(110, 128, 132, 0.26);
+}
+
+.swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--r-swatch);
+  background: var(--control);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.swatchDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.streamText {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.streamName {
+  font: var(--f-list);
+  letter-spacing: var(--ls-list);
+  color: var(--ink);
+}
+
+.streamRule {
+  font: 400 11.5px/1.25 var(--font);
+  color: rgba(233, 240, 240, 0.56);
+}
+
+.streamCount {
+  font: 400 13px/1 var(--font);
+  color: var(--ink-quiet);
+}
+
+.spacer {
+  flex: 1;
+  min-height: 10px;
+}
+
+.defended {
+  margin: 0 14px;
+  padding: 14px;
+  background: rgba(23, 31, 35, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.defendedHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.defendedLabel {
+  font: 590 12.5px/1 var(--font);
+  color: rgba(233, 240, 240, 0.66);
+}
+
+.defendedValue {
+  font: 600 13px/1 var(--font);
+  color: var(--build);
+}
+
+.defendedNote {
+  font: 400 11.5px/1.4 var(--font);
+  color: rgba(233, 240, 240, 0.56);
+}
