@@ -34,12 +34,22 @@ export interface ToastState {
   color: string;
 }
 
+/** A defended block the user is about to give away, and what it costs. */
+export interface Surrender {
+  /** 'blk:<day>:<start>' — a block, not a task, can be surrendered twice over. */
+  key: string;
+  taskId: TaskId | null;
+  title: string;
+  when: string;
+}
+
 export interface AppState extends PlannerState {
   /** The expanded clock row, if any. */
   sel: TaskId | null;
   doneOpen: DoneKey | null;
   toast: ToastState | null;
   toastOut: boolean;
+  surrender: Surrender | null;
   now: Date;
 }
 
@@ -61,7 +71,12 @@ export type Action =
   | { type: 'push'; notif: Notif }
   | { type: 'toast'; toast: ToastState }
   | { type: 'toastOut' }
-  | { type: 'toastGone' };
+  | { type: 'toastGone' }
+  | { type: 'setWeek'; wk: number }
+  | { type: 'stepWeek'; by: number }
+  | { type: 'openSurrender'; surrender: Surrender }
+  | { type: 'cancelSurrender' }
+  | { type: 'giveAway'; key: string; taskId: TaskId | null };
 
 function without<T>(record: Readonly<Record<string, T>>, key: string): Record<string, T> {
   const next = { ...record };
@@ -119,6 +134,28 @@ export function reducer(state: AppState, action: Action): AppState {
       return { ...state, toastOut: true };
     case 'toastGone':
       return { ...state, toast: null, toastOut: false };
+    case 'setWeek':
+      return { ...state, wk: action.wk };
+    // Relative, so two clicks inside one render batch move two weeks, not one.
+    case 'stepWeek':
+      return { ...state, wk: state.wk + action.by };
+    case 'openSurrender':
+      return { ...state, surrender: action.surrender };
+    case 'cancelSurrender':
+      return { ...state, surrender: null };
+    case 'giveAway': {
+      // The block is marked spent, and the work that lost it carries the tally.
+      const owner = action.taskId ?? 'unclaimed';
+      return {
+        ...state,
+        surrender: null,
+        losses: {
+          ...state.losses,
+          [action.key]: 1,
+          [owner]: (state.losses[owner] ?? 0) + 1,
+        },
+      };
+    }
   }
 }
 
@@ -157,6 +194,7 @@ function load(): AppState {
     doneOpen: null,
     toast: null,
     toastOut: false,
+    surrender: null,
     now: new Date(),
   };
   try {
@@ -194,6 +232,11 @@ export interface Actions {
   resumeSeries: (id: TaskId) => void;
   goTo: (place: PlaceId) => void;
   planTrip: (names: string[], back: string) => void;
+  setWeek: (wk: number) => void;
+  stepWeek: (by: number) => void;
+  openSurrender: (surrender: Surrender) => void;
+  cancelSurrender: () => void;
+  giveAway: (surrender: Surrender, toTitle: string) => void;
   showToast: (title: string, sub: string, color?: string) => void;
   push: (title: string, body: string, color?: string) => void;
 }
@@ -383,6 +426,33 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
           `${names.join(' → ')}. Leave now to be back by ${back}.`,
           PALETTE.workshop,
         );
+      },
+      setWeek: (wk) => {
+        buzz(HAPTIC.receipt);
+        dispatch({ type: 'setWeek', wk });
+      },
+      stepWeek: (by) => {
+        buzz(HAPTIC.undo);
+        dispatch({ type: 'stepWeek', by });
+      },
+      openSurrender: (surrender) => {
+        buzz(HAPTIC.receipt);
+        dispatch({ type: 'openSurrender', surrender });
+      },
+      cancelSurrender: () => {
+        buzz(HAPTIC.tap);
+        dispatch({ type: 'cancelSurrender' });
+      },
+      giveAway: (surrender, toTitle) => {
+        buzz(HAPTIC.move);
+        dispatch({ type: 'giveAway', key: surrender.key, taskId: surrender.taskId });
+        if (surrender.taskId !== null) {
+          push(
+            'Block surrendered',
+            `${short(surrender.taskId)} lost ${surrender.when} to ${toTitle}.`,
+            PALETTE.alarm,
+          );
+        }
       },
       showToast,
       push,

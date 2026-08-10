@@ -10,6 +10,7 @@ const base: AppState = {
   doneOpen: null,
   toast: null,
   toastOut: false,
+  surrender: null,
   now: new Date('2025-08-07T11:30:00Z'),
 };
 
@@ -78,6 +79,16 @@ describe('transient state', () => {
     expect(shown.toastOut).toBe(false);
     expect(reducer(shown, { type: 'toastOut' }).toastOut).toBe(true);
     expect(reducer(shown, { type: 'toastGone' }).toast).toBeNull();
+  });
+
+  it('steps the week relative to the state, not to a captured render', () => {
+    // Two clicks inside one render batch must move two weeks.
+    const twice = reducer(reducer(base, { type: 'stepWeek', by: -1 }), {
+      type: 'stepWeek',
+      by: -1,
+    });
+    expect(twice.wk).toBe(-2);
+    expect(reducer(twice, { type: 'setWeek', wk: 0 }).wk).toBe(0);
   });
 
   it('keeps the last 14 notifications', () => {

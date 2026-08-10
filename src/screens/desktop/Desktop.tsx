@@ -3,6 +3,9 @@ import { Toast } from '../../ui/primitives';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 import { Today } from './Today';
+import { Week } from './Week';
+import { Deadlines } from './Deadlines';
+import { Zones } from './Zones';
 import styles from './Desktop.module.css';
 
 export function Desktop() {
@@ -13,9 +16,10 @@ export function Desktop() {
       <Sidebar />
       <div className={styles.body}>
         <TopBar />
-        {/* Week, Deadlines and Zones land in step 6. */}
         {state.tab === 'today' && <Today />}
-        {state.tab !== 'today' && <div className={styles.pending} />}
+        {state.tab === 'week' && <Week />}
+        {state.tab === 'due' && <Deadlines />}
+        {state.tab === 'zones' && <Zones />}
       </div>
       {state.toast && (
         <Toast

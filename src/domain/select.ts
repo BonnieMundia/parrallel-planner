@@ -15,16 +15,27 @@ import {
   DOW,
   DAY_MS,
   dayKey,
+  dayName,
   fromNow,
   gap,
   hhmm,
+  offsetMin,
   parts,
+  sameDay,
   zoneAbbr,
   zoneCity,
   zonedToUTC,
 } from '../app/clock';
 import type { Clock } from '../app/clock';
-import { DEFAULTS, SEED_BLOCKS, SEED_MARKS, SEED_PLACES, SEED_TASKS, SEED_ZONES } from './seed';
+import {
+  DEFAULTS,
+  SEED_BLOCKS,
+  SEED_MARKS,
+  SEED_PLACES,
+  SEED_STREAMS,
+  SEED_TASKS,
+  SEED_ZONES,
+} from './seed';
 import type { PlannerState } from './state';
 import { isNoneTask, isPlaceTask } from './types';
 import type {
@@ -259,12 +270,16 @@ function streamFirst<T extends Task>(state: PlannerState, arr: readonly T[]): T[
   );
 }
 
-/** Clock-locked, soonest deadline first. */
-export function clockList(state: PlannerState, clock: Clock): ClockTask[] {
-  const sorted = [...byRule(state, 'clock')].sort(
+/** Clock-locked, soonest deadline first, before any stream filter is applied. */
+export function clockByDue(state: PlannerState, clock: Clock): ClockTask[] {
+  return [...byRule(state, 'clock')].sort(
     (a, b) => dueOf(state, clock, a).getTime() - dueOf(state, clock, b).getTime(),
   );
-  return streamFirst(state, sorted);
+}
+
+/** Clock-locked, soonest deadline first. */
+export function clockList(state: PlannerState, clock: Clock): ClockTask[] {
+  return streamFirst(state, clockByDue(state, clock));
 }
 
 export interface PlaceGroupItem {
@@ -506,6 +521,170 @@ export function weekRange(mon: Date, months: readonly string[]): string {
   const same = mon.getMonth() === sun.getMonth();
   const head = mon.getDate() + (same ? '' : ` ${months[mon.getMonth()] ?? ''}`);
   return `${head} – ${sun.getDate()} ${months[sun.getMonth()] ?? ''}`;
+}
+
+export interface WeekDay {
+  dow: string;
+  /** Date of the month, as shown in the column head. */
+  num: string;
+  isToday: boolean;
+  blocks: Block[];
+  marks: UnclaimedMark[];
+}
+
+/**
+ * Standing commitments repeat in every week. A one-off deadline only appears in the
+ * week it actually falls in, so scrolling back does not show it four times.
+ */
+export function weekDays(state: PlannerState, clock: Clock): WeekDay[] {
+  const mon = monday(state, clock);
+  const start = mon.getTime();
+  const end = start + 7 * DAY_MS;
+  const off = state.wk;
+
+  const inWeek = (b: Block): boolean => {
+    if (off === 0) return true;
+    if (b.t === null) return false;
+    const t = findTask(state, b.t);
+    if (!t) return false;
+    if (t.rule !== 'clock') return true;
+    const d = dueOf(state, clock, t).getTime();
+    return d >= start && d < end;
+  };
+
+  const blocks = rotatedBlocks(state, clock).filter(inWeek);
+  const marks = off === 0 ? rotatedMarks(state, clock) : [];
+  const today = todayIndex(clock);
+
+  return DOW.map((dow, i) => ({
+    dow,
+    num: String(new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + i).getDate()),
+    isToday: off === 0 && i === today,
+    blocks: blocks.filter((b) => b.d === i),
+    marks: marks.filter((m) => m.d === i),
+  }));
+}
+
+export interface ReviewRow {
+  name: string;
+  color: string;
+  keptPct: number;
+  /** '4 of 6 blocks kept' */
+  blocks: string;
+  /** '2 ticked · 1 given away' */
+  done: string;
+  dim: number;
+}
+
+/** What the week actually kept, per stream. */
+export function reviewRows(state: PlannerState, clock: Clock): ReviewRow[] {
+  const all = tasks(state);
+  const rotated = rotatedBlocks(state, clock);
+
+  return SEED_STREAMS.map((meta) => {
+    const owned = all.filter((t) => t.stream === meta.name);
+    const doneN = owned.filter((t) => state.done[t.id] !== undefined).length;
+    const lostN = owned.reduce((a, t) => a + lossesOf(state, t.id), 0);
+    const blocksN = rotated.filter(
+      (b) => b.t !== null && findTask(state, b.t)?.stream === meta.name,
+    ).length;
+    const kept = Math.max(0, blocksN - lostN);
+
+    return {
+      name: meta.name === 'Personal builds' ? 'Builds' : meta.name,
+      color: meta.color,
+      keptPct: blocksN ? Math.round((kept / blocksN) * 100) : 0,
+      blocks: blocksN ? `${kept} of ${blocksN} blocks kept` : 'no blocks booked',
+      done: `${doneN} ticked · ${lostN} given away`,
+      dim: blocksN || doneN ? 1 : 0.45,
+    };
+  });
+}
+
+// --- zones -------------------------------------------------------------------------
+
+/** The band is the user's own working day, 06:00 to 23:00. */
+const DAY_A = 6;
+const DAY_B = 23;
+
+export interface ZoneRow {
+  title: string;
+  color: string;
+  /** Percentage across the band. */
+  left: number;
+  /** Chips past halfway flip to the left of their mark so they stay readable. */
+  chipShift: string;
+  mine: string;
+  theirs: string;
+  day: string;
+  /** Set when the deadline lands outside 08:00–21:00 here. */
+  flag: string;
+  outside: boolean;
+}
+
+export interface ZoneGroup {
+  city: string;
+  abbr: string;
+  delta: string;
+  rows: ZoneRow[];
+}
+
+export function zoneTicks(): { label: string; left: number }[] {
+  return [6, 9, 12, 15, 18, 21, 23].map((h) => ({
+    label: String(h).padStart(2, '0'),
+    left: ((h - DAY_A) / (DAY_B - DAY_A)) * 100,
+  }));
+}
+
+/** Every deadline placed on the user's own day, with the clock it shows on theirs. */
+export function zoneGroups(state: PlannerState, clock: Clock): ZoneGroup[] {
+  const grouped = new Map<string, ClockTask[]>();
+  for (const t of clockByDue(state, clock)) {
+    const tz = t.tz ?? clock.tz;
+    const list = grouped.get(tz);
+    if (list) list.push(t);
+    else grouped.set(tz, [t]);
+  }
+
+  return [...grouped.entries()].map(([tz, items]) => {
+    const off =
+      Math.round(((offsetMin(tz, clock.now) - offsetMin(clock.tz, clock.now)) / 60) * 10) / 10;
+
+    return {
+      city: zoneCity(tz, SEED_ZONES),
+      abbr: zoneAbbr(tz, clock.now),
+      delta: off === 0 ? 'same clock as you' : `${off > 0 ? '+' : ''}${off}h from you`,
+      rows: items.map((t) => {
+        const d = dueOf(state, clock, t);
+        const p = parts(d, clock.tz);
+        const h = p.h + p.mi / 60;
+        const outside = h < 8 || h >= 21;
+        const left = Math.max(
+          0,
+          Math.min(97, ((Math.max(DAY_A, Math.min(DAY_B, h)) - DAY_A) / (DAY_B - DAY_A)) * 100),
+        );
+        return {
+          title: t.short ?? t.title,
+          color: SEED_STREAMS.find((s) => s.name === t.stream)?.color ?? '#FF5C8A',
+          left,
+          chipShift: left > 55 ? '-100%' : '0',
+          mine: hhmm(d, clock.tz),
+          theirs: t.tz !== undefined ? `${hhmm(d, t.tz)} ${zoneAbbr(t.tz, d)}` : hhmm(d, clock.tz),
+          day: sameDay(d, clock.now, clock.tz) ? 'today' : dayName(d, clock.tz),
+          flag: outside ? (h < 8 ? 'before you start' : 'after your last block') : '',
+          outside,
+        };
+      }),
+    };
+  });
+}
+
+/** How many deadlines land outside the working day. Drives the line under the title. */
+export function zoneClash(state: PlannerState, clock: Clock): number {
+  return zoneGroups(state, clock).reduce(
+    (a, g) => a + g.rows.filter((r) => r.outside).length,
+    0,
+  );
 }
 
 // --- summary counts ---------------------------------------------------------------
