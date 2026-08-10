@@ -1,7 +1,7 @@
 import { Suspense, lazy, useSyncExternalStore } from 'react';
 import { PlannerProvider } from './store';
 import { Desktop } from '../screens/desktop/Desktop';
-import styles from './App.module.css';
+import { Phone } from '../screens/phone/Phone';
 
 // The prototype ships two artifacts: desktop at 1440×900 and phone at 412×892.
 // Nothing in the handoff names a crossover width; 900 is provisional, pending the designer.
@@ -9,7 +9,14 @@ const DESKTOP = window.matchMedia('(min-width: 900px)');
 
 function subscribe(cb: () => void): () => void {
   DESKTOP.addEventListener('change', cb);
-  return () => DESKTOP.removeEventListener('change', cb);
+  // The media-query change event is not always delivered — a programmatic viewport
+  // change can skip it entirely, which strands the app on the wrong layout. resize is
+  // the second signal; getSnapshot re-reads `matches` either way, so it stays correct.
+  window.addEventListener('resize', cb);
+  return () => {
+    DESKTOP.removeEventListener('change', cb);
+    window.removeEventListener('resize', cb);
+  };
 }
 
 export function useIsDesktop(): boolean {
@@ -50,9 +57,6 @@ export function App() {
   }
 
   return (
-    <PlannerProvider>
-      {/* The phone layout lands in step 7. */}
-      {isDesktop ? <Desktop /> : <div className={styles.phone} />}
-    </PlannerProvider>
+    <PlannerProvider>{isDesktop ? <Desktop /> : <Phone />}</PlannerProvider>
   );
 }

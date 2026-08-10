@@ -1,0 +1,160 @@
+.phone {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 6px 18px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  flex: none;
+}
+
+.headRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.date {
+  font: 700 32px/1.1 var(--font);
+  letter-spacing: -0.028em;
+  color: var(--ink);
+}
+
+.clock {
+  font: 400 13.5px/1.6 var(--font);
+  color: var(--ink-3);
+}
+
+.place {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 13px;
+  min-height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 13px;
+  cursor: pointer;
+  text-align: left;
+  background: rgba(23, 31, 35, 0.6);
+  backdrop-filter: blur(20px);
+}
+
+.placeDot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--build);
+}
+
+.placeText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.placeName {
+  font: 590 14px/1.2 var(--font);
+  color: var(--ink);
+}
+
+.placeNote {
+  font: 400 12px/1.2 var(--font);
+  color: var(--ink-3);
+}
+
+.caret {
+  flex: none;
+  font: 400 11px/1 var(--font);
+  color: var(--ink-quiet);
+}
+
+.scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The phone frame hides its scrollbar entirely. */
+.scroll {
+  scrollbar-width: none;
+}
+
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- bottom bar ---------------------------------------------------------------- */
+
+.nav {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 74px;
+  background: rgba(17, 24, 27, 0.72);
+  backdrop-filter: blur(30px) saturate(1.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: grid;
+  grid-template-columns: 1fr 1fr 90px 1fr 1fr;
+  align-items: center;
+  padding-bottom: 6px;
+  z-index: 12;
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  /* Minimum hit target on phone layouts. */
+  min-height: 44px;
+}
+
+.navIcon {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.navLabel {
+  font: 400 10.5px/1 var(--font);
+  letter-spacing: 0.01em;
+}
+
+.fab {
+  justify-self: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 0;
+  background: #ff7a5c;
+  color: var(--ink);
+  font: 300 30px/1 var(--font);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 22px rgba(255, 122, 92, 0.45);
+  transition: transform var(--t-block) ease;
+}
+
+.fab:hover {
+  transform: translateY(-2px) scale(1.04);
+}

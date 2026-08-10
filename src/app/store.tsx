@@ -19,7 +19,7 @@ import { HOUR_MS, dayKey, startTicking } from './clock';
 import type { Clock } from './clock';
 import { DEFAULTS } from '../domain/seed';
 import { INITIAL_STATE } from '../domain/state';
-import type { Notif, PlannerState, Tab } from '../domain/state';
+import type { Notif, PhoneScreen, PlannerState, Tab } from '../domain/state';
 import { byRule, dueOf, findTask, nextActive, proposal } from '../domain/select';
 import type { PlaceId, Stream, TaskId } from '../domain/types';
 import { isPlaceTask } from '../domain/types';
@@ -68,6 +68,7 @@ export type Action =
   | { type: 'endSeries'; id: TaskId }
   | { type: 'resumeSeries'; id: TaskId }
   | { type: 'goTo'; place: PlaceId }
+  | { type: 'setPhoneScreen'; screen: PhoneScreen }
   | { type: 'push'; notif: Notif }
   | { type: 'toast'; toast: ToastState }
   | { type: 'toastOut' }
@@ -126,6 +127,8 @@ export function reducer(state: AppState, action: Action): AppState {
       return { ...state, ended: without(state.ended, action.id) };
     case 'goTo':
       return { ...state, here: action.place };
+    case 'setPhoneScreen':
+      return { ...state, aScreen: action.screen };
     case 'push':
       return { ...state, notifs: [action.notif, ...state.notifs].slice(0, 14) };
     case 'toast':
@@ -231,6 +234,8 @@ export interface Actions {
   endSeries: (id: TaskId) => void;
   resumeSeries: (id: TaskId) => void;
   goTo: (place: PlaceId) => void;
+  setPhoneScreen: (screen: PhoneScreen) => void;
+  pushBack: (title: string) => void;
   planTrip: (names: string[], back: string) => void;
   setWeek: (wk: number) => void;
   stepWeek: (by: number) => void;
@@ -417,6 +422,18 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
       goTo: (place) => {
         buzz(HAPTIC.undo);
         dispatch({ type: 'goTo', place });
+      },
+      setPhoneScreen: (screen) => {
+        buzz(HAPTIC.tap);
+        dispatch({ type: 'setPhoneScreen', screen });
+      },
+      pushBack: (taskTitle) => {
+        buzz(HAPTIC.receipt);
+        push(
+          'Pushed to this evening',
+          `${taskTitle} moved out of the way. The 20:15 slot is still defended.`,
+          PALETTE.workshop,
+        );
       },
       planTrip: (names, back) => {
         buzz(HAPTIC.complete);

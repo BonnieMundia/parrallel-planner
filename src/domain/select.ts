@@ -14,6 +14,7 @@
 import {
   DOW,
   DAY_MS,
+  absLabel,
   dayKey,
   dayName,
   fromNow,
@@ -22,11 +23,12 @@ import {
   offsetMin,
   parts,
   sameDay,
+  urgency,
   zoneAbbr,
   zoneCity,
   zonedToUTC,
 } from '../app/clock';
-import type { Clock } from '../app/clock';
+import type { Clock, Urgency } from '../app/clock';
 import {
   DEFAULTS,
   SEED_BLOCKS,
@@ -597,6 +599,147 @@ export function reviewRows(state: PlannerState, clock: Clock): ReviewRow[] {
       blocks: blocksN ? `${kept} of ${blocksN} blocks kept` : 'no blocks booked',
       done: `${doneN} ticked · ${lostN} given away`,
       dim: blocksN || doneN ? 1 : 0.45,
+    };
+  });
+}
+
+// --- the phone's deciding surface ---------------------------------------------------
+
+export interface Hero {
+  id: TaskId;
+  /** Minutes the focus timer opens with. */
+  mins: number;
+  kicker: string;
+  stream: string;
+  title: string;
+  /** The one big number. */
+  big: string;
+  bigNote: string;
+  why: string;
+  cta: string;
+  tint: string;
+  /** Urgency tier the card animates at. */
+  tier: Urgency;
+}
+
+/**
+ * The single next thing. Standing somewhere wins over any clock — place work stops
+ * being possible the moment you leave. Otherwise it is the soonest deadline, but only
+ * while it is actually close; when nothing is pressing, the defended slot takes the card.
+ */
+export function hero(state: PlannerState, clock: Clock, where: PlaceId): Hero {
+  const live = byRule(state, 'place');
+  const here = live.filter((t) => t.place === where);
+
+  if (here.length > 0) {
+    const sorted = [...here].sort((a, b) => soonest(state, clock, a) - soonest(state, clock, b));
+    const first = sorted[0];
+    if (first) {
+      const label = activeLabel(state, clock, first);
+      const untimed = label.at === 'No set time';
+      return {
+        id: first.id,
+        mins: minsOf(first),
+        kicker: 'You are here',
+        stream: first.stream,
+        title: first.title,
+        big: untimed ? String(here.length) : (label.at.split(' ')[0] ?? label.at),
+        bigNote: untimed ? `items at ${placeName(state, where)} · no set time` : label.in,
+        why: 'Soonest first. These are here because you are here, and they stop being possible the moment you leave.',
+        cta: 'Take it',
+        tint: 'rgba(240,169,59,.16)',
+        tier: 0,
+      };
+    }
+  }
+
+  const next = clockByDue(state, clock)[0];
+  if (next && countdown(state, clock, next).hot) {
+    const due = dueOf(state, clock, next);
+    return {
+      id: next.id,
+      mins: 90,
+      kicker: 'Do this now',
+      stream: next.stream,
+      title: next.title,
+      big: countdown(state, clock, next).v,
+      bigNote: `until ${hhmm(due, clock.tz)} EAT · ${theirClock(state, clock, next)}`,
+      why: 'The only thing today with money attached and under eight hours on it. Everything else can wait until it is done.',
+      cta: 'Start · 90 min',
+      tint: 'rgba(255,122,92,.16)',
+      tier: urgency(due, clock.now),
+    };
+  }
+
+  return {
+    id: 'bench',
+    mins: 45,
+    kicker: 'Nothing needs you',
+    stream: 'Personal builds',
+    title: '45 minutes are unclaimed at 20:15',
+    big: '19d',
+    bigNote: 'since the bench rig was last opened',
+    why: 'No deadline is close enough to justify skipping this again. This is the slot the app defends unless you give it away.',
+    cta: 'Defend it',
+    tint: 'rgba(53,214,160,.16)',
+    tier: next ? urgency(dueOf(state, clock, next), clock.now) : 0,
+  };
+}
+
+export interface NextRow {
+  id: TaskId;
+  title: string;
+  color: string;
+  sub: string;
+  right: string;
+  /** Place work you are not standing in dims — it is not available to you now. */
+  usable: boolean;
+  tier: Urgency;
+}
+
+/** What follows the hero: the rest of where you are, then the clock. Or the reverse. */
+export function phoneNext(state: PlannerState, clock: Clock, where: PlaceId): NextRow[] {
+  const byDue = clockByDue(state, clock);
+  const byPlace = [...byRule(state, 'place')].sort(
+    (a, b) => soonest(state, clock, a) - soonest(state, clock, b),
+  );
+  const here = byPlace.filter((t) => t.place === where);
+
+  const picked: Task[] =
+    here.length > 0
+      ? [...here.slice(1, 3), ...byDue.slice(0, 2)]
+      : [...byDue.slice(1, 3), ...byPlace.slice(0, 2)];
+
+  return picked.map((t) => {
+    const isPlace = t.rule === 'place';
+    const usable = !isPlace || t.place === where;
+    const color = SEED_STREAMS.find((s) => s.name === t.stream)?.color ?? '#FF5C8A';
+
+    if (isPlace) {
+      const label = activeLabel(state, clock, t);
+      return {
+        id: t.id,
+        title: t.title,
+        color,
+        sub: usable
+          ? `${label.at} · ${label.in}`
+          : `${placeName(state, t.place)} · ${label.at}`,
+        right:
+          label.at === 'No set time' ? (t.est ?? '~30m') : label.in.replace(' from now', ''),
+        usable,
+        tier: 0,
+      };
+    }
+
+    const due = dueOf(state, clock, t);
+    return {
+      id: t.id,
+      title: t.title,
+      color,
+      sub: absLabel(due, clock),
+      right: gap(due, clock.now).v,
+      usable,
+      tier: urgency(due, clock.now),
     };
   });
 }

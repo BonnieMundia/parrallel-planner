@@ -10,6 +10,7 @@ import {
   countdown,
   dueOf,
   findTask,
+  hero,
   hotCount,
   leaveBy,
   lossesOf,
@@ -17,6 +18,7 @@ import {
   monday,
   nextActive,
   noneList,
+  phoneNext,
   placeGroups,
   placeName,
   proposal,
@@ -399,6 +401,70 @@ describe('the one trip', () => {
       title: 'No estimate',
     };
     expect(minsOf(bare)).toBe(30);
+  });
+});
+
+describe('the phone hero — the single next thing', () => {
+  it('lets standing somewhere win over any clock', () => {
+    const h = hero(state(), clock(), 'market');
+    expect(h.kicker).toBe('You are here');
+    // Both errands there are untimed, so the big number is how many are waiting.
+    expect(h.big).toBe('2');
+    expect(h.bigNote).toBe('items at Naivas supermarket · no set time');
+    expect(h.cta).toBe('Take it');
+  });
+
+  it('leads with the hour when the place work is timed', () => {
+    const h = hero(state(), clock(), 'town');
+    expect(h.kicker).toBe('You are here');
+    expect(h.title).toBe('Barber — the usual slot');
+    expect(h.big).toBe('11:00');
+  });
+
+  it('falls to the soonest deadline once it is actually close', () => {
+    const h = hero(state(), after(1), 'desk');
+    expect(h.kicker).toBe('Do this now');
+    expect(h.title).toBe('RLHF batch #4118 — 40 tasks');
+    expect(h.big).toBe('7h 30m');
+    expect(h.mins).toBe(90);
+  });
+
+  it('defends the unclaimed slot when nothing is pressing', () => {
+    // At load the nearest deadline is 8h30m out — outside the window.
+    const h = hero(state(), clock(), 'desk');
+    expect(h.kicker).toBe('Nothing needs you');
+    expect(h.id).toBe('bench');
+    expect(h.cta).toBe('Defend it');
+    expect(h.mins).toBe(45);
+  });
+});
+
+describe('what follows the hero', () => {
+  it('runs the rest of where you are, then the clock', () => {
+    const rows = phoneNext(state(), clock(), 'market');
+    expect(ids(rows)).toEqual(['pharmacy', 'rlhf', 'call']);
+    expect(rows.every((r) => r.usable)).toBe(true);
+  });
+
+  it('runs the clock first when you are nowhere in particular', () => {
+    expect(ids(phoneNext(state(), clock(), 'desk'))).toEqual([
+      'call',
+      'ch3',
+      'barber',
+      'church',
+    ]);
+  });
+
+  it('dims place work you are not standing in, and names where it is', () => {
+    const rows = phoneNext(state(), clock(), 'desk');
+    const barber = rows.find((r) => r.id === 'barber');
+    expect(barber?.usable).toBe(false);
+    expect(barber?.sub).toBe('Town / CBD · 11:00 Sat');
+  });
+
+  it('shows the estimate rather than a countdown for untimed work', () => {
+    const rows = phoneNext(state(), clock(), 'market');
+    expect(rows.find((r) => r.id === 'pharmacy')?.right).toBe('~15m');
   });
 });
 

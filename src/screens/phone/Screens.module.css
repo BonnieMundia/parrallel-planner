@@ -1,0 +1,451 @@
+/* Shared by all four phone screens. 104px of bottom padding clears the tab bar. */
+
+.page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 4px 16px 104px;
+}
+
+.card {
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(23, 31, 35, 0.6);
+  backdrop-filter: var(--blur-card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.bullet {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.listLabel {
+  font: var(--f-label);
+  color: rgba(233, 240, 240, 0.65);
+  padding: 0 4px 2px;
+}
+
+/* --- Now: the hero ------------------------------------------------------------- */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.heroTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.heroKicker {
+  font: 590 12.5px/1 var(--font);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.heroStream {
+  font: 400 12.5px/1 var(--font);
+  color: var(--ink-3);
+}
+
+.heroTitle {
+  font: 700 22px/1.25 var(--font);
+  letter-spacing: -0.022em;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.heroBigRow {
+  display: flex;
+  align-items: baseline;
+  gap: 11px;
+}
+
+.heroBig {
+  font: 700 36px/1 var(--font);
+  letter-spacing: -0.035em;
+}
+
+.heroBigNote {
+  font: 400 12.5px/1.35 var(--font);
+  color: var(--ink-3);
+}
+
+.heroWhy {
+  font: 400 14px/1.45 var(--font);
+  color: rgba(233, 240, 240, 0.7);
+  text-wrap: pretty;
+}
+
+.heroActions {
+  display: flex;
+  gap: 9px;
+  padding-top: 2px;
+}
+
+.heroGo {
+  flex: 1;
+  padding: 14px 0;
+  min-height: 44px;
+  border: 0;
+  border-radius: 13px;
+  background: #ffffff;
+  color: #000000;
+  font: 590 15.5px/1 var(--font);
+  cursor: pointer;
+}
+
+.heroSkip {
+  padding: 14px 18px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 13px;
+  background: rgba(110, 128, 132, 0.34);
+  color: rgba(233, 240, 240, 0.78);
+  font: 590 15px/1 var(--font);
+  cursor: pointer;
+}
+
+/* --- Now: the trip bundle ------------------------------------------------------- */
+
+.tripCard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px 16px;
+  border-radius: 18px;
+  background: rgba(240, 169, 59, 0.14);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(240, 169, 59, 0.24);
+}
+
+.tripTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.tripLabel {
+  font: var(--f-label);
+  color: var(--amber-ink);
+}
+
+.tripTotal {
+  font: 400 12.5px/1 var(--font);
+  color: var(--ink-3);
+}
+
+.tripBack {
+  font: 400 13.5px/1.45 var(--font);
+  color: rgba(233, 240, 240, 0.7);
+  text-wrap: pretty;
+}
+
+.tripPlan {
+  padding: 12px 0;
+  min-height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--workshop);
+  color: #241802;
+  font: 590 14.5px/1 var(--font);
+  cursor: pointer;
+}
+
+/* --- Now: Then ------------------------------------------------------------------ */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sectionHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0 4px;
+}
+
+.sectionTitle {
+  font: var(--f-label);
+  color: rgba(233, 240, 240, 0.65);
+}
+
+.sectionNote {
+  font: 400 12.5px/1 var(--font);
+  color: var(--ink-quiet);
+}
+
+.nextRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  min-height: 44px;
+}
+
+.nextText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.nextTitle {
+  font: var(--f-body);
+  letter-spacing: var(--ls-body);
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.nextSub {
+  font: 400 12.5px/1.2 var(--font);
+}
+
+.nextRight {
+  flex: none;
+  font: 590 14px/1 var(--font);
+}
+
+/* --- Now: the defended card ------------------------------------------------------ */
+
+.defence {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(53, 214, 160, 0.14);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(53, 214, 160, 0.22);
+}
+
+.defenceHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.defenceLabel {
+  font: var(--f-label);
+  color: var(--green-ink);
+}
+
+.defenceValue {
+  font: 600 15px/1 var(--font);
+  color: var(--ink);
+}
+
+.defenceNote {
+  font: 400 14px/1.45 var(--font);
+  color: rgba(233, 240, 240, 0.7);
+  text-wrap: pretty;
+}
+
+/* --- Due -------------------------------------------------------------------------- */
+
+.dueRow {
+  padding: 15px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.dueTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.dueTitleWrap {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.dueTitle {
+  font: var(--f-body);
+  letter-spacing: var(--ls-body);
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.dueCd {
+  flex: none;
+  font: 600 17px/1 var(--font);
+  letter-spacing: -0.02em;
+}
+
+.dueFoot {
+  display: flex;
+  justify-content: space-between;
+  font: 400 12.5px/1 var(--font);
+  color: rgba(233, 240, 240, 0.56);
+}
+
+/* --- Week -------------------------------------------------------------------------- */
+
+.weekHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px 2px;
+  gap: 10px;
+}
+
+.weekLabel {
+  font: var(--f-label);
+  color: rgba(233, 240, 240, 0.65);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.weekNav {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.weekBtn {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(110, 128, 132, 0.28);
+  color: var(--ink);
+  font: 400 15px/1 var(--font);
+  cursor: pointer;
+}
+
+.weekNow {
+  padding: 0 10px;
+  height: 44px;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(110, 128, 132, 0.28);
+  font: 590 11.5px/1 var(--font);
+  cursor: pointer;
+}
+
+.dayRow {
+  display: flex;
+  gap: 13px;
+  padding: 13px 15px;
+}
+
+.dayCell {
+  flex: none;
+  width: 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.dayName {
+  font: 400 11px/1 var(--font);
+  letter-spacing: 0.02em;
+}
+
+.dayNum {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font: 590 14px/1 var(--font);
+  color: var(--ink);
+}
+
+.chips {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-content: flex-start;
+  padding-top: 2px;
+}
+
+.chip {
+  padding: 5px 9px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font: 590 11.5px/1.25 var(--font);
+  color: var(--ink);
+}
+
+/* --- Streams ------------------------------------------------------------------------ */
+
+.streamRow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 15px 16px;
+  min-height: 44px;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.streamSwatch {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-control);
+  background: rgba(110, 128, 132, 0.24);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.streamDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.streamText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.streamName {
+  font: var(--f-body);
+  letter-spacing: var(--ls-body);
+  color: var(--ink);
+}
+
+.streamRule {
+  font: 400 12.5px/1.2 var(--font);
+  color: rgba(233, 240, 240, 0.56);
+}
+
+.streamCount {
+  flex: none;
+  font: var(--f-list);
+  color: var(--ink-quiet);
+}
