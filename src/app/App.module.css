@@ -1,0 +1,16 @@
+/* Desktop is three-pane (sidebar 252 · content · rail 300); the phone is a single
+   column with a bottom bar. Both fill the viewport and scroll internally, never the page. */
+
+.desktop {
+  display: grid;
+  grid-template-columns: 252px minmax(0, 1fr) 300px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.phone {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}

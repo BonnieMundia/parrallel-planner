@@ -1,0 +1,561 @@
+{
+  "_note": "Seed data lifted verbatim from the prototype's logic class. Use it for the demo build so the screens have the same density and edge cases the design was drawn against.",
+  "streams": [
+    {
+      "name": "Contract",
+      "rule": "Clock",
+      "color": "#FF7A5C",
+      "chipBg": "rgba(255,122,92,.22)"
+    },
+    {
+      "name": "Writing",
+      "rule": "Clock",
+      "color": "#B08CFF",
+      "chipBg": "rgba(176,140,255,.22)"
+    },
+    {
+      "name": "Personal builds",
+      "rule": "Nothing",
+      "color": "#35D6A0",
+      "chipBg": "rgba(53,214,160,.18)"
+    },
+    {
+      "name": "Applications",
+      "rule": "Mixed",
+      "color": "#FF5C8A",
+      "chipBg": "rgba(255,55,95,.2)"
+    },
+    {
+      "name": "Life & errands",
+      "rule": "Mixed",
+      "color": "#4FD1C5",
+      "chipBg": "rgba(79,209,197,.2)"
+    }
+  ],
+  "places": [
+    {
+      "id": "desk",
+      "name": "Home desk",
+      "kind": "Where you work",
+      "travel": 0
+    },
+    {
+      "id": "town",
+      "name": "Town / CBD",
+      "kind": "Errands",
+      "travel": 25
+    },
+    {
+      "id": "market",
+      "name": "Naivas supermarket",
+      "kind": "Errands",
+      "travel": 12
+    },
+    {
+      "id": "gym",
+      "name": "Gym",
+      "kind": "Standing places",
+      "travel": 10
+    },
+    {
+      "id": "church",
+      "name": "Church",
+      "kind": "Standing places",
+      "travel": 15
+    },
+    {
+      "id": "parents",
+      "name": "Parents’ place",
+      "kind": "Standing places",
+      "travel": 40
+    },
+    {
+      "id": "anywhere",
+      "name": "Anywhere",
+      "kind": "Standing places",
+      "travel": 0
+    }
+  ],
+  "zones": [
+    {
+      "id": "Africa/Nairobi",
+      "label": "Nairobi — EAT"
+    },
+    {
+      "id": "Europe/London",
+      "label": "London — GMT/BST"
+    },
+    {
+      "id": "Europe/Berlin",
+      "label": "Berlin — CET/CEST"
+    },
+    {
+      "id": "America/New_York",
+      "label": "New York — ET"
+    },
+    {
+      "id": "America/Chicago",
+      "label": "Chicago — CT"
+    },
+    {
+      "id": "America/Los_Angeles",
+      "label": "Los Angeles — PT"
+    },
+    {
+      "id": "Asia/Dubai",
+      "label": "Dubai — GST"
+    },
+    {
+      "id": "Asia/Kolkata",
+      "label": "India — IST"
+    },
+    {
+      "id": "Asia/Singapore",
+      "label": "Singapore — SGT"
+    },
+    {
+      "id": "Australia/Sydney",
+      "label": "Sydney — AET"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "rlhf",
+      "stream": "Contract",
+      "rule": "clock",
+      "title": "RLHF batch #4118 — 40 tasks",
+      "short": "RLHF batch",
+      "at": 23,
+      "tz": "America/Los_Angeles",
+      "who": "client",
+      "pct": 86,
+      "sleep": true,
+      "note": "Platform auto-closes the batch",
+      "notes": "40 tasks at $18 each. The platform closes the batch on its own clock — partial submissions still pay, but the remainder is reassigned to another annotator within the hour."
+    },
+    {
+      "id": "ch3",
+      "stream": "Writing",
+      "rule": "clock",
+      "title": "Dissertation ch.3 — methodology, 8,200 w",
+      "short": "Ch.3 writing",
+      "h": 26,
+      "tz": "Europe/London",
+      "who": "client",
+      "pct": 61,
+      "note": "Second of four chapters",
+      "notes": "Second of four chapters. Client reads overnight and returns comments before ch.4 starts, so a day late here pushes the whole remaining schedule by a day."
+    },
+    {
+      "id": "call",
+      "stream": "Contract",
+      "rule": "clock",
+      "title": "Client sync — Cohort B handover",
+      "short": "Client sync",
+      "h": 20,
+      "place": "anywhere",
+      "tz": "Europe/Berlin",
+      "who": "call",
+      "pct": 44,
+      "note": "Video call, 30 minutes",
+      "notes": "Thirty minutes, screen share. Needs the Cohort B review at least half done or there is nothing to hand over."
+    },
+    {
+      "id": "cohortb",
+      "stream": "Contract",
+      "rule": "clock",
+      "title": "Quality review queue — Cohort B",
+      "short": "Cohort B review",
+      "h": 47,
+      "tz": "Europe/Berlin",
+      "who": "reviewer",
+      "pct": 38,
+      "note": "Blocks two other reviewers",
+      "notes": "Two other reviewers are waiting on this queue clearing. Missing it does not cost you money directly, it costs the next contract."
+    },
+    {
+      "id": "turnitin",
+      "stream": "Writing",
+      "rule": "clock",
+      "title": "Turnitin pass + formatting — MBA case",
+      "short": "Turnitin pass",
+      "h": 73,
+      "tz": "Asia/Dubai",
+      "who": "agency",
+      "pct": 24,
+      "note": "Agency reviews it before submission",
+      "notes": "Agency runs its own similarity check before submitting. Anything above 12% comes straight back to you, so budget a second pass."
+    },
+    {
+      "id": "sop",
+      "stream": "Applications",
+      "rule": "clock",
+      "title": "TUM M.Sc. Robotics — SOP first draft",
+      "short": "SOP draft",
+      "h": 314,
+      "tz": "Europe/Berlin",
+      "who": "portal",
+      "pct": 16,
+      "note": "Portal closes, no extensions",
+      "notes": "Portal closes and does not reopen. Two referees still need three weeks notice after the draft is done, so the real deadline is earlier than the one shown."
+    },
+    {
+      "id": "church",
+      "stream": "Life & errands",
+      "rule": "place",
+      "place": "church",
+      "dow": 6,
+      "at": 9,
+      "title": "Sunday service",
+      "short": "Church",
+      "est": "~2h"
+    },
+    {
+      "id": "lunch",
+      "stream": "Life & errands",
+      "rule": "place",
+      "place": "parents",
+      "dow": 6,
+      "at": 13,
+      "title": "Sunday lunch at my parents’",
+      "short": "Lunch at home",
+      "est": "~3h"
+    },
+    {
+      "id": "barber",
+      "stream": "Life & errands",
+      "rule": "place",
+      "place": "town",
+      "dow": 5,
+      "at": 11,
+      "title": "Barber — the usual slot",
+      "short": "Barber",
+      "est": "~40m"
+    },
+    {
+      "id": "standup",
+      "stream": "Life & errands",
+      "rule": "place",
+      "place": "church",
+      "dow": 2,
+      "at": 18.5,
+      "title": "Midweek meeting — 18:30",
+      "short": "Midweek meeting",
+      "est": "~1h"
+    },
+    {
+      "id": "shop",
+      "stream": "Life & errands",
+      "rule": "place",
+      "place": "market",
+      "title": "Weekly shop — list on the fridge",
+      "short": "Supermarket",
+      "queued": "2d",
+      "est": "~45m"
+    },
+    {
+      "id": "pharmacy",
+      "stream": "Life & errands",
+      "rule": "place",
+      "place": "market",
+      "title": "Collect the prescription",
+      "short": "Pharmacy",
+      "queued": "3d",
+      "est": "~15m"
+    },
+    {
+      "id": "bank",
+      "stream": "Life & errands",
+      "rule": "place",
+      "place": "town",
+      "title": "Bank — deposit the cheque",
+      "short": "Bank",
+      "queued": "4d",
+      "est": "~30m"
+    },
+    {
+      "id": "sim",
+      "stream": "Life & errands",
+      "rule": "place",
+      "place": "town",
+      "title": "Replace the line SIM",
+      "short": "SIM swap",
+      "queued": "9d",
+      "est": "~25m"
+    },
+    {
+      "id": "canbus",
+      "stream": "Personal builds",
+      "rule": "none",
+      "title": "Fleet telemetry logger — CAN bus parser",
+      "short": "CAN parser",
+      "sub": "Personal engineering · no date",
+      "staleDays": 11,
+      "lost": 9
+    },
+    {
+      "id": "sync",
+      "stream": "Personal builds",
+      "rule": "none",
+      "title": "Planner sync layer — conflict resolution",
+      "short": "Sync layer",
+      "sub": "Personal engineering · no date",
+      "staleDays": 4,
+      "lost": 3
+    },
+    {
+      "id": "bench",
+      "stream": "Personal builds",
+      "rule": "none",
+      "title": "Bench rig — 12 V supply wiring",
+      "short": "Bench rig",
+      "sub": "Personal engineering · no date",
+      "staleDays": 19,
+      "lost": 6
+    },
+    {
+      "id": "dash",
+      "stream": "Personal builds",
+      "rule": "none",
+      "title": "Fleet dashboard — first chart",
+      "short": "Fleet dashboard",
+      "sub": "Personal engineering · no date",
+      "staleDays": 7,
+      "lost": 2
+    },
+    {
+      "id": "firmware",
+      "stream": "Personal builds",
+      "rule": "none",
+      "title": "Logger firmware — OTA update path",
+      "short": "Logger firmware",
+      "sub": "Personal engineering · no date",
+      "staleDays": 15,
+      "lost": 4
+    },
+    {
+      "id": "gym",
+      "stream": "Life & errands",
+      "rule": "none",
+      "place": "gym",
+      "title": "Push day — chest, shoulders, triceps",
+      "short": "Gym",
+      "sub": "Gym · 3 of 4 sessions this week",
+      "staleDays": 2,
+      "lost": 1
+    },
+    {
+      "id": "pull",
+      "stream": "Life & errands",
+      "rule": "none",
+      "place": "gym",
+      "title": "Pull day — back, biceps",
+      "short": "Gym — pull",
+      "sub": "Gym · 3 of 4 sessions this week",
+      "staleDays": 4,
+      "lost": 1
+    },
+    {
+      "id": "apps",
+      "stream": "Applications",
+      "rule": "none",
+      "title": "Referral follow-ups — 3 pending",
+      "short": "Applications",
+      "sub": "Phone is enough · ~15m",
+      "staleDays": 6,
+      "lost": 2
+    }
+  ],
+  "blocks": [
+    {
+      "t": "canbus",
+      "d": 0,
+      "s": 6,
+      "e": 7
+    },
+    {
+      "t": "rlhf",
+      "d": 0,
+      "s": 9,
+      "e": 13
+    },
+    {
+      "t": "ch3",
+      "d": 0,
+      "s": 14,
+      "e": 17
+    },
+    {
+      "t": "gym",
+      "d": 0,
+      "s": 18.5,
+      "e": 20
+    },
+    {
+      "t": "canbus",
+      "d": 1,
+      "s": 6,
+      "e": 7
+    },
+    {
+      "t": "cohortb",
+      "d": 1,
+      "s": 9,
+      "e": 12
+    },
+    {
+      "t": "bank",
+      "d": 1,
+      "s": 13,
+      "e": 14
+    },
+    {
+      "t": "rlhf",
+      "d": 2,
+      "s": 9,
+      "e": 12.5
+    },
+    {
+      "t": "sim",
+      "d": 2,
+      "s": 13,
+      "e": 14
+    },
+    {
+      "t": "standup",
+      "d": 2,
+      "s": 18.5,
+      "e": 19.5
+    },
+    {
+      "t": "canbus",
+      "d": 3,
+      "s": 6,
+      "e": 7
+    },
+    {
+      "t": "rlhf",
+      "d": 3,
+      "s": 7.5,
+      "e": 8.5,
+      "label": "Inbox, batch triage"
+    },
+    {
+      "t": "rlhf",
+      "d": 3,
+      "s": 9,
+      "e": 12.5
+    },
+    {
+      "t": "shop",
+      "d": 3,
+      "s": 13,
+      "e": 14
+    },
+    {
+      "t": "ch3",
+      "d": 3,
+      "s": 14.5,
+      "e": 17
+    },
+    {
+      "t": "sop",
+      "d": 3,
+      "s": 17.25,
+      "e": 18
+    },
+    {
+      "t": "gym",
+      "d": 3,
+      "s": 18.5,
+      "e": 19.75
+    },
+    {
+      "t": null,
+      "d": 3,
+      "s": 20.25,
+      "e": 21,
+      "label": "Unclaimed — 45 min"
+    },
+    {
+      "t": "ch3",
+      "d": 4,
+      "s": 8,
+      "e": 12,
+      "label": "Ch.3 — final pass"
+    },
+    {
+      "t": "turnitin",
+      "d": 4,
+      "s": 13,
+      "e": 15
+    },
+    {
+      "t": "sop",
+      "d": 4,
+      "s": 17,
+      "e": 18.5
+    },
+    {
+      "t": "barber",
+      "d": 5,
+      "s": 11,
+      "e": 11.75
+    },
+    {
+      "t": "pull",
+      "d": 5,
+      "s": 12.5,
+      "e": 14
+    },
+    {
+      "t": "sync",
+      "d": 5,
+      "s": 14.5,
+      "e": 18
+    },
+    {
+      "t": "church",
+      "d": 6,
+      "s": 9,
+      "e": 11
+    },
+    {
+      "t": "lunch",
+      "d": 6,
+      "s": 13,
+      "e": 16
+    },
+    {
+      "t": "dash",
+      "d": 6,
+      "s": 16.5,
+      "e": 18.5
+    }
+  ],
+  "unclaimedMarks": [
+    {
+      "d": 2,
+      "at": 11,
+      "stream": "Writing"
+    },
+    {
+      "d": 3,
+      "at": 17,
+      "stream": "Contract"
+    },
+    {
+      "d": 4,
+      "at": 9,
+      "stream": "Writing"
+    }
+  ],
+  "defaults": {
+    "localStorageKey": "parallelPlanner.ios.v2",
+    "homeTimezone": "Africa/Nairobi",
+    "weeklyDefenceQuotaHours": 6,
+    "baseDefendedHours": 3.5,
+    "authoredToday": 3,
+    "focusMinutes": 90
+  }
+}

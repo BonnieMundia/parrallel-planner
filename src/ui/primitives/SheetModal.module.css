@@ -1,0 +1,60 @@
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  background: var(--scrim);
+  backdrop-filter: var(--blur-scrim);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.surface {
+  background: var(--sheet);
+  backdrop-filter: var(--blur-sheet);
+  border-radius: var(--r-sheet) var(--r-sheet) 0 0;
+  border-top: 1px solid var(--border-strong);
+  /* The ppSheet animation is applied from ANIM.sheet — see the note in motion.css. */
+  padding: 12px 0 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 80%;
+  outline: none;
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .surface {
+    background: #1b2428;
+  }
+}
+
+.grab {
+  width: 38px;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(233, 240, 240, 0.4);
+  align-self: center;
+}
+
+.title {
+  padding: 0 20px;
+  font: var(--f-label);
+  color: rgba(233, 240, 240, 0.65);
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.bodyPadded {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}

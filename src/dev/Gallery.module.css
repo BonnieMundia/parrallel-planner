@@ -1,0 +1,127 @@
+.page {
+  height: 100%;
+  overflow: auto;
+  padding: 44px 48px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.heading {
+  margin: 0;
+  font: var(--f-display);
+  letter-spacing: var(--ls-display);
+  color: var(--ink);
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.name {
+  margin: 0;
+  font: var(--f-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--link);
+}
+
+.demo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.pad {
+  padding: 14px 16px;
+  font: var(--f-body);
+  letter-spacing: var(--ls-body);
+  color: var(--ink);
+  min-width: 220px;
+}
+
+.sep {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tickCell {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font: var(--f-body);
+  letter-spacing: var(--ls-body);
+  color: var(--ink);
+}
+
+.struck {
+  text-decoration: line-through;
+  color: var(--ink-faint);
+}
+
+.bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 320px;
+}
+
+.bar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.barLabel {
+  font: var(--f-micro);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-quiet);
+}
+
+.swatchCell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: var(--f-meta);
+  color: var(--ink-2);
+}
+
+.swatch {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.cta {
+  border: 0;
+  padding: 9px 14px;
+  border-radius: var(--r-control);
+  background: var(--cta);
+  color: var(--ink);
+  font: var(--f-label);
+  cursor: pointer;
+  transition:
+    background var(--t-button) ease,
+    transform var(--t-button) ease;
+}
+
+.cta:hover {
+  background: var(--cta-hover);
+  transform: translateY(-1px);
+}
+
+/* The sheet and the toast are positioned against their screen, so isolation needs one. */
+.stage {
+  position: relative;
+  width: 412px;
+  height: 300px;
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  border-radius: var(--r-card);
+  overflow: hidden;
+}
+
+.phoneStage {
+  height: 200px;
+}

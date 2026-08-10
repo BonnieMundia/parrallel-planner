@@ -1,0 +1,162 @@
+/* Ported verbatim from the prototype. Animation names are referenced by string from
+   the urgency selector, so these keyframes stay global rather than module-scoped.
+
+   Do not reference them from a *.module.css file. CSS Modules rewrites the
+   animation-name it finds there to a scoped one that does not exist, and the
+   animation silently never runs. Apply them from ANIM in tokens.ts instead. */
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes ppFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ppFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes ppPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.94) translateY(10px);
+  }
+  62% {
+    opacity: 1;
+    transform: scale(1.015) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes ppSheet {
+  from {
+    transform: translateY(102%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes ppToast {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(0) scale(1.015);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes ppToastOut {
+  to {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+}
+
+@keyframes ppPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(240, 169, 59, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(240, 169, 59, 0.14);
+  }
+}
+
+@keyframes ppShake {
+  0%,
+  74%,
+  100% {
+    transform: translateX(0);
+  }
+  77% {
+    transform: translateX(-2.5px);
+  }
+  80% {
+    transform: translateX(2.5px);
+  }
+  83% {
+    transform: translateX(-1.8px);
+  }
+  86% {
+    transform: translateX(1.8px);
+  }
+  89% {
+    transform: translateX(-0.9px);
+  }
+  92% {
+    transform: translateX(0.9px);
+  }
+}
+
+@keyframes ppHot {
+  0%,
+  100% {
+    box-shadow:
+      inset 3px 0 0 rgba(245, 64, 94, 0.75),
+      0 0 0 0 rgba(245, 64, 94, 0);
+  }
+  50% {
+    box-shadow:
+      inset 3px 0 0 rgba(245, 64, 94, 1),
+      0 0 22px 0 rgba(245, 64, 94, 0.22);
+  }
+}
+
+/* The prototype neutralises the shake; the urgency colors carry the meaning on their
+   own, so every looping animation is neutralised here. The global reset in index.css
+   collapses durations — these redefinitions stop the loops moving anything at all. */
+@media (prefers-reduced-motion: reduce) {
+  @keyframes ppShake {
+    0%,
+    100% {
+      transform: none;
+    }
+  }
+  @keyframes ppPulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(240, 169, 59, 0);
+    }
+  }
+  @keyframes ppHot {
+    0%,
+    100% {
+      box-shadow: inset 3px 0 0 rgba(245, 64, 94, 0.9);
+    }
+  }
+  @keyframes blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+  }
+}

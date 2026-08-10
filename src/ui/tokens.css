@@ -1,0 +1,147 @@
+/* Every value here comes from DESIGN_TOKENS.md. Dark only, and nothing is invented —
+   if a screen needs something that is not in this file, ask rather than add. */
+
+:root {
+  --font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Helvetica, sans-serif;
+
+  /* Surface */
+  --canvas: #070b0d;
+  --card: rgba(23, 31, 35, 0.55);
+  --sidebar: rgba(17, 24, 27, 0.6);
+  --topbar: rgba(15, 21, 24, 0.55);
+  --rail: rgba(13, 19, 22, 0.5);
+  --sheet: rgba(27, 36, 40, 0.92);
+  --popover: rgba(27, 36, 40, 0.86);
+  --inset: rgba(11, 16, 19, 0.5);
+  --control: rgba(110, 128, 132, 0.2);
+  --control-strong: rgba(110, 128, 132, 0.32);
+  --scrim: rgba(0, 0, 0, 0.6);
+
+  --blur-card: blur(22px) saturate(1.5);
+  --blur-sidebar: blur(30px) saturate(1.4);
+  --blur-topbar: blur(28px) saturate(1.4);
+  --blur-rail: blur(26px);
+  --blur-sheet: blur(34px) saturate(1.6);
+  --blur-toast: blur(30px) saturate(1.6);
+  --blur-scrim: blur(3px);
+
+  --border: rgba(255, 255, 255, 0.07);
+  --border-hover: rgba(255, 255, 255, 0.16);
+  --border-strong: rgba(255, 255, 255, 0.14);
+
+  /* Ink */
+  --ink: #ffffff;
+  --ink-2: rgba(233, 240, 240, 0.72);
+  --ink-3: rgba(233, 240, 240, 0.58);
+  --ink-quiet: rgba(233, 240, 240, 0.55);
+  --ink-faint: rgba(233, 240, 240, 0.5);
+  --ink-placeholder: rgba(233, 240, 240, 0.42);
+
+  /* Color */
+  --contract: #ff7a5c;
+  --writing: #b08cff;
+  --workshop: #f0a93b;
+  --build: #35d6a0;
+  --self: #ff5c8a;
+  --life: #4fd1c5;
+  --alarm: #f5405e;
+
+  --green-ink: #6fe3ba;
+  --amber-ink: #f7c173;
+  --alarm-ink: #ffa3b4;
+  --alarm-ink-2: #ff8095;
+  --teal-ink: #86e4dc;
+  --link: #ff9e86;
+  --link-hover: #ffc0af;
+  --cta: #e85e42;
+  --cta-hover: #ff7a5c;
+  /* The dark used for ink on a filled green control. */
+  --on-build: #04251a;
+
+  /* Rule → color */
+  --rule-clock: var(--contract);
+  --rule-place: var(--workshop);
+  --rule-none: var(--build);
+
+  /* Type. Letter-spacing cannot ride in the `font` shorthand, so it pairs with it. */
+  --f-display: 700 34px/1.1 var(--font);
+  --ls-display: -0.028em;
+  --f-panel: 700 19px/1 var(--font);
+  --ls-panel: -0.02em;
+  --f-brand: 700 17px/1 var(--font);
+  --ls-brand: -0.02em;
+  --f-count: 600 24px/1 var(--font);
+  --ls-count: -0.03em;
+  --f-stat: 600 17px/1 var(--font);
+  --f-body: 400 15px/1.3 var(--font);
+  --ls-body: -0.012em;
+  --f-list: 400 14px/1.25 var(--font);
+  --ls-list: -0.01em;
+  --f-label: 590 13px/1 var(--font);
+  --f-meta: 400 12.5px/1.3 var(--font);
+  --f-eyebrow: 590 12px/1 var(--font);
+  --ls-eyebrow: 0.05em;
+  --f-micro: 400 11.5px/1.2 var(--font);
+  --f-badge: 590 11px/1 var(--font);
+
+  /* Radii */
+  --r-sheet: 24px;
+  --r-window: 14px;
+  --r-card: 14px;
+  --r-panel: 11px;
+  --r-pill: 11px;
+  --r-control: 9px;
+  --r-chip: 6px;
+  --r-swatch: 6px;
+
+  /* Spacing */
+  --s-1: 4px;
+  --s-2: 6px;
+  --s-3: 8px;
+  --s-4: 10px;
+  --s-5: 12px;
+  --s-6: 16px;
+  --s-7: 18px;
+  --s-8: 22px;
+  --s-9: 32px;
+  --s-10: 36px;
+
+  /* Shadows */
+  --sh-card-hover: 0 18px 40px rgba(0, 0, 0, 0.55);
+  --sh-block-hover: 0 12px 26px rgba(0, 0, 0, 0.5);
+  --sh-popover: 0 26px 60px rgba(0, 0, 0, 0.65);
+  --sh-window: 0 40px 90px rgba(0, 0, 0, 0.65);
+  --sh-pill: 0 1px 3px rgba(0, 0, 0, 0.35);
+  --sh-toast: 0 18px 44px rgba(0, 0, 0, 0.55);
+  --sh-toast-phone: 0 16px 42px rgba(0, 0, 0, 0.55);
+
+  /* Motion */
+  --ease-lift: cubic-bezier(0.2, 0.8, 0.3, 1);
+  --ease-enter: cubic-bezier(0.2, 0.9, 0.3, 1);
+  --ease-pop: cubic-bezier(0.2, 0.9, 0.3, 1.15);
+  --ease-toast: cubic-bezier(0.2, 0.9, 0.3, 1.1);
+  --t-card: 0.18s;
+  --t-block: 0.16s;
+  --t-button: 0.16s;
+  --t-color: 0.15s;
+}
+
+/* 8 px, transparent track. Phone-frame scrollers hide theirs entirely. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(233, 240, 240, 0.2) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(233, 240, 240, 0.2);
+  border-radius: 4px;
+}

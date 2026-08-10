@@ -1,0 +1,28 @@
+.card {
+  border-radius: var(--r-card);
+  overflow: hidden;
+  background: var(--card);
+  backdrop-filter: var(--blur-card);
+  border: 1px solid var(--border);
+}
+
+/* If the platform cannot frost, hold the same color at full opacity — never drop to
+   a flat mid-grey. */
+@supports not (backdrop-filter: blur(1px)) {
+  .card {
+    background: #171f23;
+  }
+}
+
+.interactive {
+  transition:
+    transform var(--t-card) var(--ease-lift),
+    box-shadow var(--t-card) ease,
+    border-color var(--t-card) ease;
+}
+
+.interactive:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--sh-card-hover);
+  border-color: var(--border-hover);
+}
