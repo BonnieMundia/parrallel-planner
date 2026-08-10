@@ -1,6 +1,7 @@
 import { usePlanner } from '../../app/store';
 import { MONTHS, padHour } from '../../app/clock';
 import {
+  blockGivenAway,
   findTask,
   monday,
   reviewRows,
@@ -116,7 +117,7 @@ export function Week() {
             day.blocks.map((b) => {
               const task = b.t !== null ? findTask(state, b.t) : null;
               const box = (b.e - b.s) * SCALE - 3;
-              const gone = state.losses[`blk:${b.d}:${b.s}`] !== undefined;
+              const gone = blockGivenAway(state, `blk:${b.d}:${b.s}`);
               const finished = b.t !== null && state.done[b.t] !== undefined;
               return {
                 key: `${b.t ?? 'free'}:${b.d}:${b.s}`,

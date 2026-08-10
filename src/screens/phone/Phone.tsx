@@ -3,6 +3,9 @@ import { hhmm, parts } from '../../app/clock';
 import { byRule, placeName } from '../../domain/select';
 import type { PhoneScreen } from '../../domain/state';
 import { Toast } from '../../ui/primitives';
+import { CaptureSheet } from '../../features/capture/CaptureSheet';
+import { PlacePicker } from '../../features/places/PlacePicker';
+import { FocusOverlay } from '../../features/focus/FocusOverlay';
 import { Now } from './Now';
 import { Due } from './Due';
 import { Week } from './Week';
@@ -49,7 +52,7 @@ function NavButton({ screen, label }: { screen: PhoneScreen; label: string }) {
 }
 
 export function Phone() {
-  const { state, clock } = usePlanner();
+  const { state, clock, actions } = usePlanner();
   const p = parts(clock.now, clock.tz);
   const here = placeName(state, state.aHere);
   const hereCount = byRule(state, 'place').filter((t) => t.place === state.aHere).length;
@@ -63,8 +66,7 @@ export function Phone() {
           </span>
           <span className={`${styles.clock} tnum`}>{hhmm(clock.now, clock.tz)}</span>
         </div>
-        {/* The picker sheet lands in step 8; the chip is its trigger. */}
-        <button type="button" className={styles.place}>
+        <button type="button" className={styles.place} onClick={actions.openPicker}>
           <span className={styles.placeDot} />
           <span className={styles.placeText}>
             <span className={styles.placeName}>{here}</span>
@@ -96,13 +98,21 @@ export function Phone() {
       <div className={styles.nav}>
         <NavButton screen="now" label="Now" />
         <NavButton screen="due" label="Due" />
-        {/* Capture lands in step 8. */}
-        <button type="button" className={styles.fab} aria-label="Capture">
+        <button
+          type="button"
+          className={styles.fab}
+          aria-label="Capture"
+          onClick={actions.openCapture}
+        >
           +
         </button>
         <NavButton screen="week" label="Week" />
         <NavButton screen="streams" label="Streams" />
       </div>
+
+      <PlacePicker variant="phone" />
+      <CaptureSheet variant="phone" />
+      <FocusOverlay variant="phone" />
     </div>
   );
 }

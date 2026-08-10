@@ -1,6 +1,13 @@
 import { usePlanner } from '../../app/store';
 import { MONTHS } from '../../app/clock';
-import { findTask, monday, weekDays, weekNumber, weekRange } from '../../domain/select';
+import {
+  blockGivenAway,
+  findTask,
+  monday,
+  weekDays,
+  weekNumber,
+  weekRange,
+} from '../../domain/select';
 import { streamChipBg } from '../../ui/streams';
 import { INK } from '../../ui/tokens';
 import styles from './Screens.module.css';
@@ -87,7 +94,7 @@ export function Week() {
             <span className={styles.chips}>
               {day.blocks.map((b) => {
                 const task = b.t !== null ? findTask(state, b.t) : null;
-                const gone = state.losses[`blk:${b.d}:${b.s}`] !== undefined;
+                const gone = blockGivenAway(state, `blk:${b.d}:${b.s}`);
                 const finished = b.t !== null && state.done[b.t] !== undefined;
                 const defended = !task || task.rule === 'none';
                 return (

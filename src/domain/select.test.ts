@@ -5,6 +5,7 @@ import { INITIAL_STATE } from './state';
 import type { PlannerState } from './state';
 import {
   activeLabel,
+  blockGivenAway,
   byRule,
   clockList,
   countdown,
@@ -353,7 +354,26 @@ describe('column 3 — locked to nothing, most neglected first', () => {
 
   it('counts seeded losses alongside surrendered blocks', () => {
     expect(lossesOf(state(), 'canbus')).toBe(9);
-    expect(lossesOf(state({ losses: { canbus: 2 } }), 'canbus')).toBe(11);
+    const withTwo = state({
+      surrenders: [
+        { id: 'a', blockKey: 'blk:0:6', taskId: 'canbus', at: 1 },
+        { id: 'b', blockKey: 'blk:1:6', taskId: 'canbus', at: 2 },
+      ],
+    });
+    expect(lossesOf(withTwo, 'canbus')).toBe(11);
+  });
+
+  it('counts each surrender as a row, so two never collapse into one', () => {
+    // A counter merged last-write-wins would report 10 here, not 11. ADR-001 §5.3.
+    const s = state({
+      surrenders: [
+        { id: 'a', blockKey: 'blk:0:6', taskId: 'canbus', at: 1 },
+        { id: 'b', blockKey: 'blk:3:6', taskId: 'canbus', at: 2 },
+      ],
+    });
+    expect(lossesOf(s, 'canbus')).toBe(11);
+    expect(blockGivenAway(s, 'blk:0:6')).toBe(true);
+    expect(blockGivenAway(s, 'blk:2:9')).toBe(false);
   });
 });
 

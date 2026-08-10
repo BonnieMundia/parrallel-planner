@@ -6,7 +6,7 @@
  * Transient UI (capture, pickers, focus, toasts, draft) joins this in the store.
  */
 
-import type { Place, PlaceId, Stream, Task, TaskId } from './types';
+import type { Dow, Place, PlaceId, Rule, Stream, Task, TaskId, Timezone } from './types';
 
 export type Tab = 'today' | 'week' | 'due' | 'zones';
 export type PhoneScreen = 'now' | 'due' | 'week' | 'streams';
@@ -18,6 +18,38 @@ export interface Notif {
   color: string;
   /** 'HH:MM' at the moment it was raised. */
   at: string;
+}
+
+/** A defended block that was given away, and what it was given to. */
+export interface Surrendered {
+  id: string;
+  /** 'blk:<dow>:<startHour>' — identifies the calendar block, not the task. */
+  blockKey: string;
+  taskId: TaskId | null;
+  at: number;
+}
+
+/** The capture sheet's working copy. Never persisted. */
+export interface Draft {
+  title: string;
+  rule: Rule;
+  stream: Stream;
+  place: PlaceId;
+  /** 'HH:MM', as typed. */
+  time: string;
+  tz: Timezone;
+  repeat: 'once' | 'today' | 'weekly';
+  dow: Dow;
+}
+
+/** A running focus block. Never persisted — a reload lands on a clean Now screen. */
+export interface Focus {
+  id: TaskId;
+  mins: number;
+  /** Seconds remaining. */
+  left: number;
+  paused: boolean;
+  done: boolean;
 }
 
 /** The four knobs the prototype carried as props. */
@@ -49,8 +81,11 @@ export interface PlannerState {
   ended: Readonly<Record<TaskId, number>>;
   moved: Readonly<Record<TaskId, number>>;
   confirmed: Readonly<Record<TaskId, number>>;
-  /** Keyed by task id, and by 'blk:<d>:<s>' for a surrendered calendar block. */
-  losses: Readonly<Record<string, number>>;
+  /**
+   * One row per surrender, not a counter. A counter loses increments when two
+   * devices merge — see ADR-001 §5.3.
+   */
+  surrenders: readonly Surrendered[];
 
   notifs: readonly Notif[];
   perm: NotificationPermission;
@@ -79,7 +114,7 @@ export const INITIAL_STATE: PlannerState = {
   ended: {},
   moved: {},
   confirmed: {},
-  losses: {},
+  surrenders: [],
   notifs: [],
   perm: 'default',
   settings: DEFAULT_SETTINGS,

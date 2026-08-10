@@ -164,8 +164,11 @@ export function ClockColumn() {
                   ? `Receipt confirmed ${hhmm(new Date(state.confirmed[task.id] ?? 0), clock.tz)}`
                   : 'Confirm you received this'}
               </button>
-              {/* The focus overlay lands in step 8. */}
-              <button type="button" className={styles.focus}>
+              <button
+                type="button"
+                className={styles.focus}
+                onClick={() => actions.startFocus(task.id, 90)}
+              >
                 Focus 90 min
               </button>
             </div>

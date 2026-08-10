@@ -29,8 +29,7 @@ export function Sidebar() {
 
       <div className={styles.whereBox}>
         <div className={styles.sectionLabel}>Where am I</div>
-        {/* The picker popover lands in step 8; the button is its trigger. */}
-        <button type="button" className={styles.where}>
+        <button type="button" className={styles.where} onClick={actions.openPicker}>
           <span className={styles.whereDot} />
           <span className={styles.whereText}>
             <span className={styles.whereName}>{here}</span>

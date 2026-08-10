@@ -42,8 +42,11 @@ export function Now() {
         </div>
         <div className={styles.heroWhy}>{card.why}</div>
         <div className={styles.heroActions}>
-          {/* The focus overlay lands in step 8. */}
-          <button type="button" className={styles.heroGo}>
+          <button
+            type="button"
+            className={styles.heroGo}
+            onClick={() => actions.startFocus(card.id, card.mins)}
+          >
             {card.cta}
           </button>
           <button

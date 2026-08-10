@@ -1,5 +1,9 @@
 import { usePlanner } from '../../app/store';
 import { Toast } from '../../ui/primitives';
+import { CaptureSheet } from '../../features/capture/CaptureSheet';
+import { PlacePicker } from '../../features/places/PlacePicker';
+import { FocusOverlay } from '../../features/focus/FocusOverlay';
+import { NotificationTray } from '../../features/notify/NotificationTray';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 import { Today } from './Today';
@@ -21,6 +25,12 @@ export function Desktop() {
         {state.tab === 'due' && <Deadlines />}
         {state.tab === 'zones' && <Zones />}
       </div>
+
+      <PlacePicker variant="desktop" />
+      <NotificationTray />
+      <CaptureSheet variant="desktop" />
+      <FocusOverlay variant="desktop" />
+
       {state.toast && (
         <Toast
           title={state.toast.title}

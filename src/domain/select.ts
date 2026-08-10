@@ -357,10 +357,16 @@ export function noneList(state: PlannerState): NoneTask[] {
   return streamFirst(state, sorted);
 }
 
+/** Seeded history plus every surrender recorded since. Counted, never overwritten. */
 export function lossesOf(state: PlannerState, id: TaskId): number {
   const t = findTask(state, id);
   const seeded = t && isNoneTask(t) ? (t.lost ?? 0) : 0;
-  return seeded + (state.losses[id] ?? 0);
+  return seeded + state.surrenders.filter((s) => s.taskId === id).length;
+}
+
+/** Whether a calendar block has already been given away. */
+export function blockGivenAway(state: PlannerState, blockKey: string): boolean {
+  return state.surrenders.some((s) => s.blockKey === blockKey);
 }
 
 // --- the one trip ----------------------------------------------------------------

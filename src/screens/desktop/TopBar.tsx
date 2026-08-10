@@ -43,15 +43,18 @@ export function TopBar() {
         <span className={`${styles.clock} tnum`}>
           Nairobi <span className={styles.clockTime}>{hhmm(clock.now, clock.tz)}</span>
         </span>
-        {/* The tray lands in step 8; the bell is its trigger. */}
-        <button type="button" className={styles.bell} title="Notifications">
+        <button
+          type="button"
+          className={styles.bell}
+          title="Notifications"
+          onClick={actions.toggleNotif}
+        >
           <span aria-hidden="true">◔</span>
           {state.notifs.length > 0 && (
             <span className={`${styles.badge} tnum`}>{state.notifs.length}</span>
           )}
         </button>
-        {/* Capture lands in step 8. */}
-        <button type="button" className={styles.capture}>
+        <button type="button" className={styles.capture} onClick={actions.openCapture}>
           + Capture
         </button>
       </div>
