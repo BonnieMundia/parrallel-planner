@@ -3,6 +3,7 @@ import { MONTHS, parts } from '../../app/clock';
 import { byRule, placeGroups } from '../../domain/select';
 import type { Stream } from '../../domain/types';
 import { streamColor } from '../../ui/streams';
+import { fadeUpDelayed } from '../../ui/tokens';
 import { ClockColumn } from './today/ClockColumn';
 import { PlaceColumn } from './today/PlaceColumn';
 import { NoneColumn } from './today/NoneColumn';
@@ -57,10 +58,17 @@ export function Today() {
           </div>
         </div>
 
+        {/* The three columns enter staggered, so the tab arrives rather than appearing. */}
         <div className={styles.columns}>
-          <ClockColumn />
-          <PlaceColumn />
-          <NoneColumn />
+          <div style={{ animation: fadeUpDelayed(0), minWidth: 0 }}>
+            <ClockColumn />
+          </div>
+          <div style={{ animation: fadeUpDelayed(1), minWidth: 0 }}>
+            <PlaceColumn />
+          </div>
+          <div style={{ animation: fadeUpDelayed(2), minWidth: 0 }}>
+            <NoneColumn />
+          </div>
         </div>
       </div>
 

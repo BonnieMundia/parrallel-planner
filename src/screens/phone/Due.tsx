@@ -1,7 +1,7 @@
 import { usePlanner } from '../../app/store';
 import { absLabel, parts, urgency } from '../../app/clock';
 import { byRule, clockList, countdown, dueOf, theirClock } from '../../domain/select';
-import { INK, PALETTE, urgencyAnimation } from '../../ui/tokens';
+import { INK, PALETTE, rowAnimation } from '../../ui/tokens';
 import { streamColor } from '../../ui/streams';
 import styles from './Screens.module.css';
 
@@ -25,7 +25,7 @@ export function Due() {
               className={styles.dueRow}
               style={{
                 borderTop: i ? '1px solid rgba(255,255,255,.08)' : 'none',
-                animation: urgencyAnimation(urgency(due, clock.now)),
+                animation: rowAnimation(state.flash, t.id, urgency(due, clock.now)),
               }}
             >
               <div className={styles.dueTop}>

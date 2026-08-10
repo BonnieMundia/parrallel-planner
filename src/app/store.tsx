@@ -744,7 +744,7 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
       },
 
       openPicker: () => {
-        buzz(HAPTIC.undo);
+        buzz(HAPTIC.tap);
         dispatch({ type: 'setPicker', open: true });
       },
       closePicker: () => {

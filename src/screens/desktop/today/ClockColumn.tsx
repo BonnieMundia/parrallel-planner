@@ -11,7 +11,7 @@ import {
 } from '../../../domain/select';
 import type { ClockTask } from '../../../domain/types';
 import { Card, CountdownBar, Tick } from '../../../ui/primitives';
-import { INK, PALETTE, urgencyAnimation } from '../../../ui/tokens';
+import { INK, PALETTE, rowAnimation } from '../../../ui/tokens';
 import { streamColor, streamFade } from '../../../ui/streams';
 import { DoneCollapsible } from './DoneCollapsible';
 import styles from './Columns.module.css';
@@ -72,7 +72,7 @@ export function ClockColumn() {
         style={{
           borderTop: first ? 'none' : '1px solid rgba(255,255,255,.08)',
           opacity: streamFade(state.stream, task.stream),
-          animation: urgencyAnimation(tier),
+          animation: rowAnimation(state.flash, task.id, tier),
         }}
         onClick={() => actions.select(open ? null : task.id)}
       >

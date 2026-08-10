@@ -2,7 +2,7 @@ import { usePlanner } from '../../app/store';
 import { hhmm } from '../../app/clock';
 import { byRule, hero, phoneNext, quota, trip } from '../../domain/select';
 import { CountdownBar } from '../../ui/primitives';
-import { PALETTE, urgencyAnimation } from '../../ui/tokens';
+import { PALETTE, rowAnimation, urgencyAnimation } from '../../ui/tokens';
 import styles from './Screens.module.css';
 
 export function Now() {
@@ -96,7 +96,7 @@ export function Now() {
               style={{
                 borderTop: i ? '1px solid rgba(255,255,255,.08)' : 'none',
                 opacity: r.usable ? 1 : 0.42,
-                animation: urgencyAnimation(r.tier),
+                animation: rowAnimation(state.flash, r.id, r.tier),
               }}
             >
               <span className={styles.bullet} style={{ background: r.color }} />

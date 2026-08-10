@@ -3,7 +3,7 @@ import { DOW, hhmm } from '../../../app/clock';
 import { byRule, findTask, placeGroups, trip } from '../../../domain/select';
 import { isPlaceTask } from '../../../domain/types';
 import { Tick } from '../../../ui/primitives';
-import { INK, PALETTE } from '../../../ui/tokens';
+import { INK, PALETTE, rowAnimation } from '../../../ui/tokens';
 import { streamFade } from '../../../ui/streams';
 import { DoneCollapsible } from './DoneCollapsible';
 import styles from './Columns.module.css';
@@ -92,7 +92,10 @@ export function PlaceColumn() {
               <div
                 key={item.task.id}
                 className={styles.placeRow}
-                style={{ opacity: streamFade(state.stream, item.task.stream) }}
+                style={{
+                  opacity: streamFade(state.stream, item.task.stream),
+                  animation: rowAnimation(state.flash, item.task.id),
+                }}
               >
                 <Tick label="Mark done" onClick={() => actions.completeTask(item.task.id)} />
                 <span className={styles.placeBody}>

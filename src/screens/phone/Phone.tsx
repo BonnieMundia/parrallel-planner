@@ -3,6 +3,7 @@ import { hhmm, parts } from '../../app/clock';
 import { byRule, placeName } from '../../domain/select';
 import type { PhoneScreen } from '../../domain/state';
 import { Toast } from '../../ui/primitives';
+import { ANIM } from '../../ui/tokens';
 import { CaptureSheet } from '../../features/capture/CaptureSheet';
 import { PlacePicker } from '../../features/places/PlacePicker';
 import { FocusOverlay } from '../../features/focus/FocusOverlay';
@@ -78,7 +79,8 @@ export function Phone() {
         </button>
       </div>
 
-      <div className={styles.scroll}>
+      {/* Keyed on the screen, so switching tabs replays the entrance. */}
+      <div key={state.aScreen} className={styles.scroll} style={{ animation: ANIM.fadeUp }}>
         {state.aScreen === 'now' && <Now />}
         {state.aScreen === 'due' && <Due />}
         {state.aScreen === 'week' && <Week />}

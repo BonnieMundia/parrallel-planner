@@ -51,20 +51,34 @@ export const URGENCY_COLOR: Record<Urgency, string> = {
 };
 
 /**
- * The looping animation an urgent row carries. Reduced motion is handled in
- * motion.css, so this stays a plain lookup.
+ * The looping animation an urgent row carries.
+ *
+ * `both` is load-bearing under reduced motion, not decoration: the global reset
+ * collapses every animation to one 0.01ms iteration, so without a fill mode the red
+ * inset bar on a past-due row would flash and vanish. With it, the final keyframe
+ * holds — which is the whole point of "the urgency colors carry the meaning on their
+ * own". motion.css redefines the keyframes there so nothing actually moves.
  */
 export function urgencyAnimation(tier: Urgency): string {
   switch (tier) {
     case 3:
-      return 'ppHot 3s ease-in-out infinite';
+      return 'ppHot 3s ease-in-out infinite both';
     case 2:
-      return 'ppShake 5s ease-in-out infinite, ppHot 1.7s ease-in-out infinite';
+      return 'ppShake 5s ease-in-out infinite both, ppHot 1.7s ease-in-out infinite both';
     case 1:
-      return 'ppPulse 2.8s ease-in-out infinite';
+      return 'ppPulse 2.8s ease-in-out infinite both';
     default:
       return 'none';
   }
+}
+
+/**
+ * What a list row animates with. A row that just landed pops once; otherwise it
+ * carries its urgency. The flash wins — a new row arriving is the more important
+ * event, and it is over in 480ms.
+ */
+export function rowAnimation(flash: string | null, id: string, tier: Urgency = 0): string {
+  return flash === id ? ANIM.pop : urgencyAnimation(tier);
 }
 
 export const ANIM = {
@@ -72,8 +86,14 @@ export const ANIM = {
   sheet: 'ppSheet .34s cubic-bezier(.2,.9,.3,1) both',
   toastIn: 'ppToast .44s cubic-bezier(.2,.9,.3,1.1) both',
   toastOut: 'ppToastOut .42s ease forwards',
-  fadeUp: 'ppFadeUp .55s cubic-bezier(.2,.8,.3,1) both',
+  /** Content entering — a tab or screen taking the stage. */
+  fadeUp: 'ppFadeUp .4s cubic-bezier(.2,.8,.3,1) both',
 } as const;
+
+/** Staggered entrance, so a list arrives rather than appearing all at once. */
+export function fadeUpDelayed(index: number): string {
+  return `ppFadeUp .4s ${(index * 0.06).toFixed(2)}s cubic-bezier(.2,.8,.3,1) both`;
+}
 
 export const TIMING = {
   /** A toast starts leaving here and is gone here. */

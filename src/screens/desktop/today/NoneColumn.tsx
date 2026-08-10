@@ -1,7 +1,7 @@
 import { usePlanner } from '../../../app/store';
 import { byRule, lossesOf, noneList, quota } from '../../../domain/select';
 import { Card, CountdownBar, Tick } from '../../../ui/primitives';
-import { INK, PALETTE } from '../../../ui/tokens';
+import { INK, PALETTE, rowAnimation } from '../../../ui/tokens';
 import { streamFade } from '../../../ui/streams';
 import { DoneCollapsible } from './DoneCollapsible';
 import styles from './Columns.module.css';
@@ -58,6 +58,7 @@ export function NoneColumn() {
               style={{
                 borderTop: i === 0 ? 'none' : '1px solid rgba(255,255,255,.08)',
                 opacity: streamFade(state.stream, t.stream),
+                animation: rowAnimation(state.flash, t.id),
               }}
             >
               <div className={styles.rowTop}>
