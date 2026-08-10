@@ -1,0 +1,2212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<style>
+body{margin:0;background:#070B0D;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Helvetica,sans-serif;-webkit-font-smoothing:antialiased;color:#FFFFFF}
+a{color:#FF9E86;text-decoration:none}
+a:hover{color:#FFC0AF}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(233,240,240,.2);border-radius:4px}
+[data-phone-scroll]{scrollbar-width:none}
+[data-phone-scroll]::-webkit-scrollbar{display:none}
+input,textarea{font-family:inherit}
+input::placeholder{color:rgba(233,240,240,.42)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes ppFadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes ppFadeOut{from{opacity:1}to{opacity:0}}
+@keyframes ppPop{0%{opacity:0;transform:scale(.94) translateY(10px)}62%{opacity:1;transform:scale(1.015) translateY(0)}100%{opacity:1;transform:scale(1)}}
+@keyframes ppSheet{from{transform:translateY(102%)}to{transform:none}}
+@keyframes ppToast{0%{opacity:0;transform:translateY(14px) scale(.96)}55%{opacity:1;transform:translateY(0) scale(1.015)}100%{opacity:1;transform:scale(1)}}
+@keyframes ppToastOut{to{opacity:0;transform:translateY(10px) scale(.97)}}
+@keyframes ppPulse{0%,100%{box-shadow:0 0 0 0 rgba(240,169,59,0)}50%{box-shadow:0 0 0 5px rgba(240,169,59,.14)}}
+@keyframes ppShake{0%,74%,100%{transform:translateX(0)}77%{transform:translateX(-2.5px)}80%{transform:translateX(2.5px)}83%{transform:translateX(-1.8px)}86%{transform:translateX(1.8px)}89%{transform:translateX(-.9px)}92%{transform:translateX(.9px)}}
+@keyframes ppHot{0%,100%{box-shadow:inset 3px 0 0 rgba(245,64,94,.75),0 0 0 0 rgba(245,64,94,0)}50%{box-shadow:inset 3px 0 0 rgba(245,64,94,1),0 0 22px 0 rgba(245,64,94,.22)}}
+@media (prefers-reduced-motion: reduce){@keyframes ppShake{0%,100%{transform:none}}}
+</style>
+</helmet>
+
+<section id="t3" ref="{{ hostRef }}" style="padding:44px 48px 56px;display:flex;flex-direction:column;gap:32px">
+
+<div style="display:flex;align-items:baseline;gap:12px">
+<a href="#t3" style="font:590 11px/1 -apple-system,sans-serif;letter-spacing:.02em;padding:5px 9px;background:#FFFFFF;color:#000000;border-radius:6px">3</a>
+<span style="font:590 13px/1.2 -apple-system,sans-serif;color:#FFFFFF">Places as a first-class thing, real add and delete, glass surfaces</span>
+</div>
+
+<div style="max-width:1000px;padding:20px 22px;background:rgba(23,31,35,.55);backdrop-filter:blur(22px) saturate(1.5);border:1px solid rgba(255,255,255,.07);border-radius:14px;display:flex;flex-direction:column;gap:10px">
+<div style="font:400 14px/1.5 -apple-system,sans-serif;color:rgba(233,240,240,.72);text-wrap:pretty">The yard is gone; life and errands take the place-locked section over entirely. Places are their own list — town, supermarket, church, gym, your parents’, anywhere — and you add to it. Items that have a time carry a countdown to the moment they go live (Sunday service, 09:00 Sun, 23 min from now) and every place group is sorted soonest first; items with no set time sink to the bottom. Capture takes a title, a rule, a stream and a place, and every row has a delete. Cards are frosted and lift under the cursor, the cursor leaves a trail, buttons buzz on devices that support it, and the bell raises real system notifications once you allow them. Two honest limits are at the bottom of this page.</div>
+<div style="font:400 14px/1.5 -apple-system,sans-serif;color:rgba(233,240,240,.72);text-wrap:pretty">Seven things were added on top: weekly repeats you can skip once or end outright, travel time and a one-trip bundle for errands, a Zones tab that lays every deadline on your own working day, a week review with a completion streak, a proposed new slot for anything you missed, a focus timer that hides the rest of the app, and a receipt you can confirm on work someone else set.</div>
+</div>
+
+<div style="max-width:1000px;padding:18px 20px;background:rgba(23,31,35,.55);backdrop-filter:blur(22px) saturate(1.5);border:1px solid rgba(255,255,255,.07);border-radius:14px;display:flex;align-items:center;gap:22px">
+<svg viewBox="0 0 64 64" style="width:76px;height:76px;flex:none;display:block"><defs><linearGradient id="ppIconBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#162226"></stop><stop offset="1" stop-color="#0B1013"></stop></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#ppIconBg)"></rect><rect x="12" y="15" width="40" height="8" rx="4" fill="#FF7A5C"></rect><rect x="12" y="28" width="27" height="8" rx="4" fill="#F0A93B"></rect><rect x="12" y="41" width="16" height="8" rx="4" fill="#35D6A0"></rect><circle cx="48" cy="45" r="5" fill="none" stroke="#4FD1C5" stroke-width="3"></circle></svg>
+<svg viewBox="0 0 64 64" style="width:44px;height:44px;flex:none;display:block"><rect width="64" height="64" rx="15" fill="#0E1518"></rect><rect x="12" y="15" width="40" height="8" rx="4" fill="#FF7A5C"></rect><rect x="12" y="28" width="27" height="8" rx="4" fill="#F0A93B"></rect><rect x="12" y="41" width="16" height="8" rx="4" fill="#35D6A0"></rect><circle cx="48" cy="45" r="5" fill="none" stroke="#4FD1C5" stroke-width="3"></circle></svg>
+<svg viewBox="0 0 64 64" style="width:26px;height:26px;flex:none;display:block"><rect width="64" height="64" rx="15" fill="#0E1518"></rect><rect x="12" y="15" width="40" height="8" rx="4" fill="#FF7A5C"></rect><rect x="12" y="28" width="27" height="8" rx="4" fill="#F0A93B"></rect><rect x="12" y="41" width="16" height="8" rx="4" fill="#35D6A0"></rect><circle cx="48" cy="45" r="5" fill="none" stroke="#4FD1C5" stroke-width="3"></circle></svg>
+<span style="font:400 13.5px/1.5 -apple-system,sans-serif;color:rgba(233,240,240,.72);text-wrap:pretty">The icon is the model: three lanes of different lengths, one per governing rule — clock-locked, place-locked, self-driven — with a place marker sitting off to the side. It holds at 26px because the shapes differ in length and colour, not in detail.</span>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start">
+
+<div id="3a" style="display:flex;flex-direction:column;gap:10px;flex:none;scroll-margin-top:16px">
+<div style="display:flex;align-items:baseline;gap:9px;font:400 11.5px/1.3 -apple-system,sans-serif;color:rgba(233,240,240,.58)"><a href="#3a" style="font:590 11px/1 -apple-system,sans-serif;padding:4px 8px;background:rgba(233,240,240,.14);color:#FFFFFF;border-radius:6px">3a</a>Web — 1440×900</div>
+
+<div style="position:relative;width:1440px;height:900px;border:1px solid rgba(255,255,255,.1);border-radius:14px;overflow:hidden;display:flex;box-shadow:0 40px 90px rgba(0,0,0,.65);background-color:#070B0D;background-image:radial-gradient(900px 620px at 16% 10%,rgba(255,122,92,.16),transparent 62%),radial-gradient(760px 520px at 84% 84%,rgba(176,140,255,.13),transparent 64%),radial-gradient(600px 400px at 60% 40%,rgba(53,214,160,.06),transparent 70%)">
+
+<div style="position:relative;width:252px;flex:none;background:rgba(17,24,27,.6);backdrop-filter:blur(30px) saturate(1.4);border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;padding:18px 0 14px">
+<div style="padding:0 18px 18px;display:flex;align-items:center;gap:9px">
+<svg viewBox="0 0 64 64" style="width:24px;height:24px;display:block;border-radius:7px"><rect width="64" height="64" rx="15" fill="#0E1518"></rect><rect x="12" y="15" width="40" height="8" rx="4" fill="#FF7A5C"></rect><rect x="12" y="28" width="27" height="8" rx="4" fill="#F0A93B"></rect><rect x="12" y="41" width="16" height="8" rx="4" fill="#35D6A0"></rect><circle cx="48" cy="45" r="5" fill="none" stroke="#4FD1C5" stroke-width="3"></circle></svg>
+<span style="font:700 17px/1 -apple-system,sans-serif;letter-spacing:-.02em;color:#FFFFFF">Parallel</span>
+</div>
+
+<div style="padding:0 14px 16px">
+<div style="padding:0 4px 7px;font:590 12px/1 -apple-system,sans-serif;letter-spacing:.02em;color:rgba(233,240,240,.55)">Where am I</div>
+<button onClick="{{ togglePlacePicker }}" style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 11px;border:1px solid rgba(255,255,255,.1);border-radius:11px;cursor:pointer;text-align:left;background:rgba(110,128,132,.22);transition:border-color .18s ease,background .18s ease" style-hover="border-color:rgba(255,255,255,.24);background:rgba(110,128,132,.3)">
+<span style="flex:none;width:8px;height:8px;border-radius:50%;background:#35D6A0"></span>
+<span style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0">
+<span style="font:590 13.5px/1.2 -apple-system,sans-serif;color:#FFFFFF">{{ hereName }}</span>
+<span style="font:400 11.5px/1.2 -apple-system,sans-serif;color:rgba(233,240,240,.55)">{{ hereNote }}</span>
+</span>
+<span style="flex:none;font:400 11px/1 -apple-system,sans-serif;color:rgba(233,240,240,.55)">▾</span>
+</button>
+</div>
+
+<div style="padding:0 18px 7px;font:590 12px/1 -apple-system,sans-serif;letter-spacing:.02em;color:rgba(233,240,240,.55)">Streams</div>
+<div style="margin:0 10px;display:flex;flex-direction:column;overflow:auto">
+<sc-for list="{{ streams }}" as="s" hint-placeholder-count="6">
+<button onClick="{{ s.pick }}" style="display:grid;grid-template-columns:22px 1fr auto;align-items:center;gap:11px;padding:8px 9px;border:0;border-radius:8px;cursor:pointer;text-align:left;background:{{ s.bg }};transition:background .16s ease" style-hover="background:rgba(110,128,132,.2)">
+<span style="width:22px;height:22px;border-radius:6px;background:rgba(110,128,132,.2);display:flex;align-items:center;justify-content:center"><span style="width:8px;height:8px;border-radius:50%;background:{{ s.color }}"></span></span>
+<span style="display:flex;flex-direction:column;gap:1px;min-width:0">
+<span style="font:400 14px/1.25 -apple-system,sans-serif;color:#FFFFFF;letter-spacing:-.01em">{{ s.name }}</span>
+<span style="font:400 11.5px/1.25 -apple-system,sans-serif;color:rgba(233,240,240,.56)">{{ s.rule }}</span>
+</span>
+<span style="font:400 13px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.55)">{{ s.count }}</span>
+</button>
+</sc-for>
+</div>
+
+<div style="flex:1;min-height:10px"></div>
+<div style="margin:0 14px;padding:14px;background:rgba(23,31,35,.6);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.07);border-radius:12px;display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;justify-content:space-between;align-items:baseline">
+<span style="font:590 12.5px/1 -apple-system,sans-serif;color:rgba(233,240,240,.66)">Defended</span>
+<span style="font:600 13px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:#35D6A0">{{ quotaLabel }}</span>
+</div>
+<div style="height:6px;border-radius:3px;background:rgba(110,128,132,.32);overflow:hidden"><div style="height:100%;border-radius:3px;background:#35D6A0;width:{{ quotaPct }}%"></div></div>
+<div style="font:400 11.5px/1.4 -apple-system,sans-serif;color:rgba(233,240,240,.56)">{{ quotaNote }}</div>
+</div>
+
+<sc-if value="{{ placePickerOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:14px;top:96px;width:288px;max-height:620px;z-index:20;display:flex;flex-direction:column;background:rgba(27,36,40,.86);backdrop-filter:blur(34px) saturate(1.6);border:1px solid rgba(255,255,255,.14);border-radius:14px;overflow:hidden;box-shadow:0 26px 60px rgba(0,0,0,.65)">
+<div style="padding:13px 15px 10px;font:590 12px/1 -apple-system,sans-serif;letter-spacing:.03em;text-transform:uppercase;color:rgba(233,240,240,.6)">Places</div>
+<div style="flex:1;min-height:0;overflow:auto">
+<sc-for list="{{ placeOptions }}" as="p" hint-placeholder-count="7">
+<button onClick="{{ p.pick }}" style="width:100%;display:flex;align-items:center;gap:11px;padding:11px 15px;border:0;border-top:{{ p.sep }};cursor:pointer;text-align:left;background:{{ p.bg }};transition:background .14s ease" style-hover="background:rgba(110,128,132,.24)">
+<span style="flex:none;width:8px;height:8px;border-radius:50%;background:{{ p.dot }}"></span>
+<span style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0">
+<span style="font:400 14px/1.2 -apple-system,sans-serif;color:#FFFFFF">{{ p.name }}</span>
+<span style="font:400 11.5px/1.2 -apple-system,sans-serif;color:rgba(233,240,240,.55)">{{ p.sub }}</span>
+</span>
+<span style="flex:none;font:590 14px/1 -apple-system,sans-serif;color:#35D6A0">{{ p.tick }}</span>
+</button>
+</sc-for>
+</div>
+<div style="padding:11px 13px;border-top:1px solid rgba(255,255,255,.1);display:flex;gap:8px">
+<input value="{{ newPlace }}" onChange="{{ setNewPlace }}" placeholder="Add a place…" style="flex:1;min-width:0;padding:9px 11px;border:1px solid rgba(255,255,255,.12);border-radius:9px;background:rgba(110,128,132,.2);color:#FFFFFF;font:400 13.5px/1.2 -apple-system,sans-serif;outline:none">
+<button onClick="{{ addPlace }}" style="flex:none;padding:9px 14px;border:0;border-radius:9px;background:#E85E42;color:#FFFFFF;font:590 13px/1.2 -apple-system,sans-serif;cursor:pointer">Add</button>
+</div>
+</div>
+</sc-if>
+</div>
+
+<div style="flex:1;min-width:0;display:flex;flex-direction:column">
+
+<div style="height:56px;flex:none;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:rgba(15,21,24,.55);backdrop-filter:blur(28px) saturate(1.4)">
+<div style="display:flex;gap:2px;padding:2px;background:rgba(110,128,132,.24);border-radius:9px">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+<button onClick="{{ t.pick }}" style="padding:6px 18px;border:0;border-radius:7px;cursor:pointer;font:590 13px/1.2 -apple-system,sans-serif;background:{{ t.bg }};color:{{ t.fg }};box-shadow:{{ t.shadow }};transition:background .16s ease">{{ t.label }}</button>
+</sc-for>
+</div>
+<div style="display:flex;align-items:center;gap:12px">
+<span style="display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:20px;background:rgba(53,214,160,.16);font:590 12.5px/1 -apple-system,sans-serif;color:#6FE3BA"><span style="width:6px;height:6px;border-radius:50%;background:#35D6A0"></span>{{ hereName }}</span>
+<span style="font:400 13px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.58)">Nairobi <span style="color:#FFFFFF">{{ clock }}</span></span>
+<button onClick="{{ toggleNotif }}" style="position:relative;width:34px;height:34px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(110,128,132,.2);color:#FFFFFF;font:400 15px/1 -apple-system,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .16s ease" style-hover="background:rgba(110,128,132,.34)">
+<span>◔</span>
+<span style="position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:#F5405E;color:#FFFFFF;font:600 10.5px/17px -apple-system,sans-serif;font-variant-numeric:tabular-nums;text-align:center;display:{{ badgeShow }}">{{ notifCount }}</span>
+</button>
+<button onClick="{{ openCapture }}" style="padding:8px 16px;border:0;border-radius:9px;background:#E85E42;color:#FFFFFF;font:590 13.5px/1 -apple-system,sans-serif;cursor:pointer;transition:transform .16s ease,background .16s ease" style-hover="background:#FF7A5C;transform:translateY(-1px)">+ Capture</button>
+</div>
+</div>
+
+<sc-if value="{{ isToday }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1;min-height:0;display:flex">
+<div style="flex:1;min-width:0;overflow:auto;padding:22px 24px 28px">
+
+<div style="display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:20px">
+<div style="display:flex;flex-direction:column;gap:4px">
+<div style="font:590 12px/1 -apple-system,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#FF9E86">{{ helloLine }}</div>
+<div style="font:700 34px/1.1 -apple-system,sans-serif;letter-spacing:-.028em;color:#FFFFFF">{{ todayLong }}</div>
+<div style="font:400 14px/1.35 -apple-system,sans-serif;color:rgba(233,240,240,.6)">{{ nClock }} clock-locked · <span style="color:#F7C173">1 lands after your last block</span> · {{ hereCount }} live where you are · {{ nPlace }} waiting across {{ nPlaces }} places</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:7px;width:210px">
+<div style="display:flex;justify-content:space-between;font:400 12px/1 -apple-system,sans-serif;color:rgba(233,240,240,.58)"><span>Committed</span><span style="color:#FFFFFF;font-variant-numeric:tabular-nums">9.5 of 15 h</span></div>
+<div style="height:7px;border-radius:4px;background:rgba(110,128,132,.32);display:flex;gap:2px;overflow:hidden">
+<div style="width:29%;background:#FF7A5C"></div><div style="width:15%;background:#B08CFF"></div><div style="width:11%;background:#F0A93B"></div><div style="width:8%;background:#35D6A0"></div>
+</div>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;align-items:start">
+
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;align-items:center;gap:8px;padding:0 4px">
+<span style="width:9px;height:9px;border-radius:50%;background:#FF7A5C"></span>
+<span style="font:590 13px/1 -apple-system,sans-serif;letter-spacing:.01em;color:#FFFFFF">Locked to a clock</span>
+<span style="font:400 13px/1 -apple-system,sans-serif;color:rgba(233,240,240,.55)">{{ nClock }}</span>
+</div>
+<div style="border-radius:14px;overflow:hidden;background:rgba(23,31,35,.55);backdrop-filter:blur(22px) saturate(1.5);border:1px solid rgba(255,255,255,.07);transition:transform .18s cubic-bezier(.2,.8,.3,1),box-shadow .18s ease,border-color .18s ease" style-hover="transform:translateY(-3px);box-shadow:0 18px 40px rgba(0,0,0,.55);border-color:rgba(255,255,255,.16)">
+<sc-for list="{{ fixedList }}" as="t" hint-placeholder-count="4">
+<div onClick="{{ t.select }}" style="position:relative;padding:14px 16px;border-top:{{ t.sep }};display:flex;flex-direction:column;gap:10px;cursor:pointer;opacity:{{ t.op }};background:{{ t.rowBg }};animation:{{ t.anim }};transition:background .16s ease" style-hover="background:rgba(110,128,132,.12)">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+<span style="flex:1;display:flex;align-items:flex-start;gap:10px;min-width:0">
+<button onClick="{{ t.tick }}" title="Mark done" style="flex:none;width:19px;height:19px;margin-top:1px;border:1.5px solid rgba(233,240,240,.4);border-radius:50%;background:transparent;color:transparent;font:590 11px/1 -apple-system,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s ease,border-color .15s ease,color .15s ease" style-hover="background:#35D6A0;border-color:#35D6A0;color:#04251A">✓</button>
+<span style="font:400 15px/1.3 -apple-system,sans-serif;letter-spacing:-.012em;color:#FFFFFF;text-wrap:pretty">{{ t.title }}</span>
+</span>
+<span style="flex:none;display:flex;align-items:center;gap:8px;padding-top:3px">
+<span style="width:9px;height:9px;border-radius:50%;background:{{ t.color }}"></span>
+<button onClick="{{ t.remove }}" title="Delete" style="width:20px;height:20px;border:0;border-radius:6px;background:transparent;color:rgba(233,240,240,.5);font:400 15px/1 -apple-system,sans-serif;cursor:pointer;opacity:.4;transition:opacity .15s ease,background .15s ease" style-hover="opacity:1;background:rgba(245,64,94,.22);color:#FF8095">×</button>
+</span>
+</div>
+<div style="display:flex;align-items:baseline;gap:8px">
+<span style="font:600 24px/1 -apple-system,sans-serif;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:{{ t.cdColor }}">{{ t.cd }}</span>
+<span style="font:400 12.5px/1 -apple-system,sans-serif;color:rgba(233,240,240,.56)">{{ t.cdUnit }}</span>
+</div>
+<div style="height:5px;border-radius:3px;background:rgba(110,128,132,.32);overflow:hidden"><div style="height:100%;border-radius:3px;background:{{ t.cdColor }};width:{{ t.pct }}%"></div></div>
+<div style="display:flex;justify-content:space-between;font:400 12.5px/1.3 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.58)">
+<span>{{ t.mine }}</span><span style="color:rgba(233,240,240,.55)">{{ t.theirs }}</span>
+</div>
+<sc-if value="{{ t.sleep }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:7px;padding:9px 11px;border-radius:9px;background:rgba(240,169,59,.16);font:400 12.5px/1.35 -apple-system,sans-serif;color:#F7C173">
+<span style="width:5px;height:5px;border-radius:50%;background:#F0A93B;animation:blink 1.6s infinite"></span>{{ sleepWarn }}</div>
+</sc-if>
+<sc-if value="{{ t.open }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:11px;padding:13px;margin-top:2px;border-radius:11px;background:rgba(11,16,19,.5);border:1px solid rgba(255,255,255,.08)">
+<div style="font:400 12.5px/1.5 -apple-system,sans-serif;color:rgba(233,240,240,.72);text-wrap:pretty">{{ t.notes }}</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 12px">
+<span style="display:flex;flex-direction:column;gap:3px">
+<span style="font:590 10.5px/1 -apple-system,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:rgba(233,240,240,.5)">Their clock</span>
+<span style="font:400 13px/1.3 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:#FFFFFF">{{ t.theirFull }}</span>
+<span style="font:400 11.5px/1.2 -apple-system,sans-serif;color:rgba(233,240,240,.55)">{{ t.theirCity }}</span>
+</span>
+<span style="display:flex;flex-direction:column;gap:3px">
+<span style="font:590 10.5px/1 -apple-system,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:rgba(233,240,240,.5)">Your clock</span>
+<span style="font:400 13px/1.3 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:{{ t.cdColor }}">{{ t.eatFull }}</span>
+<span style="font:400 11.5px/1.2 -apple-system,sans-serif;color:rgba(233,240,240,.55)">Nairobi</span>
+</span>
+<span style="display:flex;flex-direction:column;gap:3px">
+<span style="font:590 10.5px/1 -apple-system,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:rgba(233,240,240,.5)">Stream</span>
+<span style="font:400 13px/1.3 -apple-system,sans-serif;color:#FFFFFF">{{ t.stream }}</span>
+<span style="font:400 11.5px/1.2 -apple-system,sans-serif;color:rgba(233,240,240,.55)">{{ t.pctLabel }}</span>
+</span>
+<span style="display:flex;flex-direction:column;gap:3px">
+<span style="font:590 10.5px/1 -apple-system,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:rgba(233,240,240,.5)">If it slips</span>
+<span style="font:400 13px/1.3 -apple-system,sans-serif;color:#FFFFFF;text-wrap:pretty">{{ t.blockLabel }}</span>
+</span>
+</div>
+<div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding-top:2px">
+<span style="font:400 12px/1.2 -apple-system,sans-serif;color:rgba(233,240,240,.55)">{{ t.setBy }}</span>
+<button onClick="{{ t.confirm }}" style="padding:5px 10px;border:1px solid rgba(255,255,255,.14);border-radius:7px;background:transparent;color:rgba(233,240,240,.72);font:590 11.5px/1.2 -apple-system,sans-serif;cursor:pointer;transition:background .15s ease" style-hover="background:rgba(53,214,160,.2);color:#6FE3BA">{{ t.gotLabel }}</button>
+<button onClick="{{ t.focusIt }}" style="padding:5px 10px;border:0;border-radius:7px;background:rgba(255,122,92,.24);color:#FFC0AF;font:590 11.5px/1.2 -apple-system,sans-serif;cursor:pointer">Focus 90 min</button>
+</div>
+<sc-if value="{{ t.missed }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:9px;padding:10px 12px;border-radius:9px;background:rgba(245,64,94,.16);border:1px solid rgba(245,64,94,.28)">
+<span style="font:400 12.5px/1.35 -apple-system,sans-serif;color:#FFA3B4;text-wrap:pretty">Its time has passed. It will not move on its own.</span>
+<span style="display:flex;gap:7px;flex-wrap:wrap">
+<button onClick="{{ t.propTake }}" style="padding:6px 11px;border:0;border-radius:8px;background:#F5405E;color:#FFFFFF;font:590 11.5px/1.2 -apple-system,sans-serif;cursor:pointer">{{ t.propLabel }}</button>
+<button onClick="{{ t.propKeep }}" style="padding:6px 11px;border:0;border-radius:8px;background:rgba(110,128,132,.32);color:rgba(233,240,240,.78);font:590 11.5px/1.2 -apple-system,sans-serif;cursor:pointer">Leave it</button>
+</span>
+</div>
+</sc-if>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+<sc-if value="{{ doneClockAny }}" hint-placeholder-val="{{ false }}">
+<div style="border-radius:12px;overflow:hidden;background:rgba(53,214,160,.1);border:1px solid rgba(53,214,160,.18)">
+<button onClick="{{ doneClockToggle }}" style="width:100%;display:flex;align-items:center;gap:8px;padding:10px 14px;border:0;background:transparent;cursor:pointer;text-align:left;font:590 12.5px/1 -apple-system,sans-serif;color:#6FE3BA">✓ {{ doneClockLabel }}</button>
+<sc-if value="{{ doneClockOpen }}" hint-placeholder-val="{{ false }}">
+<sc-for list="{{ doneClock }}" as="d" hint-placeholder-count="2">
+<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid rgba(255,255,255,.08)">
+<span style="flex:1;font:400 13px/1.3 -apple-system,sans-serif;color:rgba(233,240,240,.6);text-decoration:line-through;text-wrap:pretty">{{ d.title }}</span>
+<span style="flex:none;font:400 11.5px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.5)">{{ d.at }}</span>
+<button onClick="{{ d.undo }}" style="flex:none;padding:5px 9px;border:0;border-radius:7px;background:rgba(110,128,132,.3);color:rgba(233,240,240,.78);font:590 11px/1.2 -apple-system,sans-serif;cursor:pointer">Undo</button>
+</div>
+</sc-for>
+</sc-if>
+</div>
+</sc-if>
+<div style="padding:0 6px;font:400 12.5px/1.4 -apple-system,sans-serif;color:rgba(233,240,240,.55)">Someone else set the time, in their zone. Every clock here is EAT. Click one for the detail.</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;align-items:center;gap:8px;padding:0 4px">
+<span style="width:9px;height:9px;border-radius:50%;background:#F0A93B"></span>
+<span style="font:590 13px/1 -apple-system,sans-serif;letter-spacing:.01em;color:#FFFFFF">Locked to a place</span>
+<span style="font:400 13px/1 -apple-system,sans-serif;color:rgba(233,240,240,.55)">{{ nPlace }}</span>
+</div>
+<sc-if value="{{ tripOn }}" hint-placeholder-val="{{ false }}">
+<div style="border-radius:14px;overflow:hidden;background:rgba(240,169,59,.12);border:1px solid rgba(240,169,59,.24)">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 15px">
+<span style="font:590 13px/1.2 -apple-system,sans-serif;color:#F7C173">{{ trip.label }}</span>
+<span style="font:400 12px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.6)">{{ trip.total }}</span>
+</div>
+<sc-for list="{{ trip.stops }}" as="s" hint-placeholder-count="3">
+<div style="display:flex;flex-direction:column;gap:2px;padding:9px 15px;border-top:1px solid rgba(255,255,255,.07)">
+<span style="font:400 13.5px/1.3 -apple-system,sans-serif;color:#FFFFFF;text-wrap:pretty">{{ s.name }}</span>
+<span style="font:400 12px/1.3 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.58);text-wrap:pretty">{{ s.line }}</span>
+</div>
+</sc-for>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 15px;border-top:1px solid rgba(255,255,255,.07)">
+<span style="font:400 12.5px/1.35 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.66);text-wrap:pretty">{{ trip.back }}</span>
+<button onClick="{{ trip.plan }}" style="flex:none;padding:8px 13px;border:0;border-radius:9px;background:#F0A93B;color:#241802;font:590 12.5px/1 -apple-system,sans-serif;cursor:pointer">Plan the trip</button>
+</div>
+</div>
+</sc-if>
+<sc-for list="{{ placeGroups }}" as="g" hint-placeholder-count="3">
+<div style="border-radius:14px;overflow:hidden;background:{{ g.bg }};backdrop-filter:blur(22px) saturate(1.5);border:1px solid {{ g.border }};opacity:{{ g.op }};transition:transform .18s cubic-bezier(.2,.8,.3,1),box-shadow .18s ease,border-color .18s ease,opacity .2s ease" style-hover="transform:translateY(-3px);box-shadow:0 18px 40px rgba(0,0,0,.55);opacity:1">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 15px;background:{{ g.headBg }}">
+<span style="display:flex;align-items:center;gap:8px;min-width:0">
+<span style="flex:none;width:7px;height:7px;border-radius:50%;background:{{ g.dot }}"></span>
+<span style="font:590 13px/1.2 -apple-system,sans-serif;color:{{ g.fg }}">{{ g.name }}</span>
+</span>
+<span style="flex:none;font:400 12px/1 -apple-system,sans-serif;color:rgba(233,240,240,.58)">{{ g.status }}</span>
+</div>
+<sc-for list="{{ g.items }}" as="t" hint-placeholder-count="2">
+<div style="padding:13px 15px;border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:flex-start;gap:10px">
+<button onClick="{{ t.tick }}" title="Mark done" style="flex:none;width:19px;height:19px;margin-top:1px;border:1.5px solid rgba(233,240,240,.4);border-radius:50%;background:transparent;color:transparent;font:590 11px/1 -apple-system,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s ease,border-color .15s ease,color .15s ease" style-hover="background:#35D6A0;border-color:#35D6A0;color:#04251A">✓</button>
+<span style="flex:1;display:flex;flex-direction:column;gap:5px;min-width:0">
+<span style="font:400 14.5px/1.3 -apple-system,sans-serif;letter-spacing:-.012em;color:#FFFFFF;text-wrap:pretty">{{ t.title }}</span>
+<span style="display:flex;align-items:baseline;gap:7px;flex-wrap:wrap">
+<span style="font:590 12.5px/1.2 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:{{ t.untilColor }}">{{ t.at }}</span>
+<span style="font:400 12.5px/1.2 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:{{ t.untilColor }};opacity:.8">{{ t.until }}</span>
+</span>
+<span style="font:400 12px/1.2 -apple-system,sans-serif;color:rgba(233,240,240,.56)">{{ t.meta }}</span>
+<sc-if value="{{ t.hasLeave }}" hint-placeholder-val="{{ false }}">
+<span style="display:inline-flex;align-items:center;gap:6px;font:590 12px/1.2 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:{{ t.leaveColor }}"><span style="width:5px;height:5px;border-radius:50%;background:currentColor"></span>{{ t.leave }}</span>
+</sc-if>
+<sc-if value="{{ t.recurs }}" hint-placeholder-val="{{ false }}">
+<span style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding-top:1px">
+<span style="padding:3px 8px;border-radius:6px;background:rgba(79,209,197,.16);font:590 11px/1.3 -apple-system,sans-serif;color:#86E4DC">{{ t.recurLabel }}</span>
+<button onClick="{{ t.skip }}" style="padding:3px 8px;border:1px solid rgba(255,255,255,.14);border-radius:6px;background:transparent;color:rgba(233,240,240,.66);font:590 11px/1.3 -apple-system,sans-serif;cursor:pointer;transition:background .15s ease" style-hover="background:rgba(240,169,59,.2);color:#F7C173">Skip this week</button>
+<button onClick="{{ t.endIt }}" style="padding:3px 8px;border:1px solid rgba(255,255,255,.14);border-radius:6px;background:transparent;color:rgba(233,240,240,.66);font:590 11px/1.3 -apple-system,sans-serif;cursor:pointer;transition:background .15s ease" style-hover="background:rgba(245,64,94,.2);color:#FF8095">End series</button>
+</span>
+</sc-if>
+</span>
+<button onClick="{{ t.remove }}" title="Delete" style="flex:none;width:20px;height:20px;border:0;border-radius:6px;background:transparent;color:rgba(233,240,240,.5);font:400 15px/1 -apple-system,sans-serif;cursor:pointer;opacity:.4;transition:opacity .15s ease,background .15s ease" style-hover="opacity:1;background:rgba(245,64,94,.22);color:#FF8095">×</button>
+</div>
+</sc-for>
+</div>
+</sc-for>
+<sc-if value="{{ endedAny }}" hint-placeholder-val="{{ false }}">
+<div style="border-radius:12px;overflow:hidden;background:rgba(110,128,132,.14);border:1px solid rgba(255,255,255,.08)">
+<div style="padding:10px 14px;font:590 12.5px/1 -apple-system,sans-serif;color:rgba(233,240,240,.66)">Ended series · {{ skipNote }}</div>
+<sc-for list="{{ endedList }}" as="e" hint-placeholder-count="1">
+<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid rgba(255,255,255,.08)">
+<span style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0">
+<span style="font:400 13px/1.3 -apple-system,sans-serif;color:rgba(233,240,240,.7);text-wrap:pretty">{{ e.title }}</span>
+<span style="font:400 11.5px/1.2 -apple-system,sans-serif;color:rgba(233,240,240,.5)">{{ e.when }}</span>
+</span>
+<button onClick="{{ e.resume }}" style="flex:none;padding:5px 10px;border:0;border-radius:7px;background:rgba(53,214,160,.22);color:#6FE3BA;font:590 11.5px/1.2 -apple-system,sans-serif;cursor:pointer">Resume</button>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ donePlaceAny }}" hint-placeholder-val="{{ false }}">
+<div style="border-radius:12px;overflow:hidden;background:rgba(53,214,160,.1);border:1px solid rgba(53,214,160,.18)">
+<button onClick="{{ donePlaceToggle }}" style="width:100%;display:flex;align-items:center;gap:8px;padding:10px 14px;border:0;background:transparent;cursor:pointer;text-align:left;font:590 12.5px/1 -apple-system,sans-serif;color:#6FE3BA">✓ {{ donePlaceLabel }}</button>
+<sc-if value="{{ donePlaceOpen }}" hint-placeholder-val="{{ false }}">
+<sc-for list="{{ donePlace }}" as="d" hint-placeholder-count="2">
+<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid rgba(255,255,255,.08)">
+<span style="flex:1;font:400 13px/1.3 -apple-system,sans-serif;color:rgba(233,240,240,.6);text-decoration:line-through;text-wrap:pretty">{{ d.title }}</span>
+<span style="flex:none;font:400 11.5px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.5)">{{ d.at }}</span>
+<button onClick="{{ d.undo }}" style="flex:none;padding:5px 9px;border:0;border-radius:7px;background:rgba(110,128,132,.3);color:rgba(233,240,240,.78);font:590 11px/1.2 -apple-system,sans-serif;cursor:pointer">Undo</button>
+</div>
+</sc-for>
+</sc-if>
+</div>
+</sc-if>
+<div style="padding:0 6px;font:400 12.5px/1.4 -apple-system,sans-serif;color:rgba(233,240,240,.55);text-wrap:pretty">Soonest first, across every place. Only the one you are standing in is live.</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;align-items:center;gap:8px;padding:0 4px">
+<span style="width:9px;height:9px;border-radius:50%;background:#35D6A0"></span>
+<span style="font:590 13px/1 -apple-system,sans-serif;letter-spacing:.01em;color:#FFFFFF">Locked to nothing</span>
+<span style="font:400 13px/1 -apple-system,sans-serif;color:rgba(233,240,240,.55)">{{ nSelf }}</span>
+</div>
+<div style="background:rgba(53,214,160,.14);backdrop-filter:blur(18px);border:1px solid rgba(53,214,160,.2);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;justify-content:space-between;align-items:baseline">
+<span style="font:590 13px/1 -apple-system,sans-serif;color:#6FE3BA">{{ defenseLabel }}</span>
+<span style="font:600 17px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:#FFFFFF">{{ defenseValue }}</span>
+</div>
+<div style="height:6px;border-radius:3px;background:rgba(110,128,132,.32);overflow:hidden"><div style="height:100%;border-radius:3px;background:#35D6A0;width:{{ quotaPct }}%"></div></div>
+<div style="font:400 12.5px/1.42 -apple-system,sans-serif;color:rgba(233,240,240,.66);text-wrap:pretty">{{ defenseNote }}</div>
+</div>
+<div style="border-radius:14px;overflow:hidden;background:rgba(23,31,35,.55);backdrop-filter:blur(22px) saturate(1.5);border:1px solid rgba(255,255,255,.07);transition:transform .18s cubic-bezier(.2,.8,.3,1),box-shadow .18s ease,border-color .18s ease" style-hover="transform:translateY(-3px);box-shadow:0 18px 40px rgba(0,0,0,.55);border-color:rgba(255,255,255,.16)">
+<sc-for list="{{ selfList }}" as="t" hint-placeholder-count="3">
+<div style="padding:14px 16px;border-top:{{ t.sep }};display:flex;flex-direction:column;gap:11px">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+<span style="flex:1;display:flex;align-items:flex-start;gap:10px;min-width:0">
+<button onClick="{{ t.tick }}" title="Mark done" style="flex:none;width:19px;height:19px;margin-top:1px;border:1.5px solid rgba(233,240,240,.4);border-radius:50%;background:transparent;color:transparent;font:590 11px/1 -apple-system,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s ease,border-color .15s ease,color .15s ease" style-hover="background:#35D6A0;border-color:#35D6A0;color:#04251A">✓</button>
+<span style="font:400 15px/1.3 -apple-system,sans-serif;letter-spacing:-.012em;color:#FFFFFF;text-wrap:pretty">{{ t.title }}</span>
+</span>
+<span style="flex:none;display:flex;align-items:center;gap:8px">
+<span style="font:590 12px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:{{ t.staleColor }}">{{ t.stale }}</span>
+<button onClick="{{ t.remove }}" title="Delete" style="width:20px;height:20px;border:0;border-radius:6px;background:transparent;color:rgba(233,240,240,.5);font:400 15px/1 -apple-system,sans-serif;cursor:pointer;opacity:.4;transition:opacity .15s ease,background .15s ease" style-hover="opacity:1;background:rgba(245,64,94,.22);color:#FF8095">×</button>
+</span>
+</div>
+<div style="font:400 12.5px/1.3 -apple-system,sans-serif;color:rgba(233,240,240,.56)">{{ t.sub }}</div>
+<button onClick="{{ t.defend }}" style="padding:9px 0;border:0;border-radius:9px;cursor:pointer;font:590 13.5px/1 -apple-system,sans-serif;background:{{ t.btnBg }};color:{{ t.btnFg }};transition:transform .16s ease" style-hover="transform:translateY(-1px)">{{ t.btnLabel }}</button>
+</div>
+</sc-for>
+</div>
+<div style="padding:0 6px;font:400 12.5px/1.4 -apple-system,sans-serif;color:rgba(233,240,240,.55)">No client, no date. It only happens if you defend it.</div>
+</div>
+</div>
+</div>
+
+<div style="width:300px;flex:none;border-left:1px solid rgba(255,255,255,.07);background:rgba(13,19,22,.5);backdrop-filter:blur(26px);display:flex;flex-direction:column;min-height:0">
+<div style="padding:18px 18px 12px;display:flex;justify-content:space-between;align-items:baseline">
+<span style="font:700 19px/1 -apple-system,sans-serif;letter-spacing:-.02em;color:#FFFFFF">Today, laid out</span>
+<span style="font:400 12px/1 -apple-system,sans-serif;color:rgba(233,240,240,.55)">06–23</span>
+</div>
+<div style="flex:1;min-height:0;overflow:auto;padding:6px 16px 20px">
+<div style="position:relative;height:595px">
+<sc-for list="{{ hourMarks }}" as="h" hint-placeholder-count="18">
+<div style="position:absolute;left:0;right:0;top:{{ h.top }}px;display:flex;align-items:center;gap:8px">
+<span style="width:24px;flex:none;font:400 11px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.55);text-align:right">{{ h.label }}</span>
+<span style="flex:1;height:1px;background:rgba(255,255,255,.06)"></span>
+</div>
+</sc-for>
+<sc-for list="{{ dayBlocks }}" as="b" hint-placeholder-count="8">
+<div onClick="{{ b.open }}" style="position:absolute;left:{{ b.left }};width:{{ b.width }};box-sizing:border-box;top:{{ b.top }}px;height:{{ b.h }}px;border-radius:8px;padding:{{ b.pad }};display:flex;flex-direction:column;gap:2px;overflow:hidden;cursor:{{ b.cursor }};border:1px solid rgba(255,255,255,.08);background:{{ b.bg }};background-image:{{ b.hatch }};transition:transform .16s cubic-bezier(.2,.8,.3,1),box-shadow .16s ease" style-hover="transform:translateY(-2px) scale(1.014);box-shadow:0 12px 26px rgba(0,0,0,.5)">
+<span style="font:{{ b.titleFont }};color:#FFFFFF">{{ b.title }}</span>
+<sc-if value="{{ b.showTime }}" hint-placeholder-val="{{ true }}">
+<span style="font:400 11px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:{{ b.color }}">{{ b.time }}</span>
+</sc-if>
+</div>
+</sc-for>
+<div style="position:absolute;left:24px;right:0;top:{{ nowTop }}px;display:flex;align-items:center;gap:4px;pointer-events:none">
+<span style="width:7px;height:7px;border-radius:50%;background:#F5405E"></span>
+<span style="flex:1;height:1.5px;background:#F5405E"></span>
+</div>
+</div>
+<div style="margin-top:14px;padding:13px 15px;border-radius:12px;background:rgba(240,169,59,.14);border:1px solid rgba(240,169,59,.2);display:flex;flex-direction:column;gap:4px">
+<span style="font:590 13px/1 -apple-system,sans-serif;color:#F7C173">{{ lateHead }}</span>
+<span style="font:400 12.5px/1.42 -apple-system,sans-serif;color:rgba(233,240,240,.66);text-wrap:pretty">{{ lateNote }}</span>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isWeek }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;min-height:0;display:flex;flex-direction:column;padding:22px 24px 24px">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:18px">
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="display:flex;align-items:center;gap:12px">
+<div style="font:700 30px/1.1 -apple-system,sans-serif;letter-spacing:-.026em;color:#FFFFFF">{{ weekLabel }}</div>
+<div style="display:flex;align-items:center;gap:4px">
+<button onClick="{{ weekPrev }}" title="Previous week" style="width:30px;height:30px;border:1px solid rgba(255,255,255,.12);border-radius:9px;background:rgba(110,128,132,.2);color:#FFFFFF;font:400 15px/1 -apple-system,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s ease" style-hover="background:rgba(110,128,132,.4)">‹</button>
+<button onClick="{{ weekToday }}" style="padding:0 12px;height:30px;border:1px solid rgba(255,255,255,.12);border-radius:9px;background:rgba(110,128,132,.2);color:{{ weekRelColor }};font:590 12px/1 -apple-system,sans-serif;cursor:pointer;transition:background .15s ease" style-hover="background:rgba(110,128,132,.4)">{{ weekRel }}</button>
+<button onClick="{{ weekNext }}" title="Next week" style="width:30px;height:30px;border:1px solid rgba(255,255,255,.12);border-radius:9px;background:rgba(110,128,132,.2);color:#FFFFFF;font:400 15px/1 -apple-system,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s ease" style-hover="background:rgba(110,128,132,.4)">›</button>
+</div>
+</div>
+<div style="font:400 14px/1.35 -apple-system,sans-serif;color:rgba(233,240,240,.6)">{{ weekRange }}. {{ weekNote }}</div>
+</div>
+<div style="display:flex;gap:16px;flex-wrap:wrap;max-width:460px;justify-content:flex-end">
+<sc-for list="{{ legend }}" as="l" hint-placeholder-count="6">
+<span style="display:inline-flex;align-items:center;gap:6px;font:400 12.5px/1 -apple-system,sans-serif;color:rgba(233,240,240,.6)"><span style="width:9px;height:9px;border-radius:50%;background:{{ l.color }}"></span>{{ l.name }}</span>
+</sc-for>
+</div>
+</div>
+<div style="flex:1;min-height:0;display:grid;grid-template-columns:40px repeat(7,1fr);gap:6px;background:rgba(13,19,22,.5);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:10px 12px 12px">
+<div style="display:flex;flex-direction:column">
+<div style="height:44px;flex:none"></div>
+<div style="flex:1;position:relative">
+<sc-for list="{{ weekHours }}" as="h" hint-placeholder-count="9">
+<span style="position:absolute;right:6px;top:{{ h.top }}px;font:400 11px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.55)">{{ h.label }}</span>
+</sc-for>
+</div>
+</div>
+<sc-for list="{{ weekDays }}" as="d" hint-placeholder-count="7">
+<div style="display:flex;flex-direction:column;min-width:0;border-radius:10px;background:{{ d.bg }}">
+<div style="height:44px;flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px">
+<span style="font:400 11.5px/1 -apple-system,sans-serif;letter-spacing:.02em;color:{{ d.labelColor }}">{{ d.dow }}</span>
+<span style="display:flex;align-items:center;justify-content:center;min-width:26px;height:26px;border-radius:50%;font:590 15px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;background:{{ d.numBg }};color:{{ d.numColor }}">{{ d.num }}</span>
+</div>
+<div style="flex:1;position:relative;padding:0 4px">
+<sc-for list="{{ d.blocks }}" as="b" hint-placeholder-count="3">
+<div onClick="{{ b.open }}" style="position:absolute;left:{{ b.left }};width:{{ b.width }};box-sizing:border-box;top:{{ b.top }}px;height:{{ b.h }}px;border-radius:7px;padding:{{ b.pad }};overflow:hidden;cursor:{{ b.cursor }};border:1px solid rgba(255,255,255,.08);background:{{ b.bg }};background-image:{{ b.hatch }};transition:transform .16s cubic-bezier(.2,.8,.3,1),box-shadow .16s ease" style-hover="transform:translateY(-2px) scale(1.03);box-shadow:0 12px 26px rgba(0,0,0,.55);z-index:3">
+<span style="display:block;font:{{ b.titleFont }};color:#FFFFFF;overflow:hidden">{{ b.title }}</span>
+</div>
+</sc-for>
+<sc-for list="{{ d.marks }}" as="m" hint-placeholder-count="1">
+<div style="position:absolute;left:4px;right:4px;top:{{ m.top }}px;height:0;border-top:1.5px dashed {{ m.color }}"></div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+<div style="flex:none;display:flex;align-items:stretch;gap:10px;padding-top:12px">
+<div style="flex:none;width:150px;display:flex;flex-direction:column;justify-content:center;gap:3px;padding:12px 14px;border-radius:12px;background:rgba(53,214,160,.14);border:1px solid rgba(53,214,160,.22)">
+<span style="font:700 20px/1.05 -apple-system,sans-serif;letter-spacing:-.02em;color:#FFFFFF">{{ streakLabel }}</span>
+<span style="font:400 11.5px/1.35 -apple-system,sans-serif;color:rgba(233,240,240,.62);text-wrap:pretty">{{ streakNote }}</span>
+</div>
+<div style="flex:1;min-width:0;display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
+<sc-for list="{{ reviewRows }}" as="v" hint-placeholder-count="5">
+<div style="display:flex;flex-direction:column;gap:6px;padding:11px 13px;border-radius:12px;background:rgba(23,31,35,.55);border:1px solid rgba(255,255,255,.07);opacity:{{ v.dim }}">
+<span style="display:flex;align-items:center;gap:7px;min-width:0"><span style="flex:none;width:8px;height:8px;border-radius:50%;background:{{ v.color }}"></span><span style="font:590 12.5px/1.2 -apple-system,sans-serif;color:#FFFFFF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ v.name }}</span></span>
+<span style="height:5px;border-radius:3px;background:rgba(110,128,132,.3);overflow:hidden"><span style="display:block;height:100%;border-radius:3px;background:{{ v.color }};width:{{ v.keptPct }}%"></span></span>
+<span style="font:400 11.5px/1.3 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.62)">{{ v.blocks }}</span>
+<span style="font:400 11.5px/1.3 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.5)">{{ v.done }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isDue }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;min-height:0;display:flex;flex-direction:column;padding:22px 24px 0;overflow:auto">
+<div style="display:flex;flex-direction:column;gap:4px;padding-bottom:18px">
+<div style="font:700 30px/1.1 -apple-system,sans-serif;letter-spacing:-.026em;color:#FFFFFF">Everything with a clock on it</div>
+<div style="font:400 14px/1.35 -apple-system,sans-serif;color:rgba(233,240,240,.6)">{{ dueSortNote }} Your clock is always EAT; theirs is shown beside it in their own zone. Place-locked and self-driven work is not here — it has no clock.</div>
+</div>
+<div style="border-radius:14px;overflow:hidden;background:rgba(23,31,35,.55);backdrop-filter:blur(22px) saturate(1.5);border:1px solid rgba(255,255,255,.07)">
+<div style="display:grid;grid-template-columns:130px 1fr 150px 160px 180px 40px;gap:0 18px;padding:11px 18px;font:590 12px/1 -apple-system,sans-serif;color:rgba(233,240,240,.58);background:rgba(110,128,132,.16)">
+<span>Remaining</span><span>Task</span><span>Stream</span><span>Your clock</span><span>Their clock</span><span></span>
+</div>
+<sc-for list="{{ dueRows }}" as="r" hint-placeholder-count="6">
+<div style="display:grid;grid-template-columns:130px 1fr 150px 160px 180px 40px;gap:0 18px;align-items:center;padding:16px 18px;border-top:1px solid rgba(255,255,255,.08);background:{{ r.rowBg }};animation:{{ r.anim }};transition:background .16s ease" style-hover="background:rgba(110,128,132,.14)">
+<span style="font:600 20px/1 -apple-system,sans-serif;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:{{ r.cdColor }}">{{ r.cd }}</span>
+<span style="display:flex;flex-direction:column;gap:3px">
+<span style="font:400 15px/1.3 -apple-system,sans-serif;letter-spacing:-.012em;color:#FFFFFF">{{ r.title }}</span>
+<span style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+<span style="font:400 12.5px/1 -apple-system,sans-serif;color:rgba(233,240,240,.56)">{{ r.setBy }}</span>
+<button onClick="{{ r.confirm }}" style="padding:3px 8px;border:1px solid rgba(255,255,255,.12);border-radius:6px;background:transparent;color:{{ r.gotColor }};font:590 11px/1.3 -apple-system,sans-serif;cursor:pointer">{{ r.gotLabel }}</button>
+<sc-if value="{{ r.missed }}" hint-placeholder-val="{{ false }}">
+<button onClick="{{ r.propTake }}" style="padding:3px 9px;border:0;border-radius:6px;background:rgba(245,64,94,.28);color:#FFA3B4;font:590 11px/1.3 -apple-system,sans-serif;cursor:pointer">{{ r.propLabel }}</button>
+</sc-if>
+</span>
+</span>
+<span style="display:inline-flex;align-items:center;gap:8px;font:400 13.5px/1 -apple-system,sans-serif;color:rgba(233,240,240,.72)"><span style="width:9px;height:9px;border-radius:50%;background:{{ r.color }}"></span>{{ r.stream }}</span>
+<span style="font:400 13.5px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:{{ r.mineColor }}">{{ r.mine }}</span>
+<span style="font:400 13.5px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.55)">{{ r.theirs }}</span>
+<button onClick="{{ r.remove }}" title="Delete" style="justify-self:end;width:22px;height:22px;border:0;border-radius:6px;background:transparent;color:rgba(233,240,240,.5);font:400 15px/1 -apple-system,sans-serif;cursor:pointer;opacity:.4;transition:opacity .15s ease,background .15s ease" style-hover="opacity:1;background:rgba(245,64,94,.22);color:#FF8095">×</button>
+</div>
+</sc-for>
+</div>
+<div style="padding:14px 6px 24px;font:400 12.5px/1.45 -apple-system,sans-serif;color:rgba(233,240,240,.55)">Every row deletes. Capture adds. Nothing enters without a rule attached.</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isZones }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;min-height:0;display:flex;flex-direction:column;padding:22px 24px 0;overflow:auto">
+<div style="display:flex;flex-direction:column;gap:4px;padding-bottom:18px">
+<div style="font:700 30px/1.1 -apple-system,sans-serif;letter-spacing:-.026em;color:#FFFFFF">Their clocks, laid on your day</div>
+<div style="font:400 14px/1.35 -apple-system,sans-serif;color:rgba(233,240,240,.6)">Every deadline sits where it actually lands in Nairobi, 06:00 to 23:00. {{ zoneNote }}</div>
+</div>
+<div style="border-radius:14px;overflow:hidden;background:rgba(23,31,35,.55);backdrop-filter:blur(22px) saturate(1.5);border:1px solid rgba(255,255,255,.07)">
+<div style="display:grid;grid-template-columns:210px 1fr 150px;gap:0 16px;align-items:center;padding:10px 18px;background:rgba(110,128,132,.16)">
+<span style="font:590 12px/1 -apple-system,sans-serif;color:rgba(233,240,240,.58)">Deadline</span>
+<span style="position:relative;height:16px">
+<sc-for list="{{ zoneTicks }}" as="k" hint-placeholder-count="7">
+<span style="position:absolute;left:{{ k.left }}%;top:0;font:400 11px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.5)">{{ k.label }}</span>
+</sc-for>
+</span>
+<span style="font:590 12px/1 -apple-system,sans-serif;color:rgba(233,240,240,.58)">Their clock</span>
+</div>
+<sc-for list="{{ zoneGroups }}" as="z" hint-placeholder-count="4">
+<div style="border-top:{{ z.sep }}">
+<div style="display:flex;align-items:baseline;gap:9px;padding:11px 18px 7px">
+<span style="font:590 13px/1 -apple-system,sans-serif;color:#FFFFFF">{{ z.city }}</span>
+<span style="font:400 11.5px/1 -apple-system,sans-serif;color:rgba(233,240,240,.55)">{{ z.abbr }} · {{ z.delta }}</span>
+</div>
+<sc-for list="{{ z.rows }}" as="r" hint-placeholder-count="2">
+<div style="display:grid;grid-template-columns:210px 1fr 150px;gap:0 16px;align-items:center;padding:7px 18px 11px">
+<span style="display:flex;align-items:center;gap:9px;min-width:0"><span style="flex:none;width:8px;height:8px;border-radius:50%;background:{{ r.color }}"></span><span style="font:400 13.5px/1.25 -apple-system,sans-serif;color:#FFFFFF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.title }}</span></span>
+<span style="position:relative;height:26px;display:block">
+<span style="position:absolute;left:0;right:0;top:12px;height:2px;border-radius:2px;background:rgba(255,255,255,.09)"></span>
+<span style="position:absolute;left:{{ r.left }}%;top:0;transform:translateX({{ r.chipShift }});display:flex;align-items:center;gap:6px;padding:3px 8px;border-radius:7px;background:{{ r.chipBg }};border:1px solid {{ r.chipBorder }};font:590 11.5px/1.3 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:#FFFFFF;white-space:nowrap">{{ r.mine }} <span style="font:400 11px/1.3 -apple-system,sans-serif;color:{{ r.flagColor }}">{{ r.flag }}</span></span>
+</span>
+<span style="display:flex;flex-direction:column;gap:2px">
+<span style="font:400 13px/1.2 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.72)">{{ r.theirs }}</span>
+<span style="font:400 11.5px/1.2 -apple-system,sans-serif;color:rgba(233,240,240,.5)">{{ r.day }}</span>
+</span>
+</div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+<div style="padding:14px 6px 24px;font:400 12.5px/1.45 -apple-system,sans-serif;color:rgba(233,240,240,.55);text-wrap:pretty">The band is your day, not theirs. A deadline sitting past 21:00 means someone else’s afternoon is your night — the only way to move it is to ask.</div>
+</div>
+</sc-if>
+
+</div>
+
+<sc-if value="{{ notifOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;right:18px;top:64px;width:340px;max-height:520px;z-index:22;display:flex;flex-direction:column;background:rgba(27,36,40,.86);backdrop-filter:blur(34px) saturate(1.6);border:1px solid rgba(255,255,255,.14);border-radius:14px;overflow:hidden;box-shadow:0 26px 60px rgba(0,0,0,.66)">
+<div style="padding:14px 16px 11px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+<span style="font:590 13px/1 -apple-system,sans-serif;color:#FFFFFF">Alerts</span>
+<button onClick="{{ askNotify }}" style="padding:6px 11px;border:0;border-radius:8px;background:{{ permBg }};color:{{ permFg }};font:590 11.5px/1.2 -apple-system,sans-serif;cursor:pointer">{{ permLabel }}</button>
+</div>
+<div style="flex:1;min-height:0;overflow:auto">
+<sc-for list="{{ notifs }}" as="n" hint-placeholder-count="3">
+<div style="padding:13px 16px;border-top:1px solid rgba(255,255,255,.09);display:flex;flex-direction:column;gap:4px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+<span style="font:590 13px/1.3 -apple-system,sans-serif;color:{{ n.color }};text-wrap:pretty">{{ n.title }}</span>
+<span style="flex:none;font:400 11.5px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.55)">{{ n.at }}</span>
+</div>
+<span style="font:400 12.5px/1.42 -apple-system,sans-serif;color:rgba(233,240,240,.66);text-wrap:pretty">{{ n.body }}</span>
+</div>
+</sc-for>
+</div>
+<div style="padding:11px 16px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;gap:10px">
+<span style="font:400 11.5px/1.35 -apple-system,sans-serif;color:rgba(233,240,240,.55);text-wrap:pretty">Fires when a deadline crosses 8 h or you arrive somewhere.</span>
+<button onClick="{{ clearNotifs }}" style="flex:none;padding:7px 12px;border:0;border-radius:8px;background:rgba(110,128,132,.3);color:rgba(233,240,240,.75);font:590 11.5px/1.2 -apple-system,sans-serif;cursor:pointer">Clear</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ focusOn }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:0;right:0;top:0;bottom:0;z-index:34;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:0 60px;background:radial-gradient(700px 500px at 50% 30%,rgba(255,122,92,.2),transparent 70%),rgba(8,8,10,.95);backdrop-filter:blur(30px);animation:ppFadeOut .4s ease reverse both">
+<div style="display:flex;flex-direction:column;align-items:center;gap:9px;max-width:640px;text-align:center">
+<span style="font:590 12px/1 -apple-system,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:{{ focusColor }}">{{ focusMins }} · {{ focusStream }}</span>
+<span style="font:700 30px/1.2 -apple-system,sans-serif;letter-spacing:-.028em;color:#FFFFFF;text-wrap:pretty">{{ focusTitle }}</span>
+</div>
+<div style="font:700 92px/1 -apple-system,sans-serif;letter-spacing:-.05em;font-variant-numeric:tabular-nums;color:{{ focusColor }}">{{ focusClock }}</div>
+<div style="width:420px;height:6px;border-radius:3px;background:rgba(110,128,132,.3);overflow:hidden"><div style="height:100%;border-radius:3px;background:{{ focusColor }};width:{{ focusPct }}%"></div></div>
+<div style="font:400 13.5px/1.4 -apple-system,sans-serif;color:rgba(233,240,240,.6);text-wrap:pretty">{{ focusState }}</div>
+<div style="display:flex;gap:10px">
+<button onClick="{{ focusDone }}" style="padding:13px 24px;border:0;border-radius:12px;background:#35D6A0;color:#04251A;font:590 14.5px/1 -apple-system,sans-serif;cursor:pointer">Tick it off</button>
+<button onClick="{{ focusPause }}" style="padding:13px 22px;border:0;border-radius:12px;background:rgba(110,128,132,.34);color:#FFFFFF;font:590 14.5px/1 -apple-system,sans-serif;cursor:pointer">{{ focusPauseLabel }}</button>
+<button onClick="{{ focusStop }}" style="padding:13px 22px;border:1px solid rgba(255,255,255,.14);border-radius:12px;background:transparent;color:rgba(233,240,240,.7);font:590 14.5px/1 -apple-system,sans-serif;cursor:pointer">Stop</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ toastOn }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;right:22px;top:70px;z-index:36;max-width:330px;display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:14px;background:rgba(27,36,40,.92);backdrop-filter:blur(30px) saturate(1.6);border:1px solid rgba(255,255,255,.14);box-shadow:0 18px 44px rgba(0,0,0,.55);animation:{{ toastAnim }}">
+<span style="flex:none;width:9px;height:9px;border-radius:50%;background:{{ toastColor }}"></span>
+<span style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0">
+<span style="font:590 13px/1.2 -apple-system,sans-serif;color:#FFFFFF">{{ toastTitle }}</span>
+<span style="font:400 12.5px/1.35 -apple-system,sans-serif;color:rgba(233,240,240,.62);text-wrap:pretty">{{ toastSub }}</span>
+</span>
+</div>
+</sc-if>
+
+<sc-if value="{{ surOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:24">
+<div style="width:520px;animation:ppPop .34s cubic-bezier(.2,.9,.3,1.1) both;background:rgba(27,36,40,.9);backdrop-filter:blur(34px) saturate(1.6);border:1px solid rgba(255,255,255,.14);border-radius:18px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.7)">
+<div style="padding:24px 26px 20px;display:flex;flex-direction:column;gap:9px">
+<div style="font:590 12.5px/1 -apple-system,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#6FE3BA">Defended block</div>
+<div style="font:700 24px/1.25 -apple-system,sans-serif;letter-spacing:-.024em;color:#FFFFFF;text-wrap:pretty">{{ surTitle }}</div>
+<div style="font:400 14px/1.45 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.66)">{{ surWhen }} · {{ surCount }}</div>
+</div>
+<div style="padding:0 26px 14px;font:590 13px/1.4 -apple-system,sans-serif;color:rgba(233,240,240,.75)">What are you giving it to?</div>
+<div style="max-height:290px;overflow:auto;border-top:1px solid rgba(255,255,255,.09)">
+<sc-for list="{{ surTargets }}" as="t" hint-placeholder-count="5">
+<button onClick="{{ t.pick }}" style="width:100%;display:flex;align-items:center;gap:13px;padding:15px 26px;border:0;border-top:{{ t.sep }};cursor:pointer;text-align:left;background:transparent;transition:background .14s ease" style-hover="background:rgba(110,128,132,.2)">
+<span style="flex:none;width:10px;height:10px;border-radius:50%;background:{{ t.color }}"></span>
+<span style="flex:1;display:flex;flex-direction:column;gap:3px;min-width:0">
+<span style="font:400 15px/1.3 -apple-system,sans-serif;letter-spacing:-.012em;color:#FFFFFF;text-wrap:pretty">{{ t.title }}</span>
+<span style="font:400 12.5px/1.2 -apple-system,sans-serif;color:rgba(233,240,240,.58)">{{ t.sub }}</span>
+</span>
+<span style="flex:none;font:400 17px/1 -apple-system,sans-serif;color:rgba(233,240,240,.55)">›</span>
+</button>
+</sc-for>
+</div>
+<div style="padding:16px 26px 20px;border-top:1px solid rgba(255,255,255,.09);display:flex;align-items:center;justify-content:space-between;gap:16px">
+<span style="font:400 12.5px/1.42 -apple-system,sans-serif;color:rgba(233,240,240,.58);text-wrap:pretty">Whatever you pick is recorded against this project.</span>
+<button onClick="{{ surCancel }}" style="flex:none;padding:11px 20px;border:0;border-radius:10px;background:#35D6A0;color:#04251A;font:590 14px/1 -apple-system,sans-serif;cursor:pointer">Keep it</button>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ capOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:26">
+<div style="width:560px;animation:ppPop .34s cubic-bezier(.2,.9,.3,1.1) both;background:rgba(27,36,40,.9);backdrop-filter:blur(34px) saturate(1.6);border:1px solid rgba(255,255,255,.14);border-radius:18px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.7);display:flex;flex-direction:column;gap:0">
+<div style="padding:22px 26px 16px;display:flex;flex-direction:column;gap:12px">
+<div style="font:700 21px/1.2 -apple-system,sans-serif;letter-spacing:-.022em;color:#FFFFFF">New item</div>
+<input value="{{ draftTitle }}" onChange="{{ setDraftTitle }}" placeholder="What is it?" style="width:100%;box-sizing:border-box;padding:13px 14px;border:1px solid rgba(255,255,255,.14);border-radius:11px;background:rgba(110,128,132,.2);color:#FFFFFF;font:400 15.5px/1.2 -apple-system,sans-serif;outline:none">
+</div>
+<div style="padding:0 26px 16px;display:flex;flex-direction:column;gap:9px">
+<span style="font:590 12px/1 -apple-system,sans-serif;letter-spacing:.02em;color:rgba(233,240,240,.6)">Which rule governs it</span>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+<sc-for list="{{ ruleOptions }}" as="r" hint-placeholder-count="3">
+<button onClick="{{ r.pick }}" style="display:flex;flex-direction:column;align-items:flex-start;gap:5px;padding:12px 13px;border:1px solid {{ r.border }};border-radius:11px;cursor:pointer;text-align:left;background:{{ r.bg }};transition:transform .16s ease,border-color .16s ease" style-hover="transform:translateY(-2px)">
+<span style="width:9px;height:9px;border-radius:50%;background:{{ r.color }}"></span>
+<span style="font:590 13px/1.2 -apple-system,sans-serif;color:#FFFFFF">{{ r.label }}</span>
+<span style="font:400 11.5px/1.3 -apple-system,sans-serif;color:rgba(233,240,240,.58)">{{ r.sub }}</span>
+</button>
+</sc-for>
+</div>
+</div>
+<sc-if value="{{ isPlaceDraft }}" hint-placeholder-val="{{ true }}">
+<div style="padding:0 26px 18px;display:flex;flex-direction:column;gap:9px">
+<span style="font:590 12px/1 -apple-system,sans-serif;letter-spacing:.02em;color:rgba(233,240,240,.6)">When it goes live</span>
+<div style="display:flex;gap:2px;padding:2px;background:rgba(110,128,132,.24);border-radius:9px;align-self:flex-start">
+<sc-for list="{{ repeatOptions }}" as="o" hint-placeholder-count="3">
+<button onClick="{{ o.pick }}" style="padding:7px 16px;border:0;border-radius:7px;cursor:pointer;font:590 13px/1.2 -apple-system,sans-serif;background:{{ o.bg }};color:{{ o.fg }}">{{ o.label }}</button>
+</sc-for>
+</div>
+<sc-if value="{{ isWeeklyDraft }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+<sc-for list="{{ dowOptions }}" as="d" hint-placeholder-count="7">
+<button onClick="{{ d.pick }}" style="width:44px;padding:8px 0;border:0;border-radius:9px;cursor:pointer;font:590 12.5px/1 -apple-system,sans-serif;background:{{ d.bg }};color:{{ d.fg }}">{{ d.label }}</button>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ isTimedDraft }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:9px">
+<input value="{{ draftTime }}" onChange="{{ setDraftTime }}" placeholder="09:00" style="width:110px;box-sizing:border-box;padding:10px 12px;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:rgba(110,128,132,.24);color:#FFFFFF;font:400 14px/1.2 -apple-system,sans-serif;font-variant-numeric:tabular-nums;outline:none">
+<span style="font:400 12.5px/1.35 -apple-system,sans-serif;color:rgba(233,240,240,.55)">EAT — your own clock. It goes live at this time and counts down to it.</span>
+</div>
+</sc-if>
+</div>
+</sc-if>
+<sc-if value="{{ isClockDraft }}" hint-placeholder-val="{{ false }}">
+<div style="padding:0 26px 18px;display:flex;flex-direction:column;gap:9px">
+<span style="font:590 12px/1 -apple-system,sans-serif;letter-spacing:.02em;color:rgba(233,240,240,.6)">Their time, exactly as they gave it</span>
+<div style="display:grid;grid-template-columns:130px 1fr;gap:10px">
+<input value="{{ draftTime }}" onChange="{{ setDraftTime }}" placeholder="15:00" style="width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:rgba(110,128,132,.24);color:#FFFFFF;font:400 14px/1.2 -apple-system,sans-serif;font-variant-numeric:tabular-nums;outline:none">
+<select value="{{ draftTz }}" onChange="{{ setDraftTz }}" style="width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:rgba(110,128,132,.24);color:#FFFFFF;font:400 14px/1.2 -apple-system,sans-serif;outline:none;cursor:pointer">
+<sc-for list="{{ zoneOptions }}" as="z" hint-placeholder-count="10">
+<option value="{{ z.id }}">{{ z.label }}</option>
+</sc-for>
+</select>
+</div>
+<div style="padding:10px 12px;border-radius:10px;background:rgba(255,122,92,.14);border:1px solid rgba(255,122,92,.24);font:590 13px/1.3 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:#FFC0AF;text-wrap:pretty">{{ eatPreview }}</div>
+</div>
+</sc-if>
+<div style="padding:0 26px 18px;display:grid;grid-template-columns:1fr 1fr;gap:14px">
+<div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+<span style="font:590 12px/1 -apple-system,sans-serif;letter-spacing:.02em;color:rgba(233,240,240,.6)">Stream</span>
+<select value="{{ draftStream }}" onChange="{{ setDraftStream }}" style="width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:rgba(110,128,132,.24);color:#FFFFFF;font:400 14px/1.2 -apple-system,sans-serif;outline:none;cursor:pointer">
+<sc-for list="{{ streamOptions }}" as="s" hint-placeholder-count="6">
+<option value="{{ s.name }}">{{ s.name }}</option>
+</sc-for>
+</select>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;min-width:0;opacity:{{ placeFieldOp }}">
+<span style="font:590 12px/1 -apple-system,sans-serif;letter-spacing:.02em;color:rgba(233,240,240,.6)">Place</span>
+<select value="{{ draftPlace }}" onChange="{{ setDraftPlace }}" style="width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:rgba(110,128,132,.24);color:#FFFFFF;font:400 14px/1.2 -apple-system,sans-serif;outline:none;cursor:pointer">
+<sc-for list="{{ placeOptionsFlat }}" as="p" hint-placeholder-count="7">
+<option value="{{ p.id }}">{{ p.name }}</option>
+</sc-for>
+</select>
+</div>
+</div>
+<div style="padding:15px 26px 18px;border-top:1px solid rgba(255,255,255,.09);display:flex;align-items:center;justify-content:space-between;gap:16px;background:rgba(110,128,132,.1)">
+<span style="font:400 12.5px/1.42 -apple-system,sans-serif;color:rgba(233,240,240,.58);text-wrap:pretty">{{ capHint }}</span>
+<span style="flex:none;display:flex;gap:9px">
+<button onClick="{{ closeCapture }}" style="padding:11px 18px;border:0;border-radius:10px;background:rgba(110,128,132,.32);color:rgba(233,240,240,.78);font:590 14px/1 -apple-system,sans-serif;cursor:pointer">Cancel</button>
+<button onClick="{{ saveDraft }}" style="padding:11px 22px;border:0;border-radius:10px;background:{{ saveBg }};color:{{ saveFg }};font:590 14px/1 -apple-system,sans-serif;cursor:{{ saveCursor }}">Save</button>
+</span>
+</div>
+</div>
+</div>
+</sc-if>
+
+</div>
+</div>
+
+<div id="3b" style="display:flex;flex-direction:column;gap:10px;flex:none;scroll-margin-top:16px">
+<div style="display:flex;align-items:baseline;gap:9px;font:400 11.5px/1.3 -apple-system,sans-serif;color:rgba(233,240,240,.58)"><a href="#3b" style="font:590 11px/1 -apple-system,sans-serif;padding:4px 8px;background:rgba(233,240,240,.14);color:#FFFFFF;border-radius:6px">3b</a>Phone — deciding surface<button onClick="{{ greetReplay }}" style="margin-left:2px;padding:4px 9px;border:1px solid rgba(255,255,255,.14);border-radius:7px;background:rgba(110,128,132,.2);color:rgba(233,240,240,.8);font:590 11px/1.2 -apple-system,sans-serif;cursor:pointer;transition:background .15s ease" style-hover="background:rgba(110,128,132,.34);color:#FFFFFF">Replay welcome</button></div>
+<x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" dark="{{ true }}" width="{{ 412 }}" height="{{ 892 }}" time="{{ clock }}" hint-size="428px,908px">
+<div style="position:relative;height:100%;overflow:hidden;display:flex;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;background-color:#070B0D;background-image:radial-gradient(420px 320px at 20% 6%,rgba(255,122,92,.18),transparent 64%),radial-gradient(380px 300px at 84% 88%,rgba(176,140,255,.14),transparent 66%)">
+
+<div style="padding:6px 18px 14px;display:flex;flex-direction:column;gap:13px">
+<div style="display:flex;justify-content:space-between;align-items:flex-end">
+<span style="font:700 32px/1.1 -apple-system,sans-serif;letter-spacing:-.028em;color:#FFFFFF">{{ todayShort }}</span>
+<span style="font:400 13.5px/1.6 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.58)">{{ clock }}</span>
+</div>
+<button onClick="{{ toggleAPlacePicker }}" style="width:100%;display:flex;align-items:center;gap:10px;padding:11px 13px;border:1px solid rgba(255,255,255,.1);border-radius:13px;cursor:pointer;text-align:left;background:rgba(23,31,35,.6);backdrop-filter:blur(20px)">
+<span style="flex:none;width:8px;height:8px;border-radius:50%;background:#35D6A0"></span>
+<span style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0">
+<span style="font:590 14px/1.2 -apple-system,sans-serif;color:#FFFFFF">{{ aHereName }}</span>
+<span style="font:400 12px/1.2 -apple-system,sans-serif;color:rgba(233,240,240,.58)">{{ aHereNote }}</span>
+</span>
+<span style="flex:none;font:400 11px/1 -apple-system,sans-serif;color:rgba(233,240,240,.55)">▾</span>
+</button>
+</div>
+
+<div data-phone-scroll style="flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column">
+<sc-if value="{{ aIsNow }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;padding:4px 16px 104px">
+<div style="display:flex;flex-direction:column;gap:12px;padding:18px;border-radius:20px;background:{{ hero.bg }};backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);animation:{{ hero.anim }}">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<span style="font:590 12.5px/1 -apple-system,sans-serif;letter-spacing:.03em;text-transform:uppercase;color:{{ hero.color }}">{{ hero.kicker }}</span>
+<span style="font:400 12.5px/1 -apple-system,sans-serif;color:rgba(233,240,240,.58)">{{ hero.stream }}</span>
+</div>
+<div style="font:700 22px/1.25 -apple-system,sans-serif;letter-spacing:-.022em;color:#FFFFFF;text-wrap:pretty">{{ hero.title }}</div>
+<div style="display:flex;align-items:baseline;gap:11px">
+<span style="font:700 36px/1 -apple-system,sans-serif;letter-spacing:-.035em;font-variant-numeric:tabular-nums;color:{{ hero.color }}">{{ hero.big }}</span>
+<span style="font:400 12.5px/1.35 -apple-system,sans-serif;color:rgba(233,240,240,.6)">{{ hero.bigNote }}</span>
+</div>
+<div style="font:400 14px/1.45 -apple-system,sans-serif;color:rgba(233,240,240,.7);text-wrap:pretty">{{ hero.why }}</div>
+<div style="display:flex;gap:9px;padding-top:2px">
+<button onClick="{{ heroGo }}" style="flex:1;padding:14px 0;border:0;border-radius:13px;background:#FFFFFF;color:#000000;font:590 15.5px/1 -apple-system,sans-serif;cursor:pointer">{{ hero.cta }}</button>
+<button onClick="{{ heroSkip }}" style="padding:14px 18px;border:0;border-radius:13px;background:rgba(110,128,132,.34);color:rgba(233,240,240,.78);font:590 15px/1 -apple-system,sans-serif;cursor:pointer">Not now</button>
+</div>
+</div>
+
+<sc-if value="{{ tripOn }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:10px;padding:15px 16px;border-radius:18px;background:rgba(240,169,59,.14);backdrop-filter:blur(18px);border:1px solid rgba(240,169,59,.24)">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+<span style="font:590 13px/1 -apple-system,sans-serif;color:#F7C173">{{ trip.label }}</span>
+<span style="font:400 12.5px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.6)">{{ trip.total }}</span>
+</div>
+<div style="font:400 13.5px/1.45 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.7);text-wrap:pretty">{{ trip.back }}</div>
+<button onClick="{{ trip.plan }}" style="padding:12px 0;border:0;border-radius:12px;background:#F0A93B;color:#241802;font:590 14.5px/1 -apple-system,sans-serif;cursor:pointer">Plan the trip</button>
+</div>
+</sc-if>
+
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 4px">
+<span style="font:590 13px/1 -apple-system,sans-serif;color:rgba(233,240,240,.65)">Then</span>
+<span style="font:400 12.5px/1 -apple-system,sans-serif;color:rgba(233,240,240,.55)">{{ aCtxNote }}</span>
+</div>
+<div style="border-radius:16px;overflow:hidden;background:rgba(23,31,35,.6);backdrop-filter:blur(22px) saturate(1.5);border:1px solid rgba(255,255,255,.08)">
+<sc-for list="{{ aNext }}" as="t" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-top:{{ t.sep }};opacity:{{ t.op }};animation:{{ t.anim }}">
+<span style="flex:none;width:10px;height:10px;border-radius:50%;background:{{ t.color }}"></span>
+<span style="flex:1;display:flex;flex-direction:column;gap:3px;min-width:0">
+<span style="font:400 15px/1.3 -apple-system,sans-serif;letter-spacing:-.012em;color:#FFFFFF;text-wrap:pretty">{{ t.title }}</span>
+<span style="font:400 12.5px/1.2 -apple-system,sans-serif;color:{{ t.subColor }}">{{ t.sub }}</span>
+</span>
+<span style="flex:none;font:590 14px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:{{ t.rightColor }}">{{ t.right }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:11px;padding:16px;border-radius:18px;background:rgba(53,214,160,.14);backdrop-filter:blur(18px);border:1px solid rgba(53,214,160,.22)">
+<div style="display:flex;justify-content:space-between;align-items:baseline">
+<span style="font:590 13px/1 -apple-system,sans-serif;color:#6FE3BA">Locked to nothing</span>
+<span style="font:600 15px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:#FFFFFF">{{ defenseValue }}</span>
+</div>
+<div style="height:6px;border-radius:3px;background:rgba(110,128,132,.32);overflow:hidden"><div style="height:100%;border-radius:3px;background:#35D6A0;width:{{ quotaPct }}%"></div></div>
+<div style="font:400 14px/1.45 -apple-system,sans-serif;color:rgba(233,240,240,.7);text-wrap:pretty">{{ defenseNote }}</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ aIsDue }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;padding:4px 16px 104px">
+<div style="font:590 13px/1 -apple-system,sans-serif;color:rgba(233,240,240,.65);padding:0 4px 2px">Clock-locked · {{ nClock }}</div>
+<div style="border-radius:16px;overflow:hidden;background:rgba(23,31,35,.6);backdrop-filter:blur(22px) saturate(1.5);border:1px solid rgba(255,255,255,.08)">
+<sc-for list="{{ dueRows }}" as="r" hint-placeholder-count="6">
+<div style="padding:15px 16px;border-top:{{ r.sep }};display:flex;flex-direction:column;gap:9px;animation:{{ r.anim }}">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+<span style="display:flex;align-items:center;gap:9px;min-width:0"><span style="flex:none;width:10px;height:10px;border-radius:50%;background:{{ r.color }}"></span><span style="font:400 15px/1.3 -apple-system,sans-serif;letter-spacing:-.012em;color:#FFFFFF;text-wrap:pretty">{{ r.title }}</span></span>
+<span style="flex:none;font:600 17px/1 -apple-system,sans-serif;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:{{ r.cdColor }}">{{ r.cd }}</span>
+</div>
+<div style="display:flex;justify-content:space-between;font:400 12.5px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.56)">
+<span style="color:{{ r.mineColor }}">{{ r.mine }}</span><span>{{ r.theirs }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ aIsWeek }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;padding:4px 16px 104px">
+<div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px 2px;gap:10px">
+<span style="font:590 13px/1 -apple-system,sans-serif;color:rgba(233,240,240,.65);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ weekLabel }} · {{ weekRange }}</span>
+<span style="flex:none;display:flex;align-items:center;gap:4px">
+<button onClick="{{ weekPrev }}" style="width:28px;height:28px;border:0;border-radius:8px;background:rgba(110,128,132,.28);color:#FFFFFF;font:400 15px/1 -apple-system,sans-serif;cursor:pointer">‹</button>
+<button onClick="{{ weekToday }}" style="padding:0 10px;height:28px;border:0;border-radius:8px;background:rgba(110,128,132,.28);color:{{ weekRelColor }};font:590 11.5px/1 -apple-system,sans-serif;cursor:pointer">{{ weekRel }}</button>
+<button onClick="{{ weekNext }}" style="width:28px;height:28px;border:0;border-radius:8px;background:rgba(110,128,132,.28);color:#FFFFFF;font:400 15px/1 -apple-system,sans-serif;cursor:pointer">›</button>
+</span>
+</div>
+<div style="border-radius:16px;overflow:hidden;background:rgba(23,31,35,.6);backdrop-filter:blur(22px) saturate(1.5);border:1px solid rgba(255,255,255,.08)">
+<sc-for list="{{ weekDays }}" as="d" hint-placeholder-count="7">
+<div style="display:flex;gap:13px;padding:13px 15px;border-top:{{ d.sep }};background:{{ d.bg }}">
+<span style="flex:none;width:34px;display:flex;flex-direction:column;align-items:center;gap:3px">
+<span style="font:400 11px/1 -apple-system,sans-serif;letter-spacing:.02em;color:{{ d.labelColor }}">{{ d.dow }}</span>
+<span style="display:flex;align-items:center;justify-content:center;min-width:24px;height:24px;border-radius:50%;font:590 14px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;background:{{ d.numBg }};color:{{ d.numColor }}">{{ d.num }}</span>
+</span>
+<span style="flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:5px;align-content:flex-start;padding-top:2px">
+<sc-for list="{{ d.blocks }}" as="b" hint-placeholder-count="3">
+<span style="padding:5px 9px;border-radius:8px;border:1px solid rgba(255,255,255,.08);font:590 11.5px/1.25 -apple-system,sans-serif;color:#FFFFFF;background:{{ b.bg }};background-image:{{ b.hatch }}">{{ b.title }}</span>
+</sc-for>
+</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ aIsStreams }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;padding:4px 16px 104px">
+<div style="font:590 13px/1 -apple-system,sans-serif;color:rgba(233,240,240,.65);padding:0 4px 2px">{{ nClock }} on a clock · {{ nPlace }} on a place · {{ nSelf }} on nothing</div>
+<div style="border-radius:16px;overflow:hidden;background:rgba(23,31,35,.6);backdrop-filter:blur(22px) saturate(1.5);border:1px solid rgba(255,255,255,.08)">
+<sc-for list="{{ streams }}" as="s" hint-placeholder-count="6">
+<button onClick="{{ s.pick }}" style="width:100%;display:flex;align-items:center;gap:13px;padding:15px 16px;border:0;border-top:{{ s.sep }};cursor:pointer;text-align:left;background:{{ s.bg }}">
+<span style="flex:none;width:28px;height:28px;border-radius:9px;background:rgba(110,128,132,.24);display:flex;align-items:center;justify-content:center"><span style="width:10px;height:10px;border-radius:50%;background:{{ s.color }}"></span></span>
+<span style="flex:1;display:flex;flex-direction:column;gap:3px;min-width:0">
+<span style="font:400 15px/1.3 -apple-system,sans-serif;letter-spacing:-.012em;color:#FFFFFF">{{ s.name }}</span>
+<span style="font:400 12.5px/1.2 -apple-system,sans-serif;color:rgba(233,240,240,.56)">Locked to {{ s.ruleLong }}</span>
+</span>
+<span style="flex:none;font:400 14px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:rgba(233,240,240,.55)">{{ s.count }}</span>
+</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+</div>
+
+<sc-if value="{{ aPlacePickerOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);display:flex;flex-direction:column;justify-content:flex-end;z-index:30">
+<div style="background:rgba(27,36,40,.92);backdrop-filter:blur(34px) saturate(1.6);border-radius:24px 24px 0 0;border-top:1px solid rgba(255,255,255,.14);animation:ppSheet .34s cubic-bezier(.2,.9,.3,1) both;padding:12px 0 22px;display:flex;flex-direction:column;gap:12px;max-height:80%">
+<div style="width:38px;height:5px;border-radius:3px;background:rgba(233,240,240,.4);align-self:center"></div>
+<div style="padding:0 20px;font:590 13px/1 -apple-system,sans-serif;color:rgba(233,240,240,.65)">Where are you</div>
+<div style="flex:1;min-height:0;overflow:auto">
+<sc-for list="{{ aPlaceOptions }}" as="p" hint-placeholder-count="7">
+<button onClick="{{ p.pick }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:14px 20px;border:0;border-top:{{ p.sep }};cursor:pointer;text-align:left;background:{{ p.bg }}">
+<span style="flex:none;width:9px;height:9px;border-radius:50%;background:{{ p.dot }}"></span>
+<span style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0">
+<span style="font:400 15px/1.2 -apple-system,sans-serif;color:#FFFFFF">{{ p.name }}</span>
+<span style="font:400 12px/1.2 -apple-system,sans-serif;color:rgba(233,240,240,.58)">{{ p.sub }}</span>
+</span>
+<span style="flex:none;font:590 15px/1 -apple-system,sans-serif;color:#35D6A0">{{ p.tick }}</span>
+</button>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ aCapOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);display:flex;flex-direction:column;justify-content:flex-end;z-index:32">
+<div style="background:rgba(27,36,40,.92);backdrop-filter:blur(34px) saturate(1.6);border-radius:24px 24px 0 0;border-top:1px solid rgba(255,255,255,.14);animation:ppSheet .34s cubic-bezier(.2,.9,.3,1) both;padding:12px 16px 24px;display:flex;flex-direction:column;gap:15px">
+<div style="width:38px;height:5px;border-radius:3px;background:rgba(233,240,240,.4);align-self:center"></div>
+<input value="{{ draftTitle }}" onChange="{{ setDraftTitle }}" placeholder="What is it?" style="width:100%;box-sizing:border-box;padding:13px 14px;border:1px solid rgba(255,255,255,.14);border-radius:12px;background:rgba(110,128,132,.24);color:#FFFFFF;font:400 16px/1.2 -apple-system,sans-serif;outline:none">
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="font:590 13px/1 -apple-system,sans-serif;color:rgba(233,240,240,.65);padding:0 4px">Which rule</span>
+<div style="border-radius:13px;overflow:hidden;background:rgba(33,44,49,.9)">
+<sc-for list="{{ ruleOptions }}" as="r" hint-placeholder-count="3">
+<button onClick="{{ r.pick }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:13px 15px;border:0;border-top:{{ r.sep }};cursor:pointer;text-align:left;background:{{ r.bg }}">
+<span style="flex:none;width:10px;height:10px;border-radius:50%;background:{{ r.color }}"></span>
+<span style="flex:1;display:flex;flex-direction:column;gap:2px">
+<span style="font:400 15px/1.2 -apple-system,sans-serif;color:#FFFFFF">{{ r.label }}</span>
+<span style="font:400 12.5px/1.2 -apple-system,sans-serif;color:rgba(233,240,240,.56)">{{ r.sub }}</span>
+</span>
+<span style="font:590 15px/1 -apple-system,sans-serif;color:{{ r.color }}">{{ r.tick }}</span>
+</button>
+</sc-for>
+</div>
+</div>
+<sc-if value="{{ isPlaceDraft }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:9px">
+<span style="font:590 13px/1 -apple-system,sans-serif;color:rgba(233,240,240,.65);padding:0 4px">When it goes live</span>
+<div style="display:flex;gap:2px;padding:2px;background:rgba(110,128,132,.24);border-radius:11px">
+<sc-for list="{{ repeatOptions }}" as="o" hint-placeholder-count="3">
+<button onClick="{{ o.pick }}" style="flex:1;padding:11px 0;border:0;border-radius:9px;cursor:pointer;font:590 13px/1.2 -apple-system,sans-serif;background:{{ o.bg }};color:{{ o.fg }}">{{ o.label }}</button>
+</sc-for>
+</div>
+<sc-if value="{{ isWeeklyDraft }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:5px">
+<sc-for list="{{ dowOptions }}" as="d" hint-placeholder-count="7">
+<button onClick="{{ d.pick }}" style="flex:1;padding:10px 0;border:0;border-radius:9px;cursor:pointer;font:590 12px/1 -apple-system,sans-serif;background:{{ d.bg }};color:{{ d.fg }}">{{ d.label }}</button>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ isTimedDraft }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:10px">
+<input value="{{ draftTime }}" onChange="{{ setDraftTime }}" placeholder="09:00" style="width:104px;box-sizing:border-box;padding:12px 10px;border:1px solid rgba(255,255,255,.14);border-radius:11px;background:rgba(110,128,132,.24);color:#FFFFFF;font:400 15px/1.2 -apple-system,sans-serif;font-variant-numeric:tabular-nums;text-align:center;outline:none">
+<span style="flex:1;font:400 12.5px/1.35 -apple-system,sans-serif;color:rgba(233,240,240,.55);text-wrap:pretty">EAT — your own clock</span>
+</div>
+</sc-if>
+</div>
+</sc-if>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<select value="{{ draftStream }}" onChange="{{ setDraftStream }}" style="width:100%;box-sizing:border-box;padding:12px;border:1px solid rgba(255,255,255,.14);border-radius:11px;background:rgba(110,128,132,.24);color:#FFFFFF;font:400 14px/1.2 -apple-system,sans-serif;outline:none">
+<sc-for list="{{ streamOptions }}" as="s" hint-placeholder-count="6">
+<option value="{{ s.name }}">{{ s.name }}</option>
+</sc-for>
+</select>
+<select value="{{ draftPlace }}" onChange="{{ setDraftPlace }}" style="width:100%;box-sizing:border-box;padding:12px;border:1px solid rgba(255,255,255,.14);border-radius:11px;background:rgba(110,128,132,.24);color:#FFFFFF;font:400 14px/1.2 -apple-system,sans-serif;outline:none;opacity:{{ placeFieldOp }}">
+<sc-for list="{{ placeOptionsFlat }}" as="p" hint-placeholder-count="7">
+<option value="{{ p.id }}">{{ p.name }}</option>
+</sc-for>
+</select>
+</div>
+<div style="display:flex;gap:9px">
+<button onClick="{{ saveDraft }}" style="flex:1;padding:15px 0;border:0;border-radius:13px;background:{{ saveBg }};color:{{ saveFg }};font:590 15.5px/1 -apple-system,sans-serif;cursor:{{ saveCursor }}">Save</button>
+<button onClick="{{ aCloseCapture }}" style="padding:15px 20px;border:0;border-radius:13px;background:rgba(110,128,132,.34);color:rgba(233,240,240,.78);font:590 15px/1 -apple-system,sans-serif;cursor:pointer">Cancel</button>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ greetOn }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ greetSkip }}" style="position:absolute;left:0;right:0;top:0;bottom:0;z-index:40;display:flex;flex-direction:column;justify-content:center;gap:26px;padding:0 24px;cursor:pointer;background:radial-gradient(520px 400px at 26% 22%,rgba(255,122,92,.24),transparent 68%),rgba(8,8,10,.94);backdrop-filter:blur(30px);animation:{{ greetAnim }}">
+<div style="display:flex;flex-direction:column;gap:7px">
+<span style="font:590 12.5px/1 -apple-system,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#FF9E86;animation:ppFadeUp .5s .04s ease-out both">Welcome back</span>
+<span style="font:700 42px/1.02 -apple-system,sans-serif;letter-spacing:-.038em;color:#FFFFFF;animation:ppFadeUp .6s .14s cubic-bezier(.2,.8,.3,1) both">{{ greetName }}</span>
+<span style="font:400 15px/1.45 -apple-system,sans-serif;color:rgba(233,240,240,.66);text-wrap:pretty;animation:ppFadeUp .55s .26s ease-out both">{{ greetLine }}</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:9px">
+<sc-for list="{{ greetItems }}" as="g" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:12px;padding:13px 15px;border-radius:15px;background:rgba(23,31,35,.72);border:1px solid rgba(255,255,255,.09);animation:{{ g.anim }}">
+<span style="flex:none;width:10px;height:10px;border-radius:50%;background:{{ g.color }}"></span>
+<span style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0">
+<span style="font:400 14.5px/1.3 -apple-system,sans-serif;letter-spacing:-.012em;color:#FFFFFF;text-wrap:pretty">{{ g.title }}</span>
+<span style="font:400 12px/1.2 -apple-system,sans-serif;color:rgba(233,240,240,.55)">{{ g.sub }}</span>
+</span>
+<span style="flex:none;font:590 13.5px/1 -apple-system,sans-serif;font-variant-numeric:tabular-nums;color:{{ g.rightColor }}">{{ g.right }}</span>
+</div>
+</sc-for>
+</div>
+<span style="font:400 12.5px/1 -apple-system,sans-serif;color:rgba(233,240,240,.38);animation:ppFadeUp .5s .86s ease-out both">Tap anywhere to continue</span>
+</div>
+</sc-if>
+
+<sc-if value="{{ focusOn }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:0;right:0;top:0;bottom:0;z-index:38;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:0 26px;background:radial-gradient(420px 360px at 50% 32%,rgba(255,122,92,.24),transparent 70%),rgba(8,8,10,.96);backdrop-filter:blur(28px);animation:ppFadeOut .4s ease reverse both">
+<div style="display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center">
+<span style="font:590 11.5px/1 -apple-system,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:{{ focusColor }}">{{ focusMins }}</span>
+<span style="font:700 22px/1.25 -apple-system,sans-serif;letter-spacing:-.024em;color:#FFFFFF;text-wrap:pretty">{{ focusTitle }}</span>
+</div>
+<div style="font:700 62px/1 -apple-system,sans-serif;letter-spacing:-.045em;font-variant-numeric:tabular-nums;color:{{ focusColor }}">{{ focusClock }}</div>
+<div style="width:220px;height:6px;border-radius:3px;background:rgba(110,128,132,.3);overflow:hidden"><div style="height:100%;border-radius:3px;background:{{ focusColor }};width:{{ focusPct }}%"></div></div>
+<div style="font:400 13px/1.45 -apple-system,sans-serif;color:rgba(233,240,240,.6);text-align:center;text-wrap:pretty">{{ focusState }}</div>
+<div style="display:flex;flex-direction:column;gap:9px;width:100%;max-width:260px">
+<button onClick="{{ focusDone }}" style="padding:14px 0;border:0;border-radius:13px;background:#35D6A0;color:#04251A;font:590 15px/1 -apple-system,sans-serif;cursor:pointer">Tick it off</button>
+<div style="display:flex;gap:9px">
+<button onClick="{{ focusPause }}" style="flex:1;padding:13px 0;border:0;border-radius:13px;background:rgba(110,128,132,.34);color:#FFFFFF;font:590 14.5px/1 -apple-system,sans-serif;cursor:pointer">{{ focusPauseLabel }}</button>
+<button onClick="{{ focusStop }}" style="flex:1;padding:13px 0;border:1px solid rgba(255,255,255,.14);border-radius:13px;background:transparent;color:rgba(233,240,240,.7);font:590 14.5px/1 -apple-system,sans-serif;cursor:pointer">Stop</button>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ toastOn }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:14px;right:14px;bottom:88px;z-index:36;display:flex;align-items:center;gap:12px;padding:13px 15px;border-radius:16px;background:rgba(27,36,40,.92);backdrop-filter:blur(30px) saturate(1.6);border:1px solid rgba(255,255,255,.14);box-shadow:0 16px 42px rgba(0,0,0,.55);animation:{{ toastAnim }}">
+<span style="flex:none;width:10px;height:10px;border-radius:50%;background:{{ toastColor }}"></span>
+<span style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0">
+<span style="font:590 13.5px/1.2 -apple-system,sans-serif;color:#FFFFFF">{{ toastTitle }}</span>
+<span style="font:400 12.5px/1.3 -apple-system,sans-serif;color:rgba(233,240,240,.62);text-wrap:pretty">{{ toastSub }}</span>
+</span>
+</div>
+</sc-if>
+
+<div style="position:absolute;left:0;right:0;bottom:0;height:74px;background:rgba(17,24,27,.72);backdrop-filter:blur(30px) saturate(1.4);border-top:1px solid rgba(255,255,255,.1);display:grid;grid-template-columns:1fr 1fr 90px 1fr 1fr;align-items:center;padding-bottom:6px;z-index:12">
+<sc-for list="{{ aNav1 }}" as="n" hint-placeholder-count="2">
+<button onClick="{{ n.pick }}" style="display:flex;flex-direction:column;align-items:center;gap:5px;border:0;background:transparent;cursor:pointer;padding:0">
+<svg viewBox="0 0 24 24" style="width:22px;height:22px;display:block" fill="none" stroke="{{ n.color }}" strokeWidth="{{ n.sw }}" strokeLinecap="round" strokeLinejoin="round"><path d="{{ n.d }}"></path></svg>
+<span style="font:400 10.5px/1 -apple-system,sans-serif;letter-spacing:.01em;color:{{ n.color }}">{{ n.label }}</span>
+</button>
+</sc-for>
+<button onClick="{{ aOpenCapture }}" style="justify-self:center;width:56px;height:56px;border-radius:50%;border:0;background:#FF7A5C;color:#FFFFFF;font:300 30px/1 -apple-system,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(255,122,92,.45);transition:transform .16s ease" style-hover="transform:translateY(-2px) scale(1.04)">+</button>
+<sc-for list="{{ aNav2 }}" as="n" hint-placeholder-count="2">
+<button onClick="{{ n.pick }}" style="display:flex;flex-direction:column;align-items:center;gap:5px;border:0;background:transparent;cursor:pointer;padding:0">
+<svg viewBox="0 0 24 24" style="width:22px;height:22px;display:block" fill="none" stroke="{{ n.color }}" strokeWidth="{{ n.sw }}" strokeLinecap="round" strokeLinejoin="round"><path d="{{ n.d }}"></path></svg>
+<span style="font:400 10.5px/1 -apple-system,sans-serif;letter-spacing:.01em;color:{{ n.color }}">{{ n.label }}</span>
+</button>
+</sc-for>
+</div>
+
+</div>
+</x-import>
+</div>
+
+</div>
+
+<div style="max-width:1000px;padding:18px 20px;background:rgba(240,169,59,.1);border:1px solid rgba(240,169,59,.22);border-radius:14px;display:flex;flex-direction:column;gap:8px">
+<span style="font:590 13px/1 -apple-system,sans-serif;color:#F7C173">Two honest limits</span>
+<span style="font:400 13.5px/1.5 -apple-system,sans-serif;color:rgba(233,240,240,.72);text-wrap:pretty">Notifications here are local: the bell requests real system permission and raises real notifications, but only while this page is open. Alerts that reach a phone with the app closed need a service worker and a push server behind it, which a design prototype has no way to stand up. Haptics use the standard vibration API, which Android supports and iOS Safari does not — on an iPhone the buttons will simply stay silent.</span>
+</div>
+
+<p style="margin:2px 0 0;font:400 13px/1.6 -apple-system,sans-serif;color:rgba(233,240,240,.55);max-width:960px">Try next: "add a mobile zones screen" · "let me edit a task's time" · "travel time per place should be editable" · "swap the bezel for an iPhone" · "light mode"</p>
+
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;userName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Boniface&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;You&quot;},&quot;contextAware&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Rules&quot;},&quot;clockStyle&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;countdown&quot;,&quot;absolute&quot;],&quot;default&quot;:&quot;countdown&quot;,&quot;tsType&quot;:&quot;'countdown' | 'absolute'&quot;,&quot;section&quot;:&quot;Rules&quot;},&quot;projectDefense&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;quota&quot;,&quot;neglect&quot;,&quot;both&quot;],&quot;default&quot;:&quot;both&quot;,&quot;tsType&quot;:&quot;'quota' | 'neglect' | 'both'&quot;,&quot;section&quot;:&quot;Rules&quot;}}">
+class Component extends DCLogic {
+  t0 = new Date();
+  LS = 'parallelPlanner.ios.v2';
+
+  C = { contract:'#FF7A5C', writing:'#B08CFF', workshop:'#F0A93B', build:'#35D6A0', self:'#FF5C8A', life:'#4FD1C5', alarm:'#F5405E', warn:'#F0A93B' };
+
+  BASE_PLACES = [
+    { id:'desk', name:'Home desk', kind:'Where you work', travel:0 },
+    { id:'town', name:'Town / CBD', kind:'Errands', travel:25 },
+    { id:'market', name:'Naivas supermarket', kind:'Errands', travel:12 },
+    { id:'gym', name:'Gym', kind:'Standing places', travel:10 },
+    { id:'church', name:'Church', kind:'Standing places', travel:15 },
+    { id:'parents', name:'Parents’ place', kind:'Standing places', travel:40 },
+    { id:'anywhere', name:'Anywhere', kind:'Standing places', travel:0 }
+  ];
+
+  BASE_TASKS = [
+    { id:'rlhf', stream:'Contract', rule:'clock', title:'RLHF batch #4118 — 40 tasks', short:'RLHF batch', at:23, tz:'America/Los_Angeles', who:'client', pct:86, sleep:true, note:'Platform auto-closes the batch',
+      notes:'40 tasks at $18 each. The platform closes the batch on its own clock — partial submissions still pay, but the remainder is reassigned to another annotator within the hour.' },
+    { id:'ch3', stream:'Writing', rule:'clock', title:'Dissertation ch.3 — methodology, 8,200 w', short:'Ch.3 writing', h:26, tz:'Europe/London', who:'client', pct:61, note:'Second of four chapters',
+      notes:'Second of four chapters. Client reads overnight and returns comments before ch.4 starts, so a day late here pushes the whole remaining schedule by a day.' },
+    { id:'call', stream:'Contract', rule:'clock', title:'Client sync — Cohort B handover', short:'Client sync', h:20, place:'anywhere', tz:'Europe/Berlin', who:'call', pct:44, note:'Video call, 30 minutes',
+      notes:'Thirty minutes, screen share. Needs the Cohort B review at least half done or there is nothing to hand over.' },
+    { id:'cohortb', stream:'Contract', rule:'clock', title:'Quality review queue — Cohort B', short:'Cohort B review', h:47, tz:'Europe/Berlin', who:'reviewer', pct:38, note:'Blocks two other reviewers',
+      notes:'Two other reviewers are waiting on this queue clearing. Missing it does not cost you money directly, it costs the next contract.' },
+    { id:'turnitin', stream:'Writing', rule:'clock', title:'Turnitin pass + formatting — MBA case', short:'Turnitin pass', h:73, tz:'Asia/Dubai', who:'agency', pct:24, note:'Agency reviews it before submission',
+      notes:'Agency runs its own similarity check before submitting. Anything above 12% comes straight back to you, so budget a second pass.' },
+    { id:'sop', stream:'Applications', rule:'clock', title:'TUM M.Sc. Robotics — SOP first draft', short:'SOP draft', h:314, tz:'Europe/Berlin', who:'portal', pct:16, note:'Portal closes, no extensions',
+      notes:'Portal closes and does not reopen. Two referees still need three weeks notice after the draft is done, so the real deadline is earlier than the one shown.' },
+
+    { id:'church', stream:'Life & errands', rule:'place', place:'church', dow:6, at:9, title:'Sunday service', short:'Church', est:'~2h' },
+    { id:'lunch', stream:'Life & errands', rule:'place', place:'parents', dow:6, at:13, title:'Sunday lunch at my parents’', short:'Lunch at home', est:'~3h' },
+    { id:'barber', stream:'Life & errands', rule:'place', place:'town', dow:5, at:11, title:'Barber — the usual slot', short:'Barber', est:'~40m' },
+    { id:'standup', stream:'Life & errands', rule:'place', place:'church', dow:2, at:18.5, title:'Midweek meeting — 18:30', short:'Midweek meeting', est:'~1h' },
+    { id:'shop', stream:'Life & errands', rule:'place', place:'market', title:'Weekly shop — list on the fridge', short:'Supermarket', queued:'2d', est:'~45m' },
+    { id:'pharmacy', stream:'Life & errands', rule:'place', place:'market', title:'Collect the prescription', short:'Pharmacy', queued:'3d', est:'~15m' },
+    { id:'bank', stream:'Life & errands', rule:'place', place:'town', title:'Bank — deposit the cheque', short:'Bank', queued:'4d', est:'~30m' },
+    { id:'sim', stream:'Life & errands', rule:'place', place:'town', title:'Replace the line SIM', short:'SIM swap', queued:'9d', est:'~25m' },
+
+    { id:'canbus', stream:'Personal builds', rule:'none', title:'Fleet telemetry logger — CAN bus parser', short:'CAN parser', sub:'Personal engineering · no date', staleDays:11, lost:9 },
+    { id:'sync', stream:'Personal builds', rule:'none', title:'Planner sync layer — conflict resolution', short:'Sync layer', sub:'Personal engineering · no date', staleDays:4, lost:3 },
+    { id:'bench', stream:'Personal builds', rule:'none', title:'Bench rig — 12 V supply wiring', short:'Bench rig', sub:'Personal engineering · no date', staleDays:19, lost:6 },
+    { id:'dash', stream:'Personal builds', rule:'none', title:'Fleet dashboard — first chart', short:'Fleet dashboard', sub:'Personal engineering · no date', staleDays:7, lost:2 },
+    { id:'firmware', stream:'Personal builds', rule:'none', title:'Logger firmware — OTA update path', short:'Logger firmware', sub:'Personal engineering · no date', staleDays:15, lost:4 },
+    { id:'gym', stream:'Life & errands', rule:'none', place:'gym', title:'Push day — chest, shoulders, triceps', short:'Gym', sub:'Gym · 3 of 4 sessions this week', staleDays:2, lost:1 },
+    { id:'pull', stream:'Life & errands', rule:'none', place:'gym', title:'Pull day — back, biceps', short:'Gym — pull', sub:'Gym · 3 of 4 sessions this week', staleDays:4, lost:1 },
+    { id:'apps', stream:'Applications', rule:'none', title:'Referral follow-ups — 3 pending', short:'Applications', sub:'Phone is enough · ~15m', staleDays:6, lost:2 }
+  ];
+
+  BLOCKS = [
+    { t:'canbus', d:0, s:6, e:7 }, { t:'rlhf', d:0, s:9, e:13 }, { t:'ch3', d:0, s:14, e:17 }, { t:'gym', d:0, s:18.5, e:20 },
+    { t:'canbus', d:1, s:6, e:7 }, { t:'cohortb', d:1, s:9, e:12 }, { t:'bank', d:1, s:13, e:14 },
+    { t:'rlhf', d:2, s:9, e:12.5 }, { t:'sim', d:2, s:13, e:14 }, { t:'standup', d:2, s:18.5, e:19.5 },
+    { t:'canbus', d:3, s:6, e:7 }, { t:'rlhf', d:3, s:7.5, e:8.5, label:'Inbox, batch triage' }, { t:'rlhf', d:3, s:9, e:12.5 },
+    { t:'shop', d:3, s:13, e:14 }, { t:'ch3', d:3, s:14.5, e:17 }, { t:'sop', d:3, s:17.25, e:18 },
+    { t:'gym', d:3, s:18.5, e:19.75 }, { t:null, d:3, s:20.25, e:21, label:'Unclaimed — 45 min' },
+    { t:'ch3', d:4, s:8, e:12, label:'Ch.3 — final pass' }, { t:'turnitin', d:4, s:13, e:15 }, { t:'sop', d:4, s:17, e:18.5 },
+    { t:'barber', d:5, s:11, e:11.75 }, { t:'pull', d:5, s:12.5, e:14 }, { t:'sync', d:5, s:14.5, e:18 },
+    { t:'church', d:6, s:9, e:11 }, { t:'lunch', d:6, s:13, e:16 }, { t:'dash', d:6, s:16.5, e:18.5 }
+  ];
+
+  MARKS = [ { d:2, at:11, s:'Writing' }, { d:3, at:17, s:'Contract' }, { d:4, at:9, s:'Writing' } ];
+  MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  AUTHORED_TODAY = 3;
+
+  state = (() => {
+    const s = {
+      tab:'today', here:'desk', stream:null, aScreen:'now', aHere:'desk',
+      capture:false, aCapture:false, surrender:null, losses:{}, added:[], removed:[], places:[],
+      picker:false, aPicker:false, notifOpen:false, notifs:[], perm:'default',
+      sel:null, done:{}, doneOpen:null, greet:'in', flash:null, toast:null, toastOut:false,
+      skips:{}, ended:{}, moved:{}, confirmed:{}, focus:null, wk:0,
+      draft:{ title:'', rule:'place', stream:'Life & errands', place:'market', time:'15:00', tz:'Africa/Nairobi', repeat:'once', dow:6 },
+      newPlace:'', now:new Date()
+    };
+    try {
+      const raw = localStorage.getItem('parallelPlanner.ios.v2');
+      if (raw) Object.assign(s, JSON.parse(raw), { now:new Date(), capture:false, aCapture:false, surrender:null, picker:false, aPicker:false, notifOpen:false, greet:'in', flash:null, toast:null, toastOut:false, focus:null });
+      s.skips = s.skips || {}; s.ended = s.ended || {}; s.moved = s.moved || {}; s.confirmed = s.confirmed || {};
+    } catch (e) {}
+    if (typeof Notification !== 'undefined') s.perm = Notification.permission;
+    return s;
+  })();
+
+  setHost = el => { this.host = el; };
+
+  componentDidMount() {
+    this.schedule();
+    this.initTrail();
+    this._crit = new Set(this.byRule('clock').filter(t => { const ms = this.dueOf(t) - Date.now(); return ms > 0 && ms < 3600000; }).map(t => t.id));
+    this.runGreeting();
+    if (!this.state.notifs.length) {
+      const d = this.dueOf(this.task('rlhf'));
+      this.push('Deadline inside 8 hours', 'RLHF batch #4118 closes at ' + this.hhmm(d) + ' EAT.', this.C.alarm, true);
+    }
+  }
+  componentWillUnmount() {
+    clearTimeout(this.tick);
+    [this._g1, this._g2, this._t1, this._t2, this._f1].forEach(clearTimeout);
+    clearInterval(this._ft);
+    cancelAnimationFrame(this._raf);
+    removeEventListener('pointermove', this._onMove);
+    removeEventListener('resize', this._onResize);
+    if (this._cv && this._cv.parentNode) this._cv.parentNode.removeChild(this._cv);
+  }
+  componentDidUpdate() {
+    const { tab, here, stream, aScreen, aHere, losses, added, removed, places, notifs, perm, done, skips, ended, moved, confirmed } = this.state;
+    const payload = JSON.stringify({ tab, here, stream, aScreen, aHere, losses, added, removed, places, notifs, perm, done, skips, ended, moved, confirmed });
+    if (payload === this._saved) return;
+    this._saved = payload;
+    try { localStorage.setItem(this.LS, payload); } catch (e) {}
+  }
+
+  // Seconds only matter when something is inside an hour.
+  schedule() {
+    let nearest = Infinity;
+    for (const t of this.byRule('clock')) nearest = Math.min(nearest, this.dueOf(t) - Date.now());
+    this.tick = setTimeout(() => { this.setState({ now:new Date() }); this.watchCritical(); this.schedule(); }, nearest < 3600000 ? 1000 : 20000);
+  }
+
+  // Anything crossing the last hour buzzes the phone once and says so.
+  watchCritical() {
+    if (!this._crit) this._crit = new Set();
+    for (const t of this.byRule('clock')) {
+      const ms = this.dueOf(t) - Date.now();
+      if (ms > 0 && ms < 3600000) {
+        if (!this._crit.has(t.id)) {
+          this._crit.add(t.id);
+          this.buzz([18, 60, 18]);
+          this.showToast('Under an hour', t.title + ' closes at ' + this.hhmm(this.dueOf(t)) + ' EAT.', this.C.alarm);
+        }
+      } else this._crit.delete(t.id);
+    }
+  }
+
+  runGreeting() {
+    clearTimeout(this._g1); clearTimeout(this._g2);
+    this.setState({ greet:'in' });
+    this._g1 = setTimeout(() => this.setState({ greet:'out' }), 3200);
+    this._g2 = setTimeout(() => this.setState({ greet:null }), 3700);
+  }
+  skipGreeting() {
+    if (this.state.greet !== 'in') return;
+    clearTimeout(this._g1); clearTimeout(this._g2);
+    this.buzz(8);
+    this.setState({ greet:'out' });
+    this._g2 = setTimeout(() => this.setState({ greet:null }), 500);
+  }
+
+  showToast(title, sub, color) {
+    clearTimeout(this._t1); clearTimeout(this._t2);
+    this.setState({ toast:{ title, sub, color: color || '#FF9E86' }, toastOut:false });
+    this._t1 = setTimeout(() => this.setState({ toastOut:true }), 2700);
+    this._t2 = setTimeout(() => this.setState({ toast:null, toastOut:false }), 3160);
+  }
+  flashItem(id) {
+    clearTimeout(this._f1);
+    this.setState({ flash:id });
+    this._f1 = setTimeout(() => this.setState({ flash:null }), 1500);
+  }
+
+  // 0 calm · 1 inside eight hours · 2 inside the hour
+  urgency(d) {
+    const ms = d - this.state.now;
+    if (ms <= 0) return 3;
+    return ms < 3600000 ? 2 : ms < 28800000 ? 1 : 0;
+  }
+  animFor(id, tier) {
+    if (this.state.flash && this.state.flash === id) return 'ppPop .48s cubic-bezier(.2,.9,.3,1.15) both';
+    if (tier === 3) return 'ppHot 3s ease-in-out infinite';
+    if (tier === 2) return 'ppShake 5s ease-in-out infinite, ppHot 1.7s ease-in-out infinite';
+    return tier === 1 ? 'ppPulse 2.8s ease-in-out infinite' : 'none';
+  }
+
+  // Cursor contrail — drawn straight to canvas, outside React's tree.
+  initTrail() {
+    if (!this.host || typeof document === 'undefined') return;
+    const cv = document.createElement('canvas');
+    cv.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:2147483000';
+    this.host.appendChild(cv);
+    this._cv = cv;
+    const ctx = cv.getContext('2d');
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const size = () => {
+      cv.width = innerWidth * dpr; cv.height = innerHeight * dpr;
+      cv.style.width = innerWidth + 'px'; cv.style.height = innerHeight + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    size();
+    this._onResize = size;
+    addEventListener('resize', size);
+    const pts = [], LIFE = 380;
+    this._onMove = e => { pts.push({ x:e.clientX, y:e.clientY, t:performance.now() }); };
+    addEventListener('pointermove', this._onMove, { passive:true });
+    const loop = () => {
+      const now = performance.now();
+      while (pts.length && now - pts[0].t > LIFE) pts.shift();
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      ctx.lineCap = 'round';
+      for (let i = 1; i < pts.length; i++) {
+        const a = pts[i - 1], b = pts[i];
+        const life = 1 - (now - b.t) / LIFE;
+        if (life <= 0) continue;
+        ctx.strokeStyle = 'rgba(255,140,110,' + (life * life * 0.55).toFixed(3) + ')';
+        ctx.lineWidth = 0.5 + life * 5.5;
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      }
+      if (pts.length) {
+        const p = pts[pts.length - 1];
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 16);
+        g.addColorStop(0, 'rgba(255,160,130,.30)');
+        g.addColorStop(1, 'rgba(255,160,130,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(p.x, p.y, 16, 0, Math.PI * 2); ctx.fill();
+      }
+      this._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+
+  buzz(ms) { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} }
+  tap(fn, ms) { return (...a) => { this.buzz(ms || 8); return fn(...a); }; }
+
+  push(title, body, color, silent) {
+    this.setState(s => ({ notifs: [{ id: Date.now() + Math.random(), title, body, color: color || '#FFFFFF', at: this.hhmm(new Date()) }, ...s.notifs].slice(0, 14) }));
+    if (!silent) this.buzz(18);
+    if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+      try { new Notification(title, { body }); } catch (e) {}
+    }
+  }
+  askNotify() {
+    this.buzz(8);
+    if (typeof Notification === 'undefined') return;
+    Notification.requestPermission().then(p => {
+      this.setState({ perm: p });
+      if (p === 'granted') this.push('Alerts are on', 'Deadlines crossing 8 hours and place arrivals will reach you here.', '#6FE3BA');
+    });
+  }
+
+  get PLACES() { return this.cache('places', JSON.stringify(this.state.places), () => [...this.BASE_PLACES, ...this.state.places]); }
+  get TASKS() {
+    return this.cache('tasks', JSON.stringify([this.state.added, this.state.removed]), () =>
+      [...this.BASE_TASKS, ...this.state.added].filter(t => !this.state.removed.includes(t.id)));
+  }
+  get byId() { return this.cache('byId', this.TASKS.length + ':' + JSON.stringify(this.state.removed), () => new Map(this.TASKS.map(t => [t.id, t]))); }
+  task(id) { return this.byId.get(id); }
+  byRule(r) {
+    return this.cache('rule:' + r, JSON.stringify([this.state.done, this.state.removed, this.state.added.length, this.state.ended]),
+      () => this.TASKS.filter(t => t.rule === r && !this.state.done[t.id] && !(this.state.ended || {})[t.id]));
+  }
+  completeTask(id) {
+    const t = this.task(id);
+    this.buzz(16);
+    this.setState(s => ({ done: { ...s.done, [id]: Date.now() }, sel: s.sel === id ? null : s.sel }));
+    if (t) this.push('Done', t.title, this.C.build);
+  }
+  undoDone(id) {
+    this.buzz(10);
+    this.setState(s => { const d = { ...s.done }; delete d[id]; return { done:d }; });
+  }
+  place(id) { return this.PLACES.find(p => p.id === id) || { id, name:'Somewhere' }; }
+  travelTo(id) { const p = this.place(id); return p.travel == null ? 15 : p.travel; }
+  minsOf(t) {
+    const h = /([\d.]+)\s*h/.exec(t.est || ''), m = /(\d+)\s*m/.exec(t.est || '');
+    return ((h ? parseFloat(h[1]) * 60 : 0) + (m ? +m[1] : 0)) || 30;
+  }
+  dayKey(d) { const p = this.parts(d); return p.y + '-' + p.mo + '-' + p.d; }
+  isRecurring(t) { return !!t && t.rule === 'place' && t.dow != null; }
+
+  skipOnce(id) {
+    const t = this.task(id), d = t && this.nextActive(t);
+    if (!d) return;
+    this.buzz(12);
+    const key = this.dayKey(d);
+    this.setState(s => ({ skips: { ...s.skips, [id]: [...(s.skips[id] || []), key] } }));
+    this.showToast('Skipped once', t.title + ' will not run this ' + this.dayName(d) + '. It comes back next week.', this.C.warn);
+  }
+  endSeries(id) {
+    const t = this.task(id);
+    this.buzz(16);
+    this.setState(s => ({ ended: { ...s.ended, [id]: Date.now() } }));
+    this.showToast('Series ended', (t ? t.title : 'It') + ' stops repeating. Resume it from the ended list.', this.C.alarm);
+  }
+  resumeSeries(id) {
+    const t = this.task(id);
+    this.buzz(10);
+    this.setState(s => { const e = { ...s.ended }; delete e[id]; return { ended:e }; });
+    this.showToast('Series resumed', (t ? t.title : 'It') + ' repeats weekly again.', this.C.build);
+  }
+
+  // Where a missed deadline honestly goes: two hours from now, or 09:00 tomorrow if the day is spent.
+  proposal() {
+    const p = this.parts(this.state.now);
+    if (p.h < 19) return this.zonedToUTC(this.TZ, p.y, p.mo - 1, p.d, Math.min(21, p.h + 2), 0);
+    return this.zonedToUTC(this.TZ, p.y, p.mo - 1, p.d + 1, 9, 0);
+  }
+  moveTo(id, when) {
+    const t = this.task(id);
+    this.buzz(14);
+    this.setState(s => ({ moved: { ...s.moved, [id]: when.getTime() } }));
+    this.showToast('Moved', (t ? t.short || t.title : 'It') + ' now closes ' + this.absLabel(when) + ' EAT.', this.C.contract);
+  }
+  confirmReceipt(id) {
+    const t = this.task(id);
+    this.buzz(12);
+    this.setState(s => ({ confirmed: { ...s.confirmed, [id]: Date.now() } }));
+    this.showToast('Receipt confirmed', (t ? t.short || t.title : 'It') + ' is acknowledged — whoever set it can see you have it.', this.C.build);
+  }
+
+  startFocus(id, mins) {
+    const t = this.task(id);
+    if (!t) return;
+    const m = mins || 90;
+    this.buzz(20);
+    clearInterval(this._ft);
+    this.setState({ focus: { id, mins:m, left: m * 60, paused:false, done:false } });
+    this._ft = setInterval(() => this.focusStep(), 1000);
+  }
+  focusStep() {
+    const f = this.state.focus;
+    if (!f || f.paused || f.done) return;
+    if (f.left <= 1) {
+      clearInterval(this._ft);
+      this.buzz([20, 90, 20, 90, 20]);
+      const t = this.task(f.id);
+      this.setState({ focus: { ...f, left:0, done:true } });
+      this.push('Focus block finished', (t ? t.title : 'Your block') + ' — ' + f.mins + ' minutes held.', this.C.build);
+      return;
+    }
+    this.setState(s => (s.focus ? { focus: { ...s.focus, left: s.focus.left - 1 } } : null));
+  }
+  pauseFocus() { this.buzz(8); this.setState(s => ({ focus: { ...s.focus, paused: !s.focus.paused } })); }
+  stopFocus(complete) {
+    clearInterval(this._ft);
+    const f = this.state.focus;
+    this.setState({ focus:null });
+    if (complete && f) this.completeTask(f.id);
+    else if (f) this.showToast('Focus stopped', 'Nothing was ticked off. The block is still yours to take.', this.C.warn);
+  }
+
+  cache(name, key, build) {
+    this._c = this._c || {};
+    const slot = this._c[name];
+    if (slot && slot.key === key) return slot.val;
+    const val = build();
+    this._c[name] = { key, val };
+    return val;
+  }
+
+  get TODAY_IDX() { return Math.max(0, this.DOW.indexOf(this.parts(this.t0).dow)); }
+  get SHIFT() { return (this.TODAY_IDX - this.AUTHORED_TODAY + 7) % 7; }
+  // Floating work rotates so today's plan is always today's; anything with a real
+  // weekday (church, barber, the midweek meeting) stays anchored to it.
+  shift(list) {
+    const k = this.SHIFT;
+    return list.map(x => {
+      const t = x.t ? this.task(x.t) : null;
+      if (t && t.dow != null) return { ...x, d: t.dow };
+      return { ...x, d: (x.d + k) % 7 };
+    });
+  }
+  blocks() { return this.cache('blocks', this.SHIFT, () => this.shift(this.BLOCKS)); }
+  marks() { return this.cache('bmarks', this.SHIFT, () => this.shift(this.MARKS)); }
+  monday() { const p = this.parts(this.t0); return new Date(p.y, p.mo - 1, p.d - this.TODAY_IDX + (this.state.wk || 0) * 7); }
+  weekNo(mon) {
+    const thu = new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + 3);
+    return Math.ceil((((thu - new Date(thu.getFullYear(), 0, 1)) / 86400000) + 1) / 7);
+  }
+  rangeLabel(mon) {
+    const sun = new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + 6);
+    const same = mon.getMonth() === sun.getMonth();
+    return mon.getDate() + (same ? '' : ' ' + this.MONTHS[mon.getMonth()]) + ' – ' + sun.getDate() + ' ' + this.MONTHS[sun.getMonth()];
+  }
+
+  TZ = 'Africa/Nairobi';
+  ZONES = [
+    { id:'Africa/Nairobi', label:'Nairobi — EAT' },
+    { id:'Europe/London', label:'London — GMT/BST' },
+    { id:'Europe/Berlin', label:'Berlin — CET/CEST' },
+    { id:'America/New_York', label:'New York — ET' },
+    { id:'America/Chicago', label:'Chicago — CT' },
+    { id:'America/Los_Angeles', label:'Los Angeles — PT' },
+    { id:'Asia/Dubai', label:'Dubai — GST' },
+    { id:'Asia/Kolkata', label:'India — IST' },
+    { id:'Asia/Singapore', label:'Singapore — SGT' },
+    { id:'Australia/Sydney', label:'Sydney — AET' }
+  ];
+
+  // Everything on screen is Nairobi wall-clock, whatever machine this runs on.
+  parts(d, tz) {
+    const p = new Intl.DateTimeFormat('en-GB', { timeZone: tz || this.TZ, hour12:false, weekday:'short', year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' })
+      .formatToParts(d).reduce((a, x) => (a[x.type] = x.value, a), {});
+    return { dow:p.weekday, y:+p.year, mo:+p.month, d:+p.day, h:+(p.hour === '24' ? '0' : p.hour), mi:+p.minute };
+  }
+  offsetMin(tz, d) {
+    const p = this.parts(d, tz);
+    return (Date.UTC(p.y, p.mo - 1, p.d, p.h, p.mi) - Math.floor(d.getTime() / 60000) * 60000) / 60000;
+  }
+  zonedToUTC(tz, y, mo, day, h, mi) {
+    const guess = Date.UTC(y, mo, day, h, mi);
+    let off = this.offsetMin(tz, new Date(guess));
+    off = this.offsetMin(tz, new Date(guess - off * 60000));
+    return new Date(guess - off * 60000);
+  }
+  nextInZone(tz, h, mi) {
+    const now = new Date(), p = this.parts(now, tz);
+    let d = this.zonedToUTC(tz, p.y, p.mo - 1, p.d, h, mi);
+    if (d <= now) d = this.zonedToUTC(tz, p.y, p.mo - 1, p.d + 1, h, mi);
+    return d;
+  }
+  // Intl only returns letter abbreviations for US zones, so the rest are curated.
+  ABBR = {
+    'Africa/Nairobi':['EAT','EAT'], 'Europe/London':['GMT','BST'], 'Europe/Berlin':['CET','CEST'],
+    'Asia/Dubai':['GST','GST'], 'Asia/Kolkata':['IST','IST'], 'Asia/Singapore':['SGT','SGT'],
+    'Australia/Sydney':['AEST','AEDT']
+  };
+  zoneAbbr(tz, d) {
+    const pair = this.ABBR[tz];
+    if (pair) {
+      const jan = this.offsetMin(tz, new Date(Date.UTC(d.getUTCFullYear(), 0, 15)));
+      const jul = this.offsetMin(tz, new Date(Date.UTC(d.getUTCFullYear(), 6, 15)));
+      const dst = this.offsetMin(tz, d) > Math.min(jan, jul);
+      return pair[dst && jan !== jul ? 1 : 0];
+    }
+    try {
+      const x = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName:'short' }).formatToParts(d).find(p => p.type === 'timeZoneName');
+      return x ? x.value : '';
+    } catch (e) { return ''; }
+  }
+  zoneCity(tz) { const z = this.ZONES.find(z => z.id === tz); return z ? z.label.split(' — ')[0] : (tz || '').split('/').pop().replace(/_/g, ' '); }
+  theirClock(t) {
+    if (!t.tz) return '—';
+    const d = this.dueOf(t);
+    return this.hhmm(d, t.tz) + ' ' + this.zoneAbbr(t.tz, d) + (t.who ? ' ' + t.who : '');
+  }
+
+  dueOf(t) {
+    if (!t) return new Date(this.t0);
+    const mv = this.state.moved && this.state.moved[t.id];
+    if (mv) return new Date(mv);
+    if (t.dueAt) return new Date(t.dueAt);
+    if (t.at != null) {
+      const p = this.parts(this.t0);
+      let d = this.zonedToUTC(this.TZ, p.y, p.mo - 1, p.d, Math.floor(t.at), Math.round((t.at % 1) * 60));
+      if (d <= this.t0) d = this.zonedToUTC(this.TZ, p.y, p.mo - 1, p.d + 1, Math.floor(t.at), Math.round((t.at % 1) * 60));
+      return d;
+    }
+    return new Date(this.t0.getTime() + (t.h || 24) * 3600000);
+  }
+  hhmm(d, tz) { const p = this.parts(d, tz); return String(p.h).padStart(2,'0') + ':' + String(p.mi).padStart(2,'0'); }
+  dayName(d) { return this.parts(d).dow; }
+  pad(x) { const h = Math.floor(x), m = Math.round((x - h) * 60); return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0'); }
+  gap(d) {
+    const s = Math.max(0, Math.floor((d - this.state.now) / 1000));
+    const dd = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60), ss = s % 60;
+    if (dd > 0) return { v: dd + 'd ' + h + 'h', u:'remaining', hot:false };
+    if (h > 0) return { v: h + 'h ' + String(m).padStart(2,'0') + 'm', u:'left', hot: h < 8 };
+    return { v: m + 'm ' + String(ss).padStart(2,'0') + 's', u:'left', hot:true };
+  }
+  sameDay(a, b) { const x = this.parts(a), y = this.parts(b); return x.y === y.y && x.mo === y.mo && x.d === y.d; }
+  absLabel(d) { return (this.sameDay(d, this.state.now) ? 'Today ' : this.dayName(d) + ' ') + this.hhmm(d); }
+  lossesOf(id) { const t = this.task(id); return ((t && t.lost) || 0) + (this.state.losses[id] || 0); }
+
+  DOW = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+  // When a place-locked item next goes live. Null means it has no clock at all.
+  nextActive(t) {
+    if (t.at == null) return null;
+    if (this.state.ended && this.state.ended[t.id]) return null;
+    const skipped = (this.state.skips && this.state.skips[t.id]) || [];
+    const step = t.dow == null ? 1 : 7;
+    const roll = d => { let g = 0; while (d && skipped.includes(this.dayKey(d)) && g++ < 12) d = new Date(d.getTime() + step * 86400000); return d; };
+    const now = this.state.now, p = this.parts(now);
+    const h = Math.floor(t.at), mi = Math.round((t.at % 1) * 60);
+    if (t.dow == null) {
+      let d = this.zonedToUTC(this.TZ, p.y, p.mo - 1, p.d, h, mi);
+      if (d <= now) d = this.zonedToUTC(this.TZ, p.y, p.mo - 1, p.d + 1, h, mi);
+      return roll(d);
+    }
+    let delta = (t.dow - this.DOW.indexOf(p.dow) + 7) % 7;
+    let d = this.zonedToUTC(this.TZ, p.y, p.mo - 1, p.d + delta, h, mi);
+    if (d <= now) d = this.zonedToUTC(this.TZ, p.y, p.mo - 1, p.d + delta + 7, h, mi);
+    return roll(d);
+  }
+  fromNow(d) {
+    const s = Math.max(0, Math.floor((d - this.state.now) / 1000));
+    const dd = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60);
+    if (dd > 0) return dd + ' d ' + h + ' h from now';
+    if (h > 0) return h + ' h ' + String(m).padStart(2,'0') + ' m from now';
+    return m + ' min from now';
+  }
+  activeLabel(t) {
+    const d = this.nextActive(t);
+    if (!d) return { at:'No set time', in:'whenever you are there', hot:false };
+    const today = d.toDateString() === this.state.now.toDateString();
+    return { at: this.hhmm(d) + (today ? ' today' : ' ' + this.DOW[t.dow != null ? t.dow : (d.getDay() + 6) % 7]),
+      in: this.fromNow(d), hot: (d - this.state.now) < 3600000 };
+  }
+
+  goTo(here, phone) {
+    this.buzz(10);
+    const n = this.TASKS.filter(t => t.rule === 'place' && t.place === here).length;
+    this.setState(phone ? { aHere:here, aPicker:false } : { here, picker:false });
+    if (n) this.push('You are at ' + this.place(here).name, n + (n === 1 ? ' item is' : ' items are') + ' live here now.', this.C.workshop);
+  }
+  removeTask(id) {
+    this.buzz(14);
+    this.setState(s => ({ removed: [...s.removed, id], added: s.added.filter(t => t.id !== id) }));
+  }
+  saveDraft() {
+    const d = this.state.draft;
+    if (!d.title.trim()) return;
+    const id = 'u' + Date.now();
+    const t = { id, title: d.title.trim(), short: d.title.trim().slice(0, 22), stream: d.stream, rule: d.rule };
+    if (d.rule === 'place') {
+      t.place = d.place; t.est = '~30m';
+      if (d.repeat === 'weekly' || d.repeat === 'today') {
+        const [rh, rm] = (d.time || '09:00').split(':').map(Number);
+        if (d.repeat === 'weekly') t.dow = d.dow == null ? 6 : d.dow;
+        t.at = (rh || 0) + (rm || 0) / 60;
+      } else t.queued = 'just now';
+    }
+    if (d.rule === 'clock') {
+      const [hh, mm] = (d.time || '15:00').split(':').map(Number);
+      t.dueAt = this.nextInZone(d.tz, hh || 0, mm || 0).getTime();
+      t.tz = d.tz; t.who = 'client'; t.pct = 5;
+      t.note = 'Entered as ' + (d.time || '15:00') + ' ' + this.zoneCity(d.tz);
+      t.notes = 'You entered ' + (d.time || '15:00') + ' ' + this.zoneCity(d.tz) + '. The planner stores the instant and shows it to you as ' + this.hhmm(new Date(t.dueAt)) + ' EAT.';
+    }
+    if (d.rule === 'none') { t.sub = 'Added from capture · no date'; t.staleDays = 0; t.lost = 0; }
+    this.buzz(16);
+    this.setState(s => ({ added: [...s.added, t], capture:false, aCapture:false, draft: { ...s.draft, title:'' } }));
+    const where = { clock:'locked to a clock', place:'locked to ' + this.place(d.place).name, none:'locked to nothing' }[d.rule];
+    this.flashItem(id);
+    this.showToast('Added to ' + d.stream, t.title + ' — ' + where + '.', this.C.contract);
+    this.push('Added to ' + d.stream, t.title + ' — ' + where + '.', this.C.contract);
+  }
+  addPlace() {
+    const n = this.state.newPlace.trim();
+    if (!n) return;
+    const id = 'p' + Date.now();
+    this.buzz(12);
+    this.setState(s => ({ places: [...s.places, { id, name:n, kind:'Yours', travel:15 }], newPlace:'', here:id, picker:false }));
+  }
+
+  renderVals() {
+    const C = this.C, st = this.state;
+    const contextAware = this.props.contextAware ?? true;
+    const clockStyle = this.props.clockStyle ?? 'countdown';
+    const defenseMode = this.props.projectDefense ?? 'both';
+    const SEP = '1px solid rgba(255,255,255,.08)';
+    const hotDue = this.dueOf(this.task('rlhf'));
+    const hotHH = this.hhmm(hotDue);
+
+    const meta = {
+      'Contract': { rule:'Clock', c:C.contract, bg:'rgba(255,122,92,.22)' },
+      'Writing': { rule:'Clock', c:C.writing, bg:'rgba(176,140,255,.22)' },
+      'Personal builds': { rule:'Nothing', c:C.build, bg:'rgba(53,214,160,.18)' },
+      'Applications': { rule:'Mixed', c:C.self, bg:'rgba(255,55,95,.2)' },
+      'Life & errands': { rule:'Mixed', c:C.life, bg:'rgba(79,209,197,.2)' }
+    };
+    const STREAM_NAMES = Object.keys(meta);
+    const colOf = n => (meta[n] || meta['Applications']).c;
+
+    const seg = (label, active, on) => ({
+      label, pick: this.tap(on),
+      bg: active ? '#636366' : 'transparent',
+      fg: active ? '#FFFFFF' : 'rgba(233,240,240,.66)',
+      shadow: active ? '0 1px 3px rgba(0,0,0,.35)' : 'none'
+    });
+    const tabs = [['today','Today'],['week','Week'],['due','Deadlines'],['zones','Zones']].map(([k,l]) => seg(l, st.tab === k, () => this.setState({ tab:k })));
+
+    const streams = STREAM_NAMES.map((name, i) => {
+      const on = st.stream === name, m = meta[name];
+      return { name, rule: m.rule, color: m.c, sep: i ? SEP : 'none',
+        count: this.TASKS.filter(t => t.stream === name).length,
+        ruleLong: { Clock:'a clock', Place:'a place', Nothing:'nothing', Mixed:'both, by item' }[m.rule],
+        pick: this.tap(() => this.setState({ stream: on ? null : name })),
+        bg: on ? 'rgba(110,128,132,.26)' : 'transparent' };
+    });
+
+    const fade = s => st.stream && st.stream !== s ? .34 : 1;
+    const clockTasks = this.byRule('clock');
+    const placeTasks = this.byRule('place');
+    const noneTasks = this.byRule('none');
+    const selfTasks = noneTasks.filter(t => t.stream === 'Personal builds').slice(0, 2).concat(noneTasks.filter(t => t.stream !== 'Personal builds').slice(0, 1));
+
+    const sortedClock = [...clockTasks].sort((a, b) => this.dueOf(a) - this.dueOf(b));
+    // A picked stream floats to the top of every list; order inside each group is untouched.
+    const inStream = t => st.stream && t.stream === st.stream ? 0 : 1;
+    const streamFirst = arr => st.stream ? [...arr].sort((a, b) => inStream(a) - inStream(b)) : arr;
+    const clockList = streamFirst(sortedClock);
+    const SET_BY = { client:'Set by the client', call:'Agreed on the call', reviewer:'Set with the reviewer', agency:'Set by the agency', portal:'Portal deadline — no one to ask' };
+
+    const fixedList = clockList.slice(0, 4).map((t, i) => {
+      const d = this.dueOf(t), g = this.gap(d), on = st.sel === t.id;
+      return { ...t, color: colOf(t.stream), op: fade(t.stream), sep: i ? SEP : 'none',
+        cd: clockStyle === 'countdown' ? g.v : this.absLabel(d),
+        cdUnit: clockStyle === 'countdown' ? g.u : this.theirClock(t),
+        cdColor: g.hot ? C.alarm : '#FFFFFF',
+        mine: this.absLabel(d) + ' EAT',
+        theirs: this.theirClock(t),
+        tick: this.tap(() => this.completeTask(t.id), 16),
+        open: on,
+        rowBg: on ? 'rgba(110,128,132,.18)' : 'transparent',
+        select: this.tap(() => this.setState({ sel: on ? null : t.id })),
+        notes: t.notes || t.note,
+        theirCity: t.tz ? this.zoneCity(t.tz) : 'No zone set',
+        theirFull: t.tz ? this.hhmm(d, t.tz) + ' ' + this.zoneAbbr(t.tz, d) : '—',
+        eatFull: this.absLabel(d) + ' EAT',
+        pctLabel: (t.pct || 0) + '% done',
+        blockLabel: t.note || '—',
+        anim: this.animFor(t.id, this.urgency(d)),
+        missed: d < st.now,
+        propLabel: 'Move to ' + this.absLabel(this.proposal()),
+        propTake: this.tap(() => this.moveTo(t.id, this.proposal()), 14),
+        propKeep: this.tap(() => this.showToast('Left where it is', (t.short || t.title) + ' stays past its time. Nothing was moved.', C.warn), 8),
+        setBy: SET_BY[t.who] || 'Set by you',
+        gotIt: !!st.confirmed[t.id],
+        gotLabel: st.confirmed[t.id] ? 'Receipt confirmed ' + this.hhmm(new Date(st.confirmed[t.id])) : 'Confirm you received this',
+        confirm: this.tap(() => this.confirmReceipt(t.id), 12),
+        focusIt: this.tap(() => this.startFocus(t.id, 90), 18),
+        remove: () => this.removeTask(t.id) };
+    });
+
+    // One group per place that actually holds work; the place you are in comes first and stays lit.
+    const soonest = t => { const d = this.nextActive(t); return d ? d - st.now : Infinity; };
+    const usedPlaces = this.PLACES.filter(p => placeTasks.some(t => t.place === p.id));
+    const soonestAt = id => Math.min(...placeTasks.filter(t => t.place === id).map(soonest));
+    const hasStream = id => st.stream && placeTasks.some(t => t.place === id && t.stream === st.stream) ? 0 : 1;
+    const ordered = [...usedPlaces].sort((a, b) => hasStream(a.id) - hasStream(b.id) || soonestAt(a.id) - soonestAt(b.id));
+    const placeGroups = ordered.map(p => {
+      const here = p.id === st.here;
+      const dim = contextAware && !here;
+      const byTime = [...placeTasks.filter(t => t.place === p.id)].sort((a, b) => soonest(a) - soonest(b));
+      const mine = streamFirst(byTime);
+      const items = mine.map(t => {
+        const a = this.activeLabel(t);
+        const nx = this.nextActive(t), tr = this.travelTo(t.place);
+        return { title: t.title, at: a.at, until: a.in,
+          untilColor: a.hot ? C.alarm : a.at === 'No set time' ? 'rgba(233,240,240,.5)' : '#FFFFFF',
+          meta: (t.est || '~30m') + (t.queued ? ' · queued ' + t.queued : ''),
+          hasLeave: !!nx && tr > 0,
+          leave: nx && tr > 0 ? 'Leave by ' + this.hhmm(new Date(nx.getTime() - tr * 60000)) + ' · ' + tr + ' min away' : '',
+          leaveColor: nx && nx.getTime() - tr * 60000 - st.now < 3600000 ? C.warn : 'rgba(233,240,240,.6)',
+          recurs: this.isRecurring(t),
+          recurLabel: t.dow != null ? 'Every ' + this.DOW[t.dow] : '',
+          skip: this.tap(() => this.skipOnce(t.id), 12),
+          endIt: this.tap(() => this.endSeries(t.id), 14),
+          tick: this.tap(() => this.completeTask(t.id), 16),
+          remove: () => this.removeTask(t.id) };
+      });
+      const next = byTime.length ? this.nextActive(byTime[0]) : null;
+      return { name: p.name, items,
+        status: here ? 'live · ' + items.length : (next ? this.fromNow(next).replace(' from now','') : items.length + ' waiting'),
+        op: dim ? .5 : 1,
+        dot: here ? C.build : C.workshop,
+        fg: here ? '#6FE3BA' : 'rgba(233,240,240,.72)',
+        headBg: here ? 'rgba(53,214,160,.16)' : 'rgba(110,128,132,.14)',
+        bg: here ? 'rgba(23,31,35,.62)' : 'rgba(23,31,35,.42)',
+        border: here ? 'rgba(53,214,160,.28)' : 'rgba(255,255,255,.07)' };
+    });
+
+    const selfList = streamFirst(selfTasks).map((t, i) => ({ ...t, sep: i ? SEP : 'none',
+      stale: t.staleDays + 'd untouched',
+      staleColor: t.staleDays > 7 ? C.alarm : 'rgba(233,240,240,.58)',
+      sub: (t.sub || '') + ' · surrendered ' + this.lossesOf(t.id) + '×',
+      btnLabel: 'Defend a block',
+      btnBg: t.staleDays > 7 ? C.build : 'rgba(53,214,160,.2)',
+      btnFg: t.staleDays > 7 ? '#04251A' : '#6FE3BA',
+      tick: this.tap(() => this.completeTask(t.id), 16),
+      remove: () => this.removeTask(t.id),
+      defend: this.tap(() => this.setState({ tab:'week' })) }));
+
+    const hrs = (3.5 + this.BLOCKS.filter(b => b.t && st.done[b.t] && (this.task(b.t) || {}).rule === 'none').reduce((a, b) => a + (b.e - b.s), 0)).toFixed(1);
+    const defense = {
+      quota: { label:'Weekly quota', value: hrs + ' / 6.0 h', note:'Hours only count once the work inside the block is ticked off.' },
+      neglect: { label:'Longest neglect', value:'19 days', note:'The bench rig has not been opened since 19 July. It has lost to a deadline six times.' },
+      both: { label:'Defended this week', value: hrs + ' / 6.0 h', note:'Counts finished work only. Longest neglect: 19 days on the bench rig.' }
+    }[defenseMode];
+
+    const hourMarks = this.cache('hourMarks', 1, () => {
+      const a = []; for (let h = 6; h <= 23; h++) a.push({ label: String(h).padStart(2,'0'), top:(h - 6) * 35 }); return a;
+    });
+    const weekHours = this.cache('weekHours', 1, () => {
+      const a = []; for (let h = 6; h <= 22; h += 2) a.push({ label: String(h).padStart(2,'0'), top:(h - 6) * 26 }); return a;
+    });
+
+    const hatch = 'repeating-linear-gradient(135deg,rgba(53,214,160,.2) 0 6px,transparent 6px 12px)';
+    const blockOf = (b, scale, withTime) => {
+      const t = b.t ? this.task(b.t) : null;
+      if (b.t && !t) return null;
+      const defended = !t || t.rule === 'none';
+      const m = t ? meta[t.stream] : meta['Personal builds'];
+      const finished = !!(b.t && st.done[b.t]);
+      const gone = !!st.losses['blk:' + b.d + ':' + b.s];
+      const day = scale > 30;
+      const box = (b.e - b.s) * scale - (day ? 4 : 3);
+      // Border-box: chrome and type step down so short blocks still read.
+      const tier = box >= 46 ? 0 : box >= 28 ? 1 : 2;
+      return {
+        top:(b.s - 6) * scale, h: box,
+        pad: [day ? '6px 9px' : '5px 7px', day ? '4px 9px' : '3px 7px', day ? '2px 8px' : '2px 6px'][tier],
+        titleFont: tier === 2 ? (day ? '590 11px/1.1 -apple-system,sans-serif' : '590 9.5px/1.1 -apple-system,sans-serif')
+                              : (day ? '590 12px/1.25 -apple-system,sans-serif' : '590 11px/1.25 -apple-system,sans-serif'),
+        showTime: withTime && tier === 0,
+        title:(finished ? '✓ ' : gone ? 'Given away — ' : '') + (b.label || (t ? t.short : 'Unclaimed')),
+        color: gone || finished ? 'rgba(233,240,240,.6)' : m.c,
+        bg: gone ? 'rgba(110,128,132,.18)' : finished ? 'rgba(53,214,160,.1)' : (t ? m.bg : 'rgba(53,214,160,.1)'),
+        opacity: finished ? .55 : 1,
+        hatch: defended && !gone && !finished ? hatch : 'none',
+        time: withTime ? this.pad(b.s) + ' – ' + this.pad(b.e) : '',
+        cursor: defended && !gone ? 'pointer' : 'default',
+        open: defended && !gone ? this.tap(() => this.setState({
+          surrender: { key:'blk:' + b.d + ':' + b.s, taskId:b.t, title: b.label || (t ? t.short : 'Unclaimed'), when: this.pad(b.s) + ' – ' + this.pad(b.e) }
+        }), 12) : null
+      };
+    };
+
+    // Overlapping blocks share the column instead of covering each other.
+    const layoutDay = (list, scale, withTime, base, inset) => {
+      const items = list.map(b => blockOf(b, scale, withTime)).filter(Boolean)
+        .sort((a, b) => a.top - b.top || a.h - b.h);
+      let i = 0;
+      while (i < items.length) {
+        let j = i, end = items[i].top + items[i].h;
+        while (j + 1 < items.length && items[j + 1].top < end - 0.5) { j++; end = Math.max(end, items[j].top + items[j].h); }
+        const cluster = items.slice(i, j + 1), laneEnd = [];
+        cluster.forEach(it => {
+          let lane = laneEnd.findIndex(e => e <= it.top + 0.5);
+          if (lane === -1) lane = laneEnd.length;
+          laneEnd[lane] = it.top + it.h;
+          it.lane = lane;
+        });
+        const n = Math.max(1, laneEnd.length);
+        cluster.forEach(it => {
+          it.left = 'calc(' + base + 'px + ' + (it.lane / n).toFixed(4) + ' * (100% - ' + inset + 'px))';
+          it.width = 'calc((100% - ' + inset + 'px) / ' + n + ' - 2px)';
+        });
+        i = j + 1;
+      }
+      return items;
+    };
+
+    const allBlocks = this.blocks(), allMarks = this.marks();
+    const gridKey = this.SHIFT + '|' + (st.wk || 0) + '|' + JSON.stringify(st.losses) + '|' + JSON.stringify(st.removed) + '|' + JSON.stringify(st.done);
+    const dayBlocks = this.cache('dayBlocks', gridKey, () =>
+      layoutDay(allBlocks.filter(b => b.d === this.TODAY_IDX), 35, true, 36, 36));
+
+    const n = st.now, np = this.parts(n);
+    const nowTop = Math.min(595, Math.max(0, ((np.h + np.mi / 60) - 6) * 35));
+
+    const todayIdx = this.TODAY_IDX, mon = this.monday(), wkOff = st.wk || 0;
+    // Other weeks keep the standing pattern; a one-off deadline only shows in the week it actually falls in.
+    const wkStart = mon.getTime(), wkEnd = wkStart + 7 * 86400000;
+    const inThisWeek = b => {
+      if (!wkOff) return true;
+      const t = b.t ? this.task(b.t) : null;
+      if (!t) return false;
+      if (t.rule !== 'clock') return true;
+      const d = this.dueOf(t).getTime();
+      return d >= wkStart && d < wkEnd;
+    };
+    const weekBlocks = allBlocks.filter(inThisWeek);
+    const weekDays = this.cache('weekDays', gridKey, () => ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((dow, i) => {
+      const isToday = !wkOff && i === todayIdx;
+      return {
+        dow, num: String(new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + i).getDate()), sep: i ? SEP : 'none',
+        blocks: layoutDay(weekBlocks.filter(b => b.d === i), 26, false, 4, 8),
+        marks: wkOff ? [] : allMarks.filter(m => m.d === i).map(m => ({ top:(m.at - 6) * 26, color: meta[m.s].c })),
+        bg: isToday ? 'rgba(110,128,132,.16)' : 'transparent',
+        labelColor: isToday ? '#FF9E86' : 'rgba(233,240,240,.6)',
+        numBg: isToday ? '#FF7A5C' : 'transparent',
+        numColor: '#FFFFFF'
+      };
+    }));
+
+    const legend = STREAM_NAMES.map(name => ({ name: name === 'Personal builds' ? 'Builds' : name, color: meta[name].c }));
+
+    const dueRows = clockList.map((t, i) => {
+      const d = this.dueOf(t), g = this.gap(d);
+      const late = d.getHours() >= 22 || d.getHours() < 6;
+      return { title:t.title, note:t.note, stream:t.stream, color: colOf(t.stream), sep: i ? SEP : 'none',
+        cd: clockStyle === 'countdown' ? g.v : this.absLabel(d),
+        cdColor: g.hot ? C.alarm : '#FFFFFF',
+        mine: this.absLabel(d) + (late ? ' · after hours' : ''),
+        mineColor: late ? C.warn : 'rgba(233,240,240,.72)',
+        theirs: this.theirClock(t),
+        rowBg: g.hot ? 'rgba(245,64,94,.08)' : 'transparent',
+        anim: this.animFor(t.id, this.urgency(d)),
+        missed: d < st.now,
+        propLabel: 'Move to ' + this.absLabel(this.proposal()),
+        propTake: this.tap(() => this.moveTo(t.id, this.proposal()), 14),
+        setBy: SET_BY[t.who] || 'Set by you',
+        gotIt: !!st.confirmed[t.id],
+        gotColor: st.confirmed[t.id] ? '#6FE3BA' : 'rgba(233,240,240,.5)',
+        gotLabel: st.confirmed[t.id] ? '✓ received' : 'confirm receipt',
+        confirm: this.tap(() => this.confirmReceipt(t.id), 12),
+        remove: () => this.removeTask(t.id) };
+    });
+
+    const hereName = this.place(st.here).name;
+    const aHereName = this.place(st.aHere).name;
+    const hereCount = placeTasks.filter(t => t.place === st.here).length;
+    const aHereCount = placeTasks.filter(t => t.place === st.aHere).length;
+
+    const placeRow = (phone) => {
+      const cur = phone ? st.aHere : st.here;
+      return this.PLACES.map((p, i) => {
+        const nHere = placeTasks.filter(t => t.place === p.id).length;
+        return { name:p.name, id:p.id, sep: i ? SEP : 'none',
+          sub: p.kind + (nHere ? ' · ' + nHere + ' waiting' : ' · nothing waiting'),
+          dot: nHere ? C.workshop : 'rgba(233,240,240,.3)',
+          tick: p.id === cur ? '✓' : '',
+          bg: p.id === cur ? 'rgba(53,214,160,.14)' : 'transparent',
+          pick: () => this.goTo(p.id, phone) };
+      });
+    };
+
+    const heroFor = (where, count) => {
+      if (count) {
+        const mine = [...placeTasks.filter(t => t.place === where)].sort((a, b) => soonest(a) - soonest(b));
+        const first = mine[0], a = this.activeLabel(first);
+        return { id:first.id, mins:this.minsOf(first), kicker:'You are here', stream: first.stream, color:C.workshop, bg:'rgba(240,169,59,.16)',
+          title: first.title, big: a.at === 'No set time' ? String(count) : a.at.split(' ')[0],
+          bigNote: a.at === 'No set time' ? 'items at ' + this.place(where).name + ' · no set time' : a.in,
+          why:'Soonest first. These are here because you are here, and they stop being possible the moment you leave.', cta:'Take it' };
+      }
+      const t = sortedClock[0], g = this.gap(this.dueOf(t));
+      if (g.hot) {
+        return { id:t.id, mins:90, kicker:'Do this now', stream:t.stream, color: colOf(t.stream), bg:'rgba(255,122,92,.16)',
+          title:t.title, big:g.v, bigNote:'until ' + this.hhmm(this.dueOf(t)) + ' EAT · ' + this.theirClock(t),
+          why:'The only thing today with money attached and under eight hours on it. Everything else can wait until it is done.', cta:'Start · 90 min' };
+      }
+      return { id:'bench', mins:45, kicker:'Nothing needs you', stream:'Personal builds', color:C.build, bg:'rgba(53,214,160,.16)',
+        title:'45 minutes are unclaimed at 20:15', big:'19d', bigNote:'since the bench rig was last opened',
+        why:'No deadline is close enough to justify skipping this again. This is the slot the app defends unless you give it away.', cta:'Defend it' };
+    };
+    const hero = heroFor(st.aHere, aHereCount);
+    const heroTier = aHereCount || !sortedClock.length ? 0 : this.urgency(this.dueOf(sortedClock[0]));
+    hero.anim = heroTier === 3 ? 'ppHot 3s ease-in-out infinite'
+      : heroTier === 2 ? 'ppShake 5s ease-in-out infinite, ppHot 1.7s ease-in-out infinite'
+      : heroTier === 1 ? 'ppPulse 2.8s ease-in-out infinite' : 'none';
+
+    const byPlaceSoonest = [...placeTasks].sort((a, b) => soonest(a) - soonest(b));
+    const aNext = (aHereCount
+      ? [...byPlaceSoonest.filter(t => t.place === st.aHere).slice(1, 3), ...sortedClock.slice(0, 2)]
+      : [...sortedClock.slice(1, 3), ...byPlaceSoonest.slice(0, 2)]
+    ).map((t, i) => {
+      const isPlace = t.rule === 'place';
+      const usable = !isPlace || t.place === st.aHere;
+      const g = isPlace ? null : this.gap(this.dueOf(t));
+      const a = isPlace ? this.activeLabel(t) : null;
+      return { title:t.title, color: colOf(t.stream), sep: i ? SEP : 'none',
+        sub: isPlace ? (usable ? a.at + ' · ' + a.in : this.place(t.place).name + ' · ' + a.at) : this.absLabel(this.dueOf(t)),
+        right: isPlace ? (a.at === 'No set time' ? (t.est || '~30m') : a.in.replace(' from now','')) : g.v,
+        op: usable ? 1 : .42,
+        subColor: usable ? 'rgba(233,240,240,.55)' : 'rgba(233,240,240,.4)',
+        rightColor: usable ? 'rgba(233,240,240,.62)' : 'rgba(233,240,240,.4)',
+        anim: this.animFor(t.id, isPlace ? 0 : this.urgency(this.dueOf(t))) };
+    });
+
+    const uname = (((this.props.userName ?? 'Boniface') + '').trim()) || 'Boniface';
+    const hh = st.now.getHours();
+    const helloLine = (hh < 12 ? 'Good morning' : hh < 17 ? 'Good afternoon' : 'Good evening') + ', ' + uname;
+    const greetItems = [...sortedClock.slice(0, 2), ...byPlaceSoonest.slice(0, 2)].slice(0, 3).map((t, i) => {
+      const isPlace = t.rule === 'place';
+      const g = isPlace ? null : this.gap(this.dueOf(t));
+      const a = isPlace ? this.activeLabel(t) : null;
+      return { title:t.title, color: colOf(t.stream),
+        sub: isPlace ? this.place(t.place).name + ' · ' + a.at : this.absLabel(this.dueOf(t)),
+        right: isPlace ? (a.at === 'No set time' ? (t.est || '~30m') : a.in.replace(' from now','')) : g.v,
+        rightColor: !isPlace && g.hot ? C.alarm : 'rgba(233,240,240,.62)',
+        anim: 'ppFadeUp .55s ' + (0.38 + i * 0.12).toFixed(2) + 's cubic-bezier(.2,.8,.3,1) both' };
+    });
+    const nHot = sortedClock.filter(t => this.gap(this.dueOf(t)).hot).length;
+    const greetLine = 'Here are your upcoming tasks. ' + (nHot
+      ? nHot + (nHot === 1 ? ' deadline is' : ' deadlines are') + ' inside eight hours.'
+      : 'Nothing is inside eight hours yet.');
+
+    // One trip instead of four: every untimed errand, nearest stop first, out and back.
+    const tripStops = this.PLACES.filter(p => this.travelTo(p.id) > 0 && placeTasks.some(t => t.place === p.id && t.at == null))
+      .map(p => {
+        const items = placeTasks.filter(t => t.place === p.id && t.at == null);
+        return { id:p.id, name:p.name, n:items.length, travel:this.travelTo(p.id),
+          work: items.reduce((a, t) => a + this.minsOf(t), 0) };
+      }).sort((a, b) => a.travel - b.travel);
+    const tripFar = tripStops.length ? Math.max(...tripStops.map(s => s.travel)) : 0;
+    const tripMins = tripFar * 2 + Math.max(0, tripStops.length - 1) * 8 + tripStops.reduce((a, s) => a + s.work, 0);
+    const tripBack = new Date(st.now.getTime() + tripMins * 60000);
+    const tripOn = tripStops.length > 1;
+    const trip = {
+      label: tripStops.length + ' stops, one trip',
+      total: Math.round(tripMins / 5) * 5 + ' min door to door',
+      back: 'Leave now, back by ' + this.hhmm(tripBack) + ' · ' + tripFar + ' min to the far end',
+      stops: tripStops.map((s, i) => ({ name:s.name, sep: i ? SEP : 'none',
+        line: s.n + (s.n === 1 ? ' item · ' : ' items · ') + s.work + ' min there · ' + s.travel + ' min out' })),
+      plan: this.tap(() => {
+        this.showToast('Trip planned', tripStops.map(s => s.name).join(' → ') + ' · back by ' + this.hhmm(tripBack) + '.', C.workshop);
+        this.push('One trip, ' + tripStops.length + ' stops', tripStops.map(s => s.name).join(' → ') + '. Leave now to be back by ' + this.hhmm(tripBack) + '.', C.workshop);
+      }, 16)
+    };
+
+    // Every deadline placed on your own working day, with the clock it shows on theirs.
+    const DAY_A = 6, DAY_B = 23;
+    const zoneMap = {};
+    sortedClock.forEach(t => {
+      const z = t.tz || this.TZ;
+      (zoneMap[z] = zoneMap[z] || { tz:z, items:[] }).items.push(t);
+    });
+    const zoneGroups = Object.values(zoneMap).map((grp, gi) => {
+      const off = Math.round((this.offsetMin(grp.tz, st.now) - this.offsetMin(this.TZ, st.now)) / 60 * 10) / 10;
+      return { city: this.zoneCity(grp.tz), abbr: this.zoneAbbr(grp.tz, st.now), sep: gi ? SEP : 'none',
+        delta: off === 0 ? 'same clock as you' : (off > 0 ? '+' : '') + off + 'h from you',
+        rows: grp.items.map(t => {
+          const d = this.dueOf(t), p = this.parts(d), h = p.h + p.mi / 60;
+          const out = h < 8 || h >= 21;
+          const left = Math.max(0, Math.min(97, (Math.max(DAY_A, Math.min(DAY_B, h)) - DAY_A) / (DAY_B - DAY_A) * 100));
+          return { title: t.short || t.title, color: colOf(t.stream), left,
+            chipShift: left > 55 ? '-100%' : '0',
+            mine: this.hhmm(d), theirs: this.hhmm(d, t.tz) + ' ' + this.zoneAbbr(t.tz, d),
+            day: this.sameDay(d, st.now) ? 'today' : this.dayName(d),
+            chipBg: out ? 'rgba(245,64,94,.22)' : 'rgba(255,255,255,.1)',
+            chipBorder: out ? 'rgba(245,64,94,.5)' : 'rgba(255,255,255,.16)',
+            flag: out ? (h < 8 ? 'before you start' : 'after your last block') : '',
+            flagColor: out ? '#FF8095' : 'transparent' };
+        }) };
+    });
+    const zoneTicks = [6, 9, 12, 15, 18, 21, 23].map(h => ({
+      label: String(h).padStart(2, '0'), left: (h - DAY_A) / (DAY_B - DAY_A) * 100 }));
+    const zoneClash = zoneGroups.reduce((a, g) => a + g.rows.filter(r => r.flag).length, 0);
+
+    // What the week actually kept, per stream.
+    const doneDays = new Set(Object.values(st.done).map(ts => this.dayKey(new Date(ts))));
+    let streak = 0;
+    for (let i = 0; i < 30; i++) {
+      const dd = new Date(st.now.getTime() - i * 86400000);
+      if (doneDays.has(this.dayKey(dd))) streak++;
+      else if (i > 0) break;
+    }
+    const reviewRows = STREAM_NAMES.map(name => {
+      const owned = this.TASKS.filter(t => t.stream === name);
+      const doneN = owned.filter(t => st.done[t.id]).length;
+      const lostN = owned.reduce((a, t) => a + this.lossesOf(t.id), 0);
+      const blocksN = this.blocks().filter(b => b.t && this.task(b.t) && this.task(b.t).stream === name).length;
+      const kept = Math.max(0, blocksN - lostN);
+      return { name: name === 'Personal builds' ? 'Builds' : name, color: meta[name].c,
+        keptPct: blocksN ? Math.round(kept / blocksN * 100) : 0,
+        blocks: blocksN ? kept + ' of ' + blocksN + ' blocks kept' : 'no blocks booked',
+        done: doneN + ' ticked · ' + lostN + ' given away',
+        dim: blocksN || doneN ? 1 : .45 };
+    });
+
+    const endedIds = Object.keys(st.ended || {});
+    const endedList = endedIds.map((id, i) => {
+      const t = this.task(id);
+      return { title: t ? t.title : id, sep: i ? SEP : 'none',
+        when: t && t.dow != null ? 'was every ' + this.DOW[t.dow] : 'was repeating',
+        resume: this.tap(() => this.resumeSeries(id), 12) };
+    });
+    const skipCount = Object.values(st.skips || {}).reduce((a, x) => a + x.length, 0);
+
+    const f = st.focus, fTask = f ? this.task(f.id) : null;
+
+    const navIcons = {
+      now: 'M12 3.2a8.8 8.8 0 1 1 0 17.6 8.8 8.8 0 0 1 0-17.6M12 6.9V12l3.5 2.1',
+      due: 'M6 21.2V3.4M6 5h11.4l-2.2 3.6L17.4 12H6',
+      week: 'M4.2 8a2 2 0 0 1 2-2h11.6a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6.2a2 2 0 0 1-2-2ZM4.2 10.6h15.6M8.6 3.4v4.2M15.4 3.4v4.2',
+      streams: 'M3.6 6.6h7M13.4 6.6h7M3.6 12h13.2M3.6 17.4h5.2M12 17.4h8.4'
+    };
+    const navItem = (key, label) => {
+      const on = st.aScreen === key;
+      return { label, pick: this.tap(() => this.setState({ aScreen:key })),
+        color: on ? '#FF9E86' : 'rgba(233,240,240,.5)',
+        d: navIcons[key], sw: on ? 2.1 : 1.7 };
+    };
+
+    const ruleOptions = [
+      { key:'clock', label:'A clock', sub:'Someone else set the date', color:C.contract },
+      { key:'place', label:'A place', sub:'Only happens somewhere', color:C.workshop },
+      { key:'none', label:'Nothing', sub:'Needs defending', color:C.build }
+    ].map((r, i) => {
+      const on = st.draft.rule === r.key;
+      return { ...r, sep: i ? SEP : 'none', tick: on ? '✓' : '',
+        bg: on ? 'rgba(110,128,132,.3)' : 'transparent',
+        border: on ? r.color : 'rgba(255,255,255,.12)',
+        pick: this.tap(() => this.setState(s => ({ draft: { ...s.draft, rule:r.key } }))) };
+    });
+
+    const sur = st.surrender;
+    const surTargets = sur ? [...sortedClock.slice(0, 3), ...placeTasks.slice(0, 2)].map((t, i) => ({
+      title:t.title, color: colOf(t.stream), sep: i ? SEP : 'none',
+      sub: t.rule === 'clock' ? this.absLabel(this.dueOf(t)) + ' · ' + t.theirs : this.place(t.place).name + ' · ' + this.activeLabel(t).at,
+      pick: this.tap(() => {
+        const id = sur.taskId;
+        this.setState(s => ({ surrender:null, losses: { ...s.losses, [sur.key]:1, [id || 'unclaimed']: (s.losses[id || 'unclaimed'] || 0) + 1 } }));
+        if (id) this.push('Block surrendered', (this.task(id) ? this.task(id).short : 'A defended block') + ' lost ' + sur.when + ' to ' + t.title + '.', C.alarm);
+      }, 14)
+    })) : [];
+
+    const doneIds = Object.keys(st.done);
+    const doneOf = rule => doneIds.map(id => this.task(id)).filter(t => t && t.rule === rule)
+      .sort((a, b) => st.done[b.id] - st.done[a.id])
+      .map((t, i) => ({ title:t.title, at: this.hhmm(new Date(st.done[t.id])), sep: i ? SEP : 'none',
+        undo: this.tap(() => this.undoDone(t.id), 10) }));
+    const doneCol = (rule, key) => {
+      const list = doneOf(rule), open = st.doneOpen === key;
+      return { list, open, any: list.length > 0,
+        label: list.length + (list.length === 1 ? ' done' : ' done') + ' · tap to ' + (open ? 'hide' : 'review'),
+        toggle: this.tap(() => this.setState(s => ({ doneOpen: s.doneOpen === key ? null : key }))) };
+    };
+    const dClock = doneCol('clock','clock'), dPlace = doneCol('place','place'), dSelf = doneCol('none','self');
+
+    // Defended hours only count once the work in them is actually finished.
+    const defendedHrs = 3.5 + this.BLOCKS
+      .filter(b => b.t && st.done[b.t] && (this.task(b.t) || {}).rule === 'none')
+      .reduce((a, b) => a + (b.e - b.s), 0);
+    const quotaPct = Math.min(100, Math.round(defendedHrs / 6 * 100));
+    const quotaLabel = defendedHrs.toFixed(1) + ' / 6 h';
+
+    const canSave = !!st.draft.title.trim();
+    const permLabel = { granted:'Alerts on', denied:'Blocked in browser', default:'Turn on alerts' }[st.perm] || 'Turn on alerts';
+
+    return {
+      hostRef: this.setHost,
+      tabs, streams, fixedList, placeGroups, selfList,
+      hourMarks, dayBlocks, nowTop, weekHours, weekDays, legend, dueRows,
+      hero, aNext, helloLine, greetItems, greetLine,
+      dueSortNote: st.stream ? st.stream + ' first, then by time remaining.' : 'Sorted by time remaining, not by stream.',
+      greetName: uname,
+      greetOn: !!st.greet,
+      greetAnim: st.greet === 'out' ? 'ppFadeOut .48s ease forwards' : 'ppFadeOut .38s ease reverse both',
+      greetSkip: () => this.skipGreeting(),
+      greetReplay: this.tap(() => this.runGreeting()),
+      toastOn: !!st.toast,
+      toastTitle: st.toast ? st.toast.title : '',
+      toastSub: st.toast ? st.toast.sub : '',
+      toastColor: st.toast ? st.toast.color : '#FF9E86',
+      toastAnim: st.toastOut ? 'ppToastOut .42s ease forwards' : 'ppToast .44s cubic-bezier(.2,.9,.3,1.1) both',
+      trip, tripOn, zoneGroups, zoneTicks, endedList, reviewRows,
+      zoneNote: zoneClash ? zoneClash + (zoneClash === 1 ? ' deadline lands' : ' deadlines land') + ' outside 08:00–21:00 your time.' : 'Every deadline lands inside your working day.',
+      endedAny: !!endedList.length,
+      skipNote: skipCount ? skipCount + (skipCount === 1 ? ' occurrence' : ' occurrences') + ' skipped' : 'Nothing skipped',
+      streakLabel: streak ? streak + (streak === 1 ? ' day' : ' days') + ' in a row' : 'No streak yet',
+      streakNote: streak ? 'Counted from the last thing you ticked off.' : 'Tick something off today to start one.',
+      focusOn: !!f,
+      focusTitle: fTask ? fTask.title : '',
+      focusStream: fTask ? fTask.stream : '',
+      focusClock: f ? String(Math.floor(f.left / 60)).padStart(2, '0') + ':' + String(f.left % 60).padStart(2, '0') : '00:00',
+      focusPct: f ? (1 - f.left / (f.mins * 60)) * 100 : 0,
+      focusState: f && f.done ? 'Block finished — tick it off or take the time back' : f && f.paused ? 'Paused. The clock is not running.' : f ? 'Running. Everything else is hidden on purpose.' : '',
+      focusColor: f && f.done ? '#6FE3BA' : f && f.paused ? '#F7C173' : '#FF9E86',
+      focusPauseLabel: f && f.paused ? 'Resume' : 'Pause',
+      focusPause: this.tap(() => this.pauseFocus(), 8),
+      focusDone: this.tap(() => this.stopFocus(true), 16),
+      focusStop: this.tap(() => this.stopFocus(false), 10),
+      focusMins: f ? f.mins + ' min block' : '',
+      heroGo: this.tap(() => this.startFocus(hero.id, hero.mins), 14),
+      heroSkip: this.tap(() => this.push('Pushed to this evening', hero.title + ' moved out of the way. The 20:15 slot is still defended.', C.warn), 12),
+
+      nClock: clockTasks.length, nPlace: placeTasks.length, nSelf: noneTasks.length,
+      nPlaces: placeGroups.length, hereCount, hereName, aHereName,
+      hereNote: hereCount ? hereCount + ' waiting here' : 'nothing waiting here',
+      aHereNote: aHereCount ? aHereCount + ' waiting here' : 'nothing waiting here',
+
+      placePickerOpen: st.picker, aPlacePickerOpen: st.aPicker,
+      togglePlacePicker: this.tap(() => this.setState(s => ({ picker: !s.picker }))),
+      toggleAPlacePicker: this.tap(() => this.setState(s => ({ aPicker: !s.aPicker }))),
+      placeOptions: placeRow(false), aPlaceOptions: placeRow(true),
+      placeOptionsFlat: this.PLACES.map(p => ({ id:p.id, name:p.name })),
+      newPlace: st.newPlace,
+      setNewPlace: e => this.setState({ newPlace: e.target.value }),
+      addPlace: () => this.addPlace(),
+
+      capOpen: st.capture, aCapOpen: st.aCapture,
+      openCapture: this.tap(() => this.setState({ capture:true }), 10),
+      closeCapture: this.tap(() => this.setState({ capture:false })),
+      aOpenCapture: this.tap(() => this.setState({ aCapture:true }), 10),
+      aCloseCapture: this.tap(() => this.setState({ aCapture:false })),
+      draftTitle: st.draft.title, draftStream: st.draft.stream, draftPlace: st.draft.place,
+      setDraftTitle: e => { const v = e.target.value; this.setState(s => ({ draft: { ...s.draft, title:v } })); },
+      setDraftStream: e => { const v = e.target.value; this.setState(s => ({ draft: { ...s.draft, stream:v } })); },
+      setDraftPlace: e => { const v = e.target.value; this.setState(s => ({ draft: { ...s.draft, place:v } })); },
+      streamOptions: STREAM_NAMES.map(name => ({ name })),
+      ruleOptions,
+      placeFieldOp: st.draft.rule === 'place' ? 1 : .4,
+      isClockDraft: st.draft.rule === 'clock',
+      isPlaceDraft: st.draft.rule === 'place',
+      isWeeklyDraft: st.draft.rule === 'place' && st.draft.repeat === 'weekly',
+      isTimedDraft: st.draft.rule === 'place' && st.draft.repeat !== 'once',
+      repeatOptions: [['once','No set time'],['today','At a time'],['weekly','Every week']].map(([k, l]) => ({
+        label:l, pick: this.tap(() => this.setState(s => ({ draft: { ...s.draft, repeat:k } }))),
+        bg: st.draft.repeat === k ? '#636366' : 'transparent',
+        fg: st.draft.repeat === k ? '#FFFFFF' : 'rgba(233,240,240,.6)' })),
+      dowOptions: this.DOW.map((d, i) => ({ label:d.slice(0, 2),
+        pick: this.tap(() => this.setState(s => ({ draft: { ...s.draft, dow:i } }))),
+        bg: st.draft.dow === i ? '#FF7A5C' : 'rgba(110,128,132,.24)',
+        fg: st.draft.dow === i ? '#FFFFFF' : 'rgba(233,240,240,.7)' })),
+      draftTime: st.draft.time, draftTz: st.draft.tz,
+      setDraftTime: e => { const v = e.target.value; this.setState(s => ({ draft: { ...s.draft, time:v } })); },
+      setDraftTz: e => { const v = e.target.value; this.setState(s => ({ draft: { ...s.draft, tz:v } })); },
+      zoneOptions: this.ZONES,
+      eatPreview: (() => {
+        const [hh, mm] = (st.draft.time || '').split(':').map(Number);
+        if (isNaN(hh)) return 'Enter a time as the client gave it to you.';
+        const d = this.nextInZone(st.draft.tz, hh || 0, mm || 0);
+        return (st.draft.time) + ' ' + this.zoneCity(st.draft.tz) + '  →  ' + this.absLabel(d) + ' EAT';
+      })(),
+      capHint: { clock:'Goes to Deadlines with a placeholder time you can set later.', place:'Joins that place’s queue and only surfaces when you are there.', none:'Gets a defence slot and starts counting neglect from today.' }[st.draft.rule],
+      saveDraft: () => this.saveDraft(),
+      saveBg: canSave ? '#E85E42' : 'rgba(110,128,132,.24)',
+      saveFg: canSave ? '#FFFFFF' : 'rgba(233,240,240,.4)',
+      saveCursor: canSave ? 'pointer' : 'not-allowed',
+
+      notifOpen: st.notifOpen, notifs: st.notifs, notifCount: st.notifs.length,
+      badgeShow: st.notifs.length ? 'block' : 'none',
+      toggleNotif: this.tap(() => this.setState(s => ({ notifOpen: !s.notifOpen }))),
+      clearNotifs: this.tap(() => this.setState({ notifs: [] })),
+      askNotify: () => this.askNotify(),
+      permLabel,
+      permBg: st.perm === 'granted' ? 'rgba(53,214,160,.22)' : st.perm === 'denied' ? 'rgba(245,64,94,.2)' : '#E85E42',
+      permFg: st.perm === 'granted' ? '#6FE3BA' : st.perm === 'denied' ? '#FF8095' : '#FFFFFF',
+
+      surOpen: !!sur, surTargets,
+      surTitle: sur ? sur.title : '',
+      surWhen: sur ? sur.when : '',
+      surCount: sur && sur.taskId ? 'It has already lost this slot ' + this.lossesOf(sur.taskId) + ' times.' : 'This slot has never been claimed by anything.',
+      surCancel: this.tap(() => this.setState({ surrender:null })),
+
+      isToday: st.tab === 'today', isWeek: st.tab === 'week', isDue: st.tab === 'due', isZones: st.tab === 'zones',
+      aIsNow: st.aScreen === 'now', aIsDue: st.aScreen === 'due',
+      aIsWeek: st.aScreen === 'week', aIsStreams: st.aScreen === 'streams',
+      aNav1: [navItem('now','Now'), navItem('due','Due')],
+      aNav2: [navItem('week','Week'), navItem('streams','Streams')],
+      aCtxNote: aHereCount ? 'Nearest first' : 'Desk work first',
+
+      clock: this.hhmm(n),
+      todayLong: np.dow + ' ' + np.d + ' ' + this.MONTHS[np.mo - 1],
+      todayShort: np.dow + ' ' + np.d,
+      weekLabel: 'Week ' + this.weekNo(mon), weekRange: this.rangeLabel(mon),
+      weekPrev: this.tap(() => this.setState(s => ({ wk: (s.wk || 0) - 1 })), 10),
+      weekNext: this.tap(() => this.setState(s => ({ wk: (s.wk || 0) + 1 })), 10),
+      weekToday: this.tap(() => this.setState({ wk:0 }), 12),
+      weekRel: wkOff === 0 ? 'This week' : wkOff === -1 ? 'Last week' : wkOff === 1 ? 'Next week'
+        : wkOff < 0 ? Math.abs(wkOff) + ' weeks back' : wkOff + ' weeks ahead',
+      weekRelColor: wkOff === 0 ? '#FF9E86' : wkOff < 0 ? 'rgba(233,240,240,.5)' : '#F7C173',
+      weekIsNow: wkOff === 0,
+      weekNote: wkOff === 0
+        ? 'Hatched blocks are defended; giving one away asks what you are giving it to.'
+        : 'Standing commitments repeat here. One-off deadlines only appear in the week they fall in.',
+      quotaPct, quotaLabel, quotaNote: 'Counted only when the work is ticked off.',
+      doneClock: dClock.list, doneClockAny: dClock.any, doneClockOpen: dClock.open, doneClockLabel: dClock.label, doneClockToggle: dClock.toggle,
+      donePlace: dPlace.list, donePlaceAny: dPlace.any, donePlaceOpen: dPlace.open, donePlaceLabel: dPlace.label, donePlaceToggle: dPlace.toggle,
+      doneSelf: dSelf.list, doneSelfAny: dSelf.any, doneSelfOpen: dSelf.open, doneSelfLabel: dSelf.label, doneSelfToggle: dSelf.toggle,
+      defenseLabel: defense.label, defenseValue: defense.value, defenseNote: defense.note,
+      sleepWarn: 'Lands at ' + hotHH + ', after your last block ends at 21:00.',
+      lateHead: 'One deadline lands after you stop',
+      lateNote: 'RLHF batch #4118 closes at ' + hotHH + ' EAT. Your last block ends at 21:00, so it either moves earlier or it is a late night.'
+    };
+  }
+}
+</script>
+</body>
+</html>
