@@ -3,6 +3,8 @@ import { EMPTY_DRAFT, reducer } from './store';
 import type { AppState } from './store';
 import { INITIAL_STATE } from '../domain/state';
 import { byRule, lossesOf, places } from '../domain/select';
+import { EMPTY_OVERLAYS } from '../domain/sync/foldEvents';
+import type { Overlays } from '../domain/sync/foldEvents';
 
 const base: AppState = {
   ...INITIAL_STATE,
@@ -15,6 +17,8 @@ const base: AppState = {
   pickerOpen: false,
   notifOpen: false,
   settingsOpen: false,
+  signInOpen: false,
+  userId: null,
   draft: EMPTY_DRAFT,
   newPlace: '',
   focus: null,
@@ -170,6 +174,80 @@ describe('surrenders are rows, not a counter', () => {
     expect(twice.surrenders).toHaveLength(2);
     expect(lossesOf(twice, 'canbus')).toBe(11);
     expect(twice.surrender).toBeNull();
+  });
+});
+
+describe('merging server overlays into local state', () => {
+  const overlays = (over: Partial<Overlays> = {}): Overlays => ({ ...EMPTY_OVERLAYS, ...over });
+
+  it('keeps local work the server has never seen', () => {
+    // The device was offline; nothing it did may be lost by pulling.
+    const local: AppState = { ...base, done: { rlhf: 100 }, removed: ['sim'] };
+    const merged = reducer(local, { type: 'merge', overlays: overlays({ done: { ch3: 200 } }) });
+    expect(merged.done).toEqual({ rlhf: 100, ch3: 200 });
+    expect(merged.removed).toEqual(['sim']);
+  });
+
+  it('takes the later timestamp when both sides touched the same task', () => {
+    const local: AppState = { ...base, done: { rlhf: 100 } };
+    expect(
+      reducer(local, { type: 'merge', overlays: overlays({ done: { rlhf: 500 } }) }).done['rlhf'],
+    ).toBe(500);
+    // And does not go backwards when the server is the staler of the two.
+    const ahead: AppState = { ...base, done: { rlhf: 900 } };
+    expect(
+      reducer(ahead, { type: 'merge', overlays: overlays({ done: { rlhf: 500 } }) }).done['rlhf'],
+    ).toBe(900);
+  });
+
+  it('unions removals and skips rather than replacing them', () => {
+    const local: AppState = {
+      ...base,
+      removed: ['sim'],
+      skips: { church: ['2026-8-16'] },
+    };
+    const merged = reducer(local, {
+      type: 'merge',
+      overlays: overlays({ removed: ['bank'], skips: { church: ['2026-8-23'] } }),
+    });
+    expect([...merged.removed].sort()).toEqual(['bank', 'sim']);
+    expect(merged.skips['church']).toEqual(['2026-8-16', '2026-8-23']);
+  });
+
+  it('does not duplicate a skip both sides already knew about', () => {
+    const local: AppState = { ...base, skips: { church: ['2026-8-16'] } };
+    const merged = reducer(local, {
+      type: 'merge',
+      overlays: overlays({ skips: { church: ['2026-8-16'] } }),
+    });
+    expect(merged.skips['church']).toEqual(['2026-8-16']);
+  });
+
+  it('adds only surrenders it has not already recorded', () => {
+    const local: AppState = {
+      ...base,
+      surrenders: [{ id: 'e1', blockKey: 'blk:0:6', taskId: 'canbus', at: 1 }],
+    };
+    const merged = reducer(local, {
+      type: 'merge',
+      overlays: overlays({
+        surrenders: [
+          { id: 'e1', blockKey: 'blk:0:6', taskId: 'canbus', at: 1 },
+          { id: 'e2', blockKey: 'blk:3:6', taskId: 'canbus', at: 2 },
+        ],
+      }),
+    });
+    expect(merged.surrenders.map((s) => s.id)).toEqual(['e1', 'e2']);
+  });
+
+  it('is idempotent: pulling twice changes nothing the second time', () => {
+    const local: AppState = { ...base, done: { rlhf: 100 } };
+    const o = overlays({ done: { ch3: 200 }, removed: ['bank'] });
+    const once = reducer(local, { type: 'merge', overlays: o });
+    const twice = reducer(once, { type: 'merge', overlays: o });
+    expect(twice.done).toEqual(once.done);
+    expect(twice.removed).toEqual(once.removed);
+    expect(twice.surrenders).toEqual(once.surrenders);
   });
 });
 

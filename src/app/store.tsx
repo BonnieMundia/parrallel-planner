@@ -33,6 +33,9 @@ import type { Place, PlaceId, Stream, Task, TaskId } from '../domain/types';
 import { isPlaceTask } from '../domain/types';
 import { HAPTIC, INK, PALETTE, TIMING } from '../ui/tokens';
 import { buzz } from '../ui/haptics';
+import { supabase } from '../lib/supabase';
+import { currentUserId, importSeed, pullOverlays } from '../lib/repository';
+import type { Overlays } from '../domain/sync/foldEvents';
 
 /**
  * Ids must be unique across devices, not just within one. 'u' + Date.now() collides
@@ -95,6 +98,9 @@ export interface AppState extends PlannerState {
   pickerOpen: boolean;
   notifOpen: boolean;
   settingsOpen: boolean;
+  signInOpen: boolean;
+  /** Null when signed out, which is the normal state — sync is opt-in. */
+  userId: string | null;
   draft: Draft;
   newPlace: string;
   focus: Focus | null;
@@ -145,6 +151,9 @@ export type Action =
   | { type: 'focusStop' }
   | { type: 'flash'; id: TaskId | null }
   | { type: 'greet'; phase: 'in' | 'out' | null }
+  | { type: 'merge'; overlays: Overlays }
+  | { type: 'setSignInOpen'; open: boolean }
+  | { type: 'setUser'; userId: string | null }
   | { type: 'setSettingsOpen'; open: boolean }
   | { type: 'setSetting'; patch: Partial<Settings> };
 
@@ -282,6 +291,42 @@ export function reducer(state: AppState, action: Action): AppState {
       return { ...state, flash: action.id };
     case 'greet':
       return { ...state, greet: action.phase };
+    /*
+     * Server overlays folded in on top of local ones. Union for the grow-only sets,
+     * later-timestamp-wins for the registers — the same rule foldEvents applies, so a
+     * device that was offline keeps its own work rather than having it overwritten.
+     */
+    case 'merge': {
+      const o = action.overlays;
+      const laterOf = (
+        a: Readonly<Record<string, number>>,
+        b: Readonly<Record<string, number>>,
+      ): Record<string, number> => {
+        const out: Record<string, number> = { ...a };
+        for (const [k, v] of Object.entries(b)) out[k] = Math.max(out[k] ?? 0, v);
+        return out;
+      };
+      const skips: Record<string, string[]> = {};
+      for (const [k, v] of Object.entries(state.skips)) skips[k] = [...v];
+      for (const [k, v] of Object.entries(o.skips)) {
+        skips[k] = [...new Set([...(skips[k] ?? []), ...v])];
+      }
+      const seen = new Set(state.surrenders.map((s) => s.id));
+      return {
+        ...state,
+        done: laterOf(state.done, o.done),
+        ended: laterOf(state.ended, o.ended),
+        moved: laterOf(state.moved, o.moved),
+        confirmed: laterOf(state.confirmed, o.confirmed),
+        removed: [...new Set([...state.removed, ...o.removed])],
+        skips,
+        surrenders: [...state.surrenders, ...o.surrenders.filter((s) => !seen.has(s.id))],
+      };
+    }
+    case 'setSignInOpen':
+      return { ...state, signInOpen: action.open };
+    case 'setUser':
+      return { ...state, userId: action.userId };
     case 'setSettingsOpen':
       return { ...state, settingsOpen: action.open };
     case 'setSetting':
@@ -332,6 +377,8 @@ function load(): AppState {
     pickerOpen: false,
     notifOpen: false,
     settingsOpen: false,
+    signInOpen: false,
+    userId: null,
     draft: EMPTY_DRAFT,
     newPlace: '',
     focus: null,
@@ -471,6 +518,9 @@ export interface Actions {
   openSettings: () => void;
   closeSettings: () => void;
   setSetting: (patch: Partial<Settings>) => void;
+  openSignIn: () => void;
+  closeSignIn: () => void;
+  setUser: (userId: string | null) => void;
   startFocus: (id: TaskId, mins: number) => void;
   pauseFocus: () => void;
   stopFocus: (complete: boolean) => void;
@@ -609,6 +659,50 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
     );
     return () => clearTimeout(gone);
   }, [state.greet]);
+
+  /*
+   * Sync is opt-in and additive. The planner has already hydrated from localStorage by
+   * the time any of this runs, so a signed-out user, a missing project or a dead
+   * network all leave the app working exactly as before.
+   *
+   * On the first sign-in the user gets their own copy of the world; after that the
+   * event log is pulled and folded into the same overlay shape the reducer holds.
+   */
+  useEffect(() => {
+    if (!supabase) return;
+    let live = true;
+
+    const adopt = async (userId: string | null): Promise<void> => {
+      if (!live) return;
+      dispatch({ type: 'setUser', userId });
+      if (!userId) return;
+
+      const clock: Clock = { t0: T0, now: new Date(), tz: DEFAULTS.homeTimezone };
+      const imported = await importSeed(userId, clock);
+      if (!live) return;
+      if (imported.error) {
+        console.warn('Seed import failed:', imported.error);
+        return;
+      }
+
+      const pulled = await pullOverlays(userId);
+      if (!live || pulled.error || !pulled.data) {
+        if (pulled.error) console.warn('Pull failed:', pulled.error);
+        return;
+      }
+      dispatch({ type: 'merge', overlays: pulled.data });
+    };
+
+    void currentUserId().then(adopt);
+    const { data } = supabase.auth.onAuthStateChange((_e, session) => {
+      void adopt(session?.user.id ?? null);
+    });
+
+    return () => {
+      live = false;
+      data.subscription.unsubscribe();
+    };
+  }, []);
 
   const flashTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const flash = useCallback((id: TaskId) => {
@@ -953,6 +1047,17 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
       },
       setSetting: (patch) => {
         dispatch({ type: 'setSetting', patch });
+      },
+      openSignIn: () => {
+        buzz(HAPTIC.tap);
+        dispatch({ type: 'setSignInOpen', open: true });
+      },
+      closeSignIn: () => {
+        buzz(HAPTIC.tap);
+        dispatch({ type: 'setSignInOpen', open: false });
+      },
+      setUser: (userId) => {
+        dispatch({ type: 'setUser', userId });
       },
       // Skipping just starts the exit; the phase effect above removes it.
       skipGreeting: () => {

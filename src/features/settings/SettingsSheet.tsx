@@ -46,6 +46,28 @@ export function SettingsSheet() {
 
   return (
     <SheetModal open title="Settings" onClose={actions.closeSettings}>
+      <div className={styles.field}>
+        <span className={styles.label}>Sync</span>
+        <button
+          type="button"
+          className={styles.toggle}
+          onClick={() => {
+            actions.closeSettings();
+            actions.openSignIn();
+          }}
+        >
+          <span className={styles.toggleText}>
+            {state.userId ? 'Signed in' : 'This device only'}
+          </span>
+          <span className={styles.label}>▸</span>
+        </button>
+        <span className={styles.note}>
+          {state.userId
+            ? 'Your work syncs to every device you sign in on.'
+            : 'Sign in to share your work between devices.'}
+        </span>
+      </div>
+
       <label className={styles.field}>
         <span className={styles.label}>Your name</span>
         <input
