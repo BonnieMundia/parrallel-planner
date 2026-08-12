@@ -35,13 +35,24 @@ export function SignIn() {
 
   return (
     <SheetModal open title="Sync" onClose={actions.closeSignIn}>
-      {!isConfigured && (
-        <div className={styles.note}>
-          No Supabase project is configured. The planner works on this device only.
-        </div>
-      )}
-
-      {state.userId ? (
+      {/*
+        A sign-in form that cannot possibly work is worse than no form: it reads as
+        broken rather than as unavailable. When the build has no Supabase project,
+        explain instead of rendering a dead input.
+      */}
+      {!isConfigured ? (
+        <>
+          <div className={styles.note}>
+            This build has no Supabase project, so there is nothing to sign in to. Your
+            work stays on this device.
+          </div>
+          <div className={styles.note}>
+            To turn sync on, set VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY
+            where this is deployed, then rebuild — Vite reads them at build time, not
+            when the page loads.
+          </div>
+        </>
+      ) : state.userId ? (
         <>
           <div className={styles.note}>Signed in. Your work syncs to every device.</div>
           <button
@@ -70,7 +81,8 @@ export function SignIn() {
               autoComplete="email"
               value={email}
               placeholder="you@example.com"
-              disabled={!isConfigured || busy}
+              autoFocus
+              disabled={busy}
               onChange={(e) => setEmail(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && void submit()}
             />
@@ -81,7 +93,7 @@ export function SignIn() {
           <button
             type="button"
             className={styles.primary}
-            disabled={!isConfigured || busy || email.trim().length === 0}
+            disabled={busy || email.trim().length === 0}
             onClick={() => void submit()}
           >
             {busy ? 'Sending…' : 'Send a sign-in link'}

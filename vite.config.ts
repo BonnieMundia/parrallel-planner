@@ -15,5 +15,14 @@ export default defineConfig({
     // fast suite fast.
     environment: 'node',
     include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
+    /*
+     * Threads, not the default forks. A fork is a whole node process per test file,
+     * and jsdom on top of that is heavy enough that on a memory-constrained machine
+     * the worker never answers and the run dies with "Failed to start forks worker" —
+     * which reads like a broken test rather than a full machine.
+     */
+    pool: 'threads',
+    // Vitest 4 moved this off poolOptions and onto the config directly.
+    maxWorkers: 4,
   },
 });
