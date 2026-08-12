@@ -1,0 +1,223 @@
+.wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.label {
+  font: var(--f-eyebrow);
+  letter-spacing: 0.02em;
+  color: var(--ink-3);
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 12px;
+  min-height: 44px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--control-strong);
+  color: var(--ink);
+  font: var(--f-list);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color var(--t-color) ease;
+}
+
+.trigger:hover,
+.trigger[aria-expanded='true'] {
+  border-color: var(--border-hover);
+}
+
+.value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.caret {
+  flex: none;
+  font: 400 11px/1 var(--font);
+  color: var(--ink-quiet);
+}
+
+/* --- the popover --------------------------------------------------------------- */
+
+.popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 40;
+  width: 272px;
+  max-width: calc(100vw - 32px);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: var(--r-card);
+  background: var(--popover);
+  backdrop-filter: var(--blur-sheet);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--sh-popover);
+  animation: ppPop 0.18s cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .popover {
+    background: #1b2428;
+  }
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.nav {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: var(--control);
+  color: var(--ink);
+  font: 400 15px/1 var(--font);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--t-color) ease;
+}
+
+.nav:hover {
+  background: rgba(110, 128, 132, 0.4);
+}
+
+.selects {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+}
+
+.select {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 8px;
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: var(--control);
+  color: var(--ink);
+  font: 590 12.5px/1 var(--font);
+  outline: none;
+  cursor: pointer;
+}
+
+.weekdays,
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.weekday {
+  text-align: center;
+  font: var(--f-badge);
+  color: var(--ink-faint);
+  padding-bottom: 2px;
+}
+
+.day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-2);
+  font: 400 13px/1 var(--font);
+  cursor: pointer;
+  transition:
+    background var(--t-color) ease,
+    color var(--t-color) ease;
+}
+
+.day:hover {
+  background: rgba(110, 128, 132, 0.28);
+  color: var(--ink);
+}
+
+.day:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: -2px;
+}
+
+/* Days borrowed from the neighbouring months stay legible but recede. */
+.outside {
+  color: var(--ink-placeholder);
+}
+
+.today {
+  box-shadow: inset 0 0 0 1px rgba(255, 158, 134, 0.5);
+  color: var(--link);
+}
+
+.selected {
+  background: var(--cta);
+  color: #ffffff;
+}
+
+.selected:hover {
+  background: var(--cta-hover);
+  color: #ffffff;
+}
+
+.foot {
+  display: flex;
+  gap: 6px;
+  padding-top: 2px;
+}
+
+.todayBtn {
+  flex: 1;
+  padding: 8px 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-2);
+  font: 590 12px/1 var(--font);
+  cursor: pointer;
+  transition: background var(--t-color) ease;
+}
+
+.todayBtn:hover {
+  background: rgba(110, 128, 132, 0.24);
+  color: var(--ink);
+}
+
+/* Touch needs a real target; the 30px grid cells are a pointer affordance. */
+@media (pointer: coarse) {
+  .day {
+    min-height: 40px;
+  }
+
+  .nav,
+  .select {
+    height: 44px;
+  }
+
+  .todayBtn {
+    min-height: 44px;
+  }
+}

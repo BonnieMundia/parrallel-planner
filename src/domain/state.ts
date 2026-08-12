@@ -37,6 +37,8 @@ export interface Draft {
   place: PlaceId;
   /** 'HH:MM', as typed. */
   time: string;
+  /** 'YYYY-MM-DD'. Only clock-locked work uses it; place work repeats or has no date. */
+  date: string;
   tz: Timezone;
   repeat: 'once' | 'today' | 'weekly';
   dow: Dow;

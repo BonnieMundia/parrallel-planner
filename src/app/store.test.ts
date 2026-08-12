@@ -77,7 +77,7 @@ describe('the reducer never mutates the seed', () => {
 
 describe('capture', () => {
   it('drops a captured task into added, closes, and clears the title', () => {
-    const open = reducer(base, { type: 'setCapture', open: true });
+    const open = reducer(base, { type: 'setCapture', open: true, today: '2026-08-12' });
     const typed = reducer(open, { type: 'setDraft', patch: { title: 'Pick up the parcel' } });
     expect(typed.draft.title).toBe('Pick up the parcel');
 
@@ -97,18 +97,29 @@ describe('capture', () => {
   });
 
   it('abandons the draft title when the sheet is closed unsaved', () => {
-    const typed = reducer(reducer(base, { type: 'setCapture', open: true }), {
+    const typed = reducer(reducer(base, { type: 'setCapture', open: true, today: '2026-08-12' }), {
       type: 'setDraft',
       patch: { title: 'Half-written' },
     });
-    expect(reducer(typed, { type: 'setCapture', open: false }).draft.title).toBe('');
+    expect(reducer(typed, { type: 'setCapture', open: false, today: '2026-08-12' }).draft.title).toBe('');
   });
 
   it('keeps the rest of the draft, so the rule survives a reopen', () => {
     const s = reducer(base, { type: 'setDraft', patch: { rule: 'clock', tz: 'Europe/Berlin' } });
-    const closed = reducer(s, { type: 'setCapture', open: false });
+    const closed = reducer(s, { type: 'setCapture', open: false, today: '2026-08-12' });
     expect(closed.draft.rule).toBe('clock');
     expect(closed.draft.tz).toBe('Europe/Berlin');
+  });
+
+  it('defaults the date to today when the sheet opens', () => {
+    const open = reducer(base, { type: 'setCapture', open: true, today: '2026-08-12' });
+    expect(open.draft.date).toBe('2026-08-12');
+  });
+
+  it('does not overwrite a date already chosen', () => {
+    const chosen = reducer(base, { type: 'setDraft', patch: { date: '2026-08-17' } });
+    const reopened = reducer(chosen, { type: 'setCapture', open: true, today: '2026-08-12' });
+    expect(reopened.draft.date).toBe('2026-08-17');
   });
 });
 

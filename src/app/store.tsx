@@ -15,7 +15,16 @@ import {
   useRef,
 } from 'react';
 import type { Dispatch, ReactNode } from 'react';
-import { HOUR_MS, dayKey, hhmm, nextInZone, startTicking, zoneCity } from './clock';
+import {
+  HOUR_MS,
+  dayKey,
+  hhmm,
+  nextInZone,
+  parts,
+  startTicking,
+  zoneCity,
+  zonedToUTC,
+} from './clock';
 import type { Clock } from './clock';
 import { DEFAULTS, SEED_ZONES } from '../domain/seed';
 import { INITIAL_STATE } from '../domain/state';
@@ -33,6 +42,7 @@ import type { Place, PlaceId, Stream, Task, TaskId } from '../domain/types';
 import { isPlaceTask } from '../domain/types';
 import { HAPTIC, INK, PALETTE, TIMING } from '../ui/tokens';
 import { buzz } from '../ui/haptics';
+import { fromKey } from '../ui/monthGrid';
 import { supabase } from '../lib/supabase';
 import { currentUserId, importSeed, pullOverlays } from '../lib/repository';
 import type { Overlays } from '../domain/sync/foldEvents';
@@ -82,6 +92,8 @@ export const EMPTY_DRAFT: Draft = {
   stream: 'Life & errands',
   place: 'market',
   time: '15:00',
+  // Filled with today, in the home zone, when the sheet opens.
+  date: '',
   tz: 'Africa/Nairobi',
   repeat: 'once',
   dow: 6,
@@ -136,7 +148,7 @@ export type Action =
   | { type: 'openSurrender'; surrender: Surrender }
   | { type: 'cancelSurrender' }
   | { type: 'giveAway'; id: string; blockKey: string; taskId: TaskId | null }
-  | { type: 'setCapture'; open: boolean }
+  | { type: 'setCapture'; open: boolean; today: string }
   | { type: 'setDraft'; patch: Partial<Draft> }
   | { type: 'addTask'; task: Task }
   | { type: 'setPicker'; open: boolean }
@@ -239,8 +251,12 @@ export function reducer(state: AppState, action: Action): AppState {
       return {
         ...state,
         captureOpen: action.open,
-        // Leaving the sheet abandons the draft rather than half-remembering it.
-        draft: action.open ? state.draft : { ...state.draft, title: '' },
+        draft: action.open
+          ? // Default the date to today rather than leaving it blank, so the common
+            // case is one tap and the picker opens somewhere sensible.
+            { ...state.draft, date: state.draft.date || action.today }
+          : // Leaving the sheet abandons the draft rather than half-remembering it.
+            { ...state.draft, title: '' },
       };
     case 'setDraft':
       return { ...state, draft: { ...state.draft, ...action.patch } };
@@ -545,6 +561,15 @@ export function usePlanner(): Store {
 
 /** Fixed for the session, so `at` and `h` deadlines never drift as the clock ticks. */
 const T0 = new Date();
+
+/**
+ * Today in the home zone, not the host's. Past 21:00 EAT a machine set to UTC is
+ * still on yesterday, and the picker would open on the wrong day.
+ */
+export function todayKey(): string {
+  const p = parts(new Date(), DEFAULTS.homeTimezone);
+  return `${p.y}-${String(p.mo).padStart(2, '0')}-${String(p.d).padStart(2, '0')}`;
+}
 
 export function PlannerProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, undefined, load);
@@ -928,11 +953,11 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
 
       openCapture: () => {
         buzz(HAPTIC.undo);
-        dispatch({ type: 'setCapture', open: true });
+        dispatch({ type: 'setCapture', open: true, today: todayKey() });
       },
       closeCapture: () => {
         buzz(HAPTIC.tap);
-        dispatch({ type: 'setCapture', open: false });
+        dispatch({ type: 'setCapture', open: false, today: todayKey() });
       },
       setDraft: (patch) => {
         dispatch({ type: 'setDraft', patch });
@@ -961,7 +986,16 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
           };
         } else if (d.rule === 'clock') {
           const [hh = 15, mm = 0] = (d.time || '15:00').split(':').map(Number);
-          const due = nextInZone(d.tz, hh || 0, mm || 0, s.now);
+          /*
+           * A deadline is a date and a time in the setter's zone, resolved to an
+           * instant here. It used to be nextInZone(time) alone, which silently meant
+           * "the next time it is 15:00" — so nothing beyond 24 hours could be
+           * captured at all, and a real interview five days out was unrepresentable.
+           */
+          const on = fromKey(d.date);
+          const due = on
+            ? zonedToUTC(d.tz, on.year, on.month, on.day, hh || 0, mm || 0)
+            : nextInZone(d.tz, hh || 0, mm || 0, s.now);
           const city = zoneCity(d.tz, SEED_ZONES);
           task = {
             ...common,

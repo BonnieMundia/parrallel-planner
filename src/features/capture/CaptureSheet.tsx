@@ -1,5 +1,7 @@
-import { usePlanner } from '../../app/store';
-import { DOW, hhmm, nextInZone, zoneCity } from '../../app/clock';
+import { todayKey, usePlanner } from '../../app/store';
+import { DatePicker } from '../../ui/primitives/DatePicker';
+import { DOW, hhmm, nextInZone, zoneCity, zonedToUTC } from '../../app/clock';
+import { formatKey, fromKey } from '../../ui/monthGrid';
 import { SEED_STREAMS, SEED_ZONES } from '../../domain/seed';
 import { absLabel } from '../../app/clock';
 import { places } from '../../domain/select';
@@ -40,8 +42,16 @@ export function CaptureSheet({ variant }: { variant: 'desktop' | 'phone' }) {
   const preview = (() => {
     const [hh, mm] = (d.time || '').split(':').map(Number);
     if (hh === undefined || Number.isNaN(hh)) return 'Enter a time as the client gave it to you.';
-    const due = nextInZone(d.tz, hh || 0, mm || 0, clock.now);
-    return `${d.time} ${zoneCity(d.tz, SEED_ZONES)}  →  ${absLabel(due, clock)} EAT`;
+    // Same resolution saveDraft uses, so the preview cannot promise one instant and
+    // the saved task hold another.
+    const on = fromKey(d.date);
+    const due = on
+      ? zonedToUTC(d.tz, on.year, on.month, on.day, hh || 0, mm || 0)
+      : nextInZone(d.tz, hh || 0, mm || 0, clock.now);
+    const shown = on
+      ? `${formatKey(d.date, DOW)} ${hhmm(due, clock.tz)} EAT`
+      : `${absLabel(due, clock)} EAT`;
+    return `${d.time} ${zoneCity(d.tz, SEED_ZONES)}  →  ${shown}`;
   })();
 
   return (
@@ -152,6 +162,12 @@ export function CaptureSheet({ variant }: { variant: 'desktop' | 'phone' }) {
         {isClock && (
           <div className={styles.block}>
             <span className={styles.label}>Their time, exactly as they gave it</span>
+            <DatePicker
+              label="Date"
+              value={d.date}
+              today={todayKey()}
+              onChange={(date) => actions.setDraft({ date })}
+            />
             <div className={styles.clockGrid}>
               <input
                 className={`${styles.time} tnum`}
