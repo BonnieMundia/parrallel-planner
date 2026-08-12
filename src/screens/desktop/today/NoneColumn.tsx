@@ -1,5 +1,5 @@
 import { usePlanner } from '../../../app/store';
-import { byRule, lossesOf, noneList, quota } from '../../../domain/select';
+import { byRule, lossesOf, noneColumn, quota } from '../../../domain/select';
 import { Card, CountdownBar, Tick } from '../../../ui/primitives';
 import { INK, PALETTE, rowAnimation } from '../../../ui/tokens';
 import { streamFade } from '../../../ui/streams';
@@ -8,8 +8,7 @@ import styles from './Columns.module.css';
 
 export function NoneColumn() {
   const { state, actions } = usePlanner();
-  const all = noneList(state);
-  const rows = all.slice(0, 3);
+  const rows = noneColumn(state, 3);
   const q = quota(state);
 
   const defence = {

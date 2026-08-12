@@ -3,9 +3,16 @@ import { PlannerProvider } from './store';
 import { Desktop } from '../screens/desktop/Desktop';
 import { Phone } from '../screens/phone/Phone';
 
-// The prototype ships two artifacts: desktop at 1440×900 and phone at 412×892.
-// Nothing in the handoff names a crossover width; 900 is provisional, pending the designer.
-const DESKTOP = window.matchMedia('(min-width: 900px)');
+/**
+ * The prototype ships two artifacts, 1440×900 and 412×892, and names no crossover
+ * width. 1200 is derived rather than picked: the sidebar and rail take 552px, the
+ * content padding 48 and the column gaps 36, so 1200 leaves 188px a column — the
+ * narrowest at which the 24px countdown and the your-clock/their-clock footer still
+ * fit without overflowing. At 1000px the columns collapse to 118px and the design
+ * stops working; below 1200 the phone layout is the honest answer, since it is the
+ * one that was actually drawn for a narrow screen.
+ */
+const DESKTOP = window.matchMedia('(min-width: 1200px)');
 
 function subscribe(cb: () => void): () => void {
   DESKTOP.addEventListener('change', cb);

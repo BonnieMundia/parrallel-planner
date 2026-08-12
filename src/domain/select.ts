@@ -348,13 +348,41 @@ export function placeGroups(state: PlannerState, clock: Clock): PlaceGroup[] {
 }
 
 /**
- * Locked to nothing, most-neglected first. DATA_MODEL specifies this ordering; the
- * prototype left the list in seed order, which hid the 19-day bench rig the Defended
- * card names by name. Following the doc — flagged for the designer.
+ * Locked to nothing, most-neglected first — the ordering DATA_MODEL specifies. The
+ * prototype left the list in seed order, which hid the 19-day bench rig that the
+ * Defended card names by name.
  */
 export function noneList(state: PlannerState): NoneTask[] {
   const sorted = [...byRule(state, 'none')].sort((a, b) => (b.staleDays ?? 0) - (a.staleDays ?? 0));
   return streamFirst(state, sorted);
+}
+
+/**
+ * The three rows the Today column actually shows.
+ *
+ * Ordering alone is not enough here. Sorting the whole list by staleness puts three
+ * Personal builds at the top and the column stops being a picture of everything with
+ * no date on it — the gym and the follow-ups vanish behind the builds. The prototype
+ * avoided that by taking two builds and one of everything else; it just took them in
+ * seed order, so the most-neglected work was not the work shown.
+ *
+ * This keeps the prototype's composition and applies the documented ordering inside
+ * it: the two most-neglected builds, then the most-neglected thing that is not a build.
+ */
+export function noneColumn(state: PlannerState, rows = 3): NoneTask[] {
+  const byNeglect = noneList(state);
+  const builds = byNeglect.filter((t) => t.stream === 'Personal builds');
+  const rest = byNeglect.filter((t) => t.stream !== 'Personal builds');
+  const buildSlots = Math.max(1, rows - 1);
+  const picked = [...builds.slice(0, buildSlots), ...rest.slice(0, rows - Math.min(builds.length, buildSlots))];
+  // If one side is short, backfill from the other rather than showing fewer rows.
+  if (picked.length < rows) {
+    for (const t of byNeglect) {
+      if (picked.length >= rows) break;
+      if (!picked.includes(t)) picked.push(t);
+    }
+  }
+  return streamFirst(state, picked.slice(0, rows));
 }
 
 /** Seeded history plus every surrender recorded since. Counted, never overwritten. */

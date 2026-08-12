@@ -77,6 +77,8 @@ export interface AppState extends PlannerState {
   focus: Focus | null;
   /** The row that just landed, flashed with ppPop. */
   flash: TaskId | null;
+  /** The welcome: showing, leaving, or gone. Never persisted. */
+  greet: 'in' | 'out' | null;
   now: Date;
 }
 
@@ -118,7 +120,8 @@ export type Action =
   | { type: 'focusTick' }
   | { type: 'focusPause' }
   | { type: 'focusStop' }
-  | { type: 'flash'; id: TaskId | null };
+  | { type: 'flash'; id: TaskId | null }
+  | { type: 'greet'; phase: 'in' | 'out' | null };
 
 function without<T>(record: Readonly<Record<string, T>>, key: string): Record<string, T> {
   const next = { ...record };
@@ -252,6 +255,8 @@ export function reducer(state: AppState, action: Action): AppState {
 
     case 'flash':
       return { ...state, flash: action.id };
+    case 'greet':
+      return { ...state, greet: action.phase };
   }
 }
 
@@ -300,6 +305,7 @@ function load(): AppState {
     newPlace: '',
     focus: null,
     flash: null,
+    greet: 'in',
     now: new Date(),
   };
   try {
@@ -356,6 +362,7 @@ export interface Actions {
   closeNotif: () => void;
   clearNotifs: () => void;
   askNotify: () => void;
+  skipGreeting: () => void;
   startFocus: (id: TaskId, mins: number) => void;
   pauseFocus: () => void;
   stopFocus: (complete: boolean) => void;
@@ -456,6 +463,24 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
       PALETTE.build,
     );
   }, [state.focus]);
+
+  // The welcome holds, then leaves. Each phase owns its own timer: a single effect
+  // keyed on `greet` would cancel the removal timer the moment the phase changed to
+  // 'out', stranding the overlay on screen forever.
+  useEffect(() => {
+    if (state.greet !== 'in') return;
+    const out = setTimeout(() => dispatch({ type: 'greet', phase: 'out' }), TIMING.greetHold);
+    return () => clearTimeout(out);
+  }, [state.greet]);
+
+  useEffect(() => {
+    if (state.greet !== 'out') return;
+    const gone = setTimeout(
+      () => dispatch({ type: 'greet', phase: null }),
+      TIMING.greetGone - TIMING.greetHold,
+    );
+    return () => clearTimeout(gone);
+  }, [state.greet]);
 
   const flashTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const flash = useCallback((id: TaskId) => {
@@ -790,6 +815,12 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
         });
       },
 
+      // Skipping just starts the exit; the phase effect above removes it.
+      skipGreeting: () => {
+        if (live.current.greet !== 'in') return;
+        buzz(HAPTIC.tap);
+        dispatch({ type: 'greet', phase: 'out' });
+      },
       startFocus: (id, mins) => {
         buzz(HAPTIC.focusStart);
         dispatch({ type: 'startFocus', id, mins });

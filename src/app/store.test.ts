@@ -18,6 +18,7 @@ const base: AppState = {
   newPlace: '',
   focus: null,
   flash: null,
+  greet: null,
   now: new Date('2025-08-07T11:30:00Z'),
 };
 
@@ -198,6 +199,12 @@ describe('transient state', () => {
     });
     expect(twice.wk).toBe(-2);
     expect(reducer(twice, { type: 'setWeek', wk: 0 }).wk).toBe(0);
+  });
+
+  it('runs the welcome in, out, and away', () => {
+    const showing: AppState = { ...base, greet: 'in' };
+    expect(reducer(showing, { type: 'greet', phase: 'out' }).greet).toBe('out');
+    expect(reducer(showing, { type: 'greet', phase: null }).greet).toBeNull();
   });
 
   it('keeps the last 14 notifications', () => {

@@ -1,6 +1,12 @@
+/* The phone artifact is 412 wide. Between it and the 1200px desktop breakpoint the
+   layout would otherwise stretch to tablet width, which nothing was drawn for — so it
+   holds its own measure and centres instead. */
 .phone {
   position: relative;
   height: 100%;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
   overflow: hidden;
   display: flex;
   flex-direction: column;

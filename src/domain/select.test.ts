@@ -18,6 +18,7 @@ import {
   minsOf,
   monday,
   nextActive,
+  noneColumn,
   noneList,
   phoneNext,
   placeGroups,
@@ -350,6 +351,29 @@ describe('column 3 — locked to nothing, most neglected first', () => {
   it('holds seed order for a tie', () => {
     const list = ids(noneList(state()));
     expect(list.indexOf('sync')).toBeLessThan(list.indexOf('pull'));
+  });
+
+  it('shows a mix in the column, most-neglected within each side', () => {
+    // Sorting the whole list by staleness would show bench/firmware/canbus — three
+    // builds, and the column stops being a picture of everything with no date.
+    expect(ids(noneColumn(state()))).toEqual(['bench', 'firmware', 'apps']);
+  });
+
+  it('takes the most-neglected non-build, not the first in seed order', () => {
+    const third = noneColumn(state())[2];
+    expect(third?.id).toBe('apps');
+    expect(third?.staleDays).toBe(6);
+    // gym (2d) and pull (4d) are both less neglected, so neither takes the slot.
+  });
+
+  it('backfills rather than showing fewer rows when one side runs out', () => {
+    const s = state({ removed: ['apps', 'gym', 'pull'] });
+    expect(noneColumn(s)).toHaveLength(3);
+    expect(ids(noneColumn(s))).toEqual(['bench', 'firmware', 'canbus']);
+  });
+
+  it('still orders the full list purely by neglect', () => {
+    expect(ids(noneList(state())).slice(0, 3)).toEqual(['bench', 'firmware', 'canbus']);
   });
 
   it('counts seeded losses alongside surrendered blocks', () => {
