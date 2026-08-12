@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { usePlanner } from '../../app/store';
 import { isConfigured } from '../../lib/supabase';
-import { signIn, signOut } from '../../lib/repository';
+import { signIn, signInRedirectTo, signOut } from '../../lib/repository';
 import { SheetModal } from '../../ui/primitives';
 import styles from './SignIn.module.css';
 
@@ -68,9 +68,12 @@ export function SignIn() {
           </button>
         </>
       ) : sent ? (
-        <div className={styles.note}>
-          Check {email} for a link. Opening it on this device signs you in.
-        </div>
+        <>
+          <div className={styles.note}>
+            Check {email} for a link. Opening it signs you in.
+          </div>
+          <div className={styles.note}>It lands on {signInRedirectTo()}.</div>
+        </>
       ) : (
         <>
           <label className={styles.field}>

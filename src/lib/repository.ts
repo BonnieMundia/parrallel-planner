@@ -30,12 +30,32 @@ const message = (e: unknown): string =>
  * Magic link: no password to store, lose or reset, and the fewest screens — which
  * matters when the designer has not drawn any of them (ADR-001 §12 Q1).
  */
+/**
+ * Where the emailed link should land.
+ *
+ * Not simply window.location.origin: asking for a link from the dev server puts a
+ * localhost URL in an email, and an email is read wherever the person happens to be —
+ * usually a phone, where localhost is the phone. VITE_SITE_URL names somewhere the
+ * link is actually reachable; the current origin is the fallback for a real deployment.
+ */
+export function signInRedirectTo(): string {
+  const configured = import.meta.env['VITE_SITE_URL'];
+  if (typeof configured === 'string' && configured.length > 0) return configured;
+
+  const origin = window.location.origin;
+  const local = /^https?:\/\/(localhost|127\.0\.0\.1|\[::1\])(:|$)/.test(origin);
+  // A localhost link in an email is a dead end on any other device. Say so loudly
+  // rather than sending one and letting it fail in the reader's hands.
+  if (local) console.warn('Sign-in link will point at localhost. Set VITE_SITE_URL.');
+  return origin;
+}
+
 export async function signIn(email: string): Promise<Result<null>> {
   if (!supabase) return fail('Supabase is not configured.');
   try {
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: window.location.origin },
+      options: { emailRedirectTo: signInRedirectTo() },
     });
     return error ? fail(error.message) : ok(null);
   } catch (e) {
