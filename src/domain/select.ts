@@ -125,11 +125,13 @@ export function dueOf(state: PlannerState, clock: Clock, t: Task): Date {
 
   const at = t.rule === 'clock' || t.rule === 'place' ? t.at : undefined;
   if (at !== undefined) {
-    const p = parts(clock.t0, clock.tz);
-    const h = Math.floor(at);
-    const mi = Math.round((at % 1) * 60);
-    const d = zonedToUTC(clock.tz, p.y, p.mo - 1, p.d, h, mi);
-    return d <= clock.t0 ? zonedToUTC(clock.tz, p.y, p.mo - 1, p.d + 1, h, mi) : d;
+    // `at` is that hour on the current day, so it is read from `now` rather than from
+    // load time. Anchoring it to `t0` meant a session left open overnight kept
+    // yesterday's date and the task sat permanently past due — a planner is exactly
+    // the thing people leave open. It now goes past due for the rest of its evening,
+    // which is what the red band is for, and returns as today's after midnight.
+    const p = parts(clock.now, clock.tz);
+    return zonedToUTC(clock.tz, p.y, p.mo - 1, p.d, Math.floor(at), Math.round((at % 1) * 60));
   }
 
   const hours = t.rule === 'clock' ? (t.h ?? 24) : 24;

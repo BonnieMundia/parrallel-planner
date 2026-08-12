@@ -78,6 +78,10 @@ export function Sidebar() {
         <CountdownBar pct={q.pct} color={PALETTE.build} height={6} label="Defended this week" />
         <div className={styles.defendedNote}>Counted only when the work is ticked off.</div>
       </div>
+
+      <button type="button" className={styles.settings} onClick={actions.openSettings}>
+        Settings
+      </button>
     </div>
   );
 }

@@ -19,7 +19,15 @@ import { HOUR_MS, dayKey, hhmm, nextInZone, startTicking, zoneCity } from './clo
 import type { Clock } from './clock';
 import { DEFAULTS, SEED_ZONES } from '../domain/seed';
 import { INITIAL_STATE } from '../domain/state';
-import type { Draft, Focus, Notif, PhoneScreen, PlannerState, Tab } from '../domain/state';
+import type {
+  Draft,
+  Focus,
+  Notif,
+  PhoneScreen,
+  PlannerState,
+  Settings,
+  Tab,
+} from '../domain/state';
 import { byRule, dueOf, findTask, nextActive, placeName, proposal } from '../domain/select';
 import type { Place, PlaceId, Stream, Task, TaskId } from '../domain/types';
 import { isPlaceTask } from '../domain/types';
@@ -29,9 +37,23 @@ import { buzz } from '../ui/haptics';
 /**
  * Ids must be unique across devices, not just within one. 'u' + Date.now() collides
  * when two devices capture in the same millisecond — see ADR-001 §5.2.
+ *
+ * randomUUID is secure-context only, so it is absent over plain http on a LAN address —
+ * which is exactly how you would show someone the app from your laptop. Falling back to
+ * random bytes keeps capture working there instead of throwing.
  */
 function newId(): string {
-  return crypto.randomUUID();
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  if (typeof crypto !== 'undefined' && typeof crypto.getRandomValues === 'function') {
+    const b = crypto.getRandomValues(new Uint8Array(16));
+    b[6] = ((b[6] ?? 0) & 0x0f) | 0x40;
+    b[8] = ((b[8] ?? 0) & 0x3f) | 0x80;
+    const hex = [...b].map((x) => x.toString(16).padStart(2, '0')).join('');
+    return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+  }
+  return `u${Date.now().toString(36)}${Math.random().toString(36).slice(2, 10)}`;
 }
 
 export type DoneKey = 'clock' | 'place' | 'self';
@@ -72,6 +94,7 @@ export interface AppState extends PlannerState {
   captureOpen: boolean;
   pickerOpen: boolean;
   notifOpen: boolean;
+  settingsOpen: boolean;
   draft: Draft;
   newPlace: string;
   focus: Focus | null;
@@ -121,7 +144,9 @@ export type Action =
   | { type: 'focusPause' }
   | { type: 'focusStop' }
   | { type: 'flash'; id: TaskId | null }
-  | { type: 'greet'; phase: 'in' | 'out' | null };
+  | { type: 'greet'; phase: 'in' | 'out' | null }
+  | { type: 'setSettingsOpen'; open: boolean }
+  | { type: 'setSetting'; patch: Partial<Settings> };
 
 function without<T>(record: Readonly<Record<string, T>>, key: string): Record<string, T> {
   const next = { ...record };
@@ -257,6 +282,10 @@ export function reducer(state: AppState, action: Action): AppState {
       return { ...state, flash: action.id };
     case 'greet':
       return { ...state, greet: action.phase };
+    case 'setSettingsOpen':
+      return { ...state, settingsOpen: action.open };
+    case 'setSetting':
+      return { ...state, settings: { ...state.settings, ...action.patch } };
   }
 }
 
@@ -280,6 +309,7 @@ const DURABLE = [
   'ended',
   'moved',
   'confirmed',
+  'settings',
 ] as const satisfies readonly (keyof PlannerState)[];
 
 function serialize(state: AppState): string {
@@ -301,6 +331,7 @@ function load(): AppState {
     captureOpen: false,
     pickerOpen: false,
     notifOpen: false,
+    settingsOpen: false,
     draft: EMPTY_DRAFT,
     newPlace: '',
     focus: null,
@@ -315,13 +346,87 @@ function load(): AppState {
     if (typeof saved !== 'object' || saved === null) return base;
     const bag = saved as Record<string, unknown>;
     const merged = { ...base };
+    // Storage is untrusted input: it survives schema changes, hand editing and partial
+    // writes. A wrong shape here reaches the selectors and takes the whole app down, so
+    // each key is checked and anything that fails falls back to its default.
     for (const k of DURABLE) {
-      if (bag[k] !== undefined) Object.assign(merged, { [k]: bag[k] });
+      const value = bag[k];
+      if (value === undefined) continue;
+      if (!isValidDurable(k, value)) continue;
+      Object.assign(merged, { [k]: value });
     }
     return merged;
   } catch {
     // Unreadable or unparseable storage is not worth losing the session over.
     return base;
+  }
+}
+
+const TABS: readonly Tab[] = ['today', 'week', 'due', 'zones'];
+const SCREENS: readonly PhoneScreen[] = ['now', 'due', 'week', 'streams'];
+
+const isRecord = (v: unknown): v is Record<string, unknown> =>
+  typeof v === 'object' && v !== null && !Array.isArray(v);
+
+/** Every value is `Record<TaskId, number>`-shaped. */
+const isStampMap = (v: unknown): boolean =>
+  isRecord(v) && Object.values(v).every((x) => typeof x === 'number' && Number.isFinite(x));
+
+const isTaskish = (v: unknown): boolean =>
+  isRecord(v) &&
+  typeof v['id'] === 'string' &&
+  typeof v['title'] === 'string' &&
+  typeof v['stream'] === 'string' &&
+  (v['rule'] === 'clock' || v['rule'] === 'place' || v['rule'] === 'none');
+
+const isPlaceish = (v: unknown): boolean =>
+  isRecord(v) && typeof v['id'] === 'string' && typeof v['name'] === 'string';
+
+function isValidDurable(key: (typeof DURABLE)[number], v: unknown): boolean {
+  switch (key) {
+    case 'tab':
+      return TABS.includes(v as Tab);
+    case 'aScreen':
+      return SCREENS.includes(v as PhoneScreen);
+    case 'here':
+    case 'aHere':
+      return typeof v === 'string';
+    case 'stream':
+      return v === null || typeof v === 'string';
+    case 'perm':
+      return v === 'default' || v === 'granted' || v === 'denied';
+    case 'added':
+      return Array.isArray(v) && v.every(isTaskish);
+    case 'places':
+      return Array.isArray(v) && v.every(isPlaceish);
+    case 'removed':
+      return Array.isArray(v) && v.every((x) => typeof x === 'string');
+    case 'notifs':
+      return Array.isArray(v) && v.every((x) => isRecord(x) && typeof x['title'] === 'string');
+    case 'surrenders':
+      return Array.isArray(v) && v.every((x) => isRecord(x) && typeof x['blockKey'] === 'string');
+    case 'done':
+    case 'ended':
+    case 'moved':
+    case 'confirmed':
+      return isStampMap(v);
+    case 'skips':
+      return (
+        isRecord(v) &&
+        Object.values(v).every(
+          (x) => Array.isArray(x) && x.every((d) => typeof d === 'string'),
+        )
+      );
+    case 'settings':
+      return (
+        isRecord(v) &&
+        typeof v['userName'] === 'string' &&
+        typeof v['contextAware'] === 'boolean' &&
+        (v['clockStyle'] === 'countdown' || v['clockStyle'] === 'absolute') &&
+        (v['projectDefense'] === 'quota' ||
+          v['projectDefense'] === 'neglect' ||
+          v['projectDefense'] === 'both')
+      );
   }
 }
 
@@ -363,6 +468,9 @@ export interface Actions {
   clearNotifs: () => void;
   askNotify: () => void;
   skipGreeting: () => void;
+  openSettings: () => void;
+  closeSettings: () => void;
+  setSetting: (patch: Partial<Settings>) => void;
   startFocus: (id: TaskId, mins: number) => void;
   pauseFocus: () => void;
   stopFocus: (complete: boolean) => void;
@@ -412,6 +520,26 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
       return soonest;
     };
     return startTicking((now) => dispatch({ type: 'tick', now }), nearest);
+  }, []);
+
+  /*
+   * Browsers throttle timers in a background tab and freeze them outright when a phone
+   * sleeps, so the countdown can be minutes stale by the time the screen comes back.
+   * Catch the moment it returns and re-tick at once rather than waiting for a timer
+   * that may itself be overdue.
+   */
+  useEffect(() => {
+    const resync = (): void => {
+      if (document.visibilityState === 'visible') dispatch({ type: 'tick', now: new Date() });
+    };
+    document.addEventListener('visibilitychange', resync);
+    window.addEventListener('focus', resync);
+    window.addEventListener('pageshow', resync);
+    return () => {
+      document.removeEventListener('visibilitychange', resync);
+      window.removeEventListener('focus', resync);
+      window.removeEventListener('pageshow', resync);
+    };
   }, []);
 
   // Writes are diffed against the last payload, so an unchanged tick misses storage.
@@ -815,6 +943,17 @@ export function PlannerProvider({ children }: { children: ReactNode }) {
         });
       },
 
+      openSettings: () => {
+        buzz(HAPTIC.tap);
+        dispatch({ type: 'setSettingsOpen', open: true });
+      },
+      closeSettings: () => {
+        buzz(HAPTIC.tap);
+        dispatch({ type: 'setSettingsOpen', open: false });
+      },
+      setSetting: (patch) => {
+        dispatch({ type: 'setSetting', patch });
+      },
       // Skipping just starts the exit; the phase effect above removes it.
       skipGreeting: () => {
         if (live.current.greet !== 'in') return;

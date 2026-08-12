@@ -108,11 +108,32 @@ describe('dueOf — both ways a deadline is expressed', () => {
     );
   });
 
-  it('rolls `at` to tomorrow when the hour is already past at load', () => {
-    const late: Clock = { t0: new Date('2025-08-07T21:00:00Z'), now: T0, tz: EAT };
-    expect(dueOf(state(), late, clockTask(state(), 'rlhf')).toISOString()).toBe(
+  it('lets `at` go past due rather than skipping to tomorrow', () => {
+    // 23:30 EAT: the 23:00 batch has closed. It should read as past, which is what the
+    // red band is for — not silently jump a day and look calm.
+    const after23: Clock = { t0: T0, now: new Date('2025-08-07T20:30:00Z'), tz: EAT };
+    const due = dueOf(state(), after23, clockTask(state(), 'rlhf'));
+    expect(due.toISOString()).toBe('2025-08-07T20:00:00.000Z');
+    expect(due.getTime()).toBeLessThan(after23.now.getTime());
+  });
+
+  it('reads `at` from the current day, so an overnight session does not strand it', () => {
+    // The tab was opened yesterday and left open. Anchoring to load time kept
+    // yesterday's date and the task sat permanently past due.
+    const overnight: Clock = {
+      t0: new Date('2025-08-07T11:30:00Z'),
+      now: new Date('2025-08-08T07:00:00Z'), // 10:00 EAT the next morning
+      tz: EAT,
+    };
+    expect(dueOf(state(), overnight, clockTask(state(), 'rlhf')).toISOString()).toBe(
       '2025-08-08T20:00:00.000Z',
     );
+  });
+
+  it('holds `at` steady through the day it belongs to', () => {
+    const t = clockTask(state(), 'rlhf');
+    expect(dueOf(state(), after(1), t)).toEqual(dueOf(state(), clock(), t));
+    expect(dueOf(state(), after(5), t)).toEqual(dueOf(state(), clock(), t));
   });
 
   it('reads `h` as hours from load, so ch3 is always 26 hours out', () => {

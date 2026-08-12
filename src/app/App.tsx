@@ -1,5 +1,6 @@
 import { Suspense, lazy, useSyncExternalStore } from 'react';
 import { PlannerProvider } from './store';
+import { ErrorBoundary } from './ErrorBoundary';
 import { Desktop } from '../screens/desktop/Desktop';
 import { Phone } from '../screens/phone/Phone';
 
@@ -64,6 +65,8 @@ export function App() {
   }
 
   return (
-    <PlannerProvider>{isDesktop ? <Desktop /> : <Phone />}</PlannerProvider>
+    <ErrorBoundary>
+      <PlannerProvider>{isDesktop ? <Desktop /> : <Phone />}</PlannerProvider>
+    </ErrorBoundary>
   );
 }

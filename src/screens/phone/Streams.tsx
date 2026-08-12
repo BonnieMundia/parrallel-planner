@@ -51,6 +51,10 @@ export function Streams() {
           );
         })}
       </div>
+
+      <button type="button" className={styles.settingsRow} onClick={actions.openSettings}>
+        Settings
+      </button>
     </div>
   );
 }

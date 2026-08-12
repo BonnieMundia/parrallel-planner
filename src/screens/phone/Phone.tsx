@@ -8,6 +8,7 @@ import { CaptureSheet } from '../../features/capture/CaptureSheet';
 import { PlacePicker } from '../../features/places/PlacePicker';
 import { FocusOverlay } from '../../features/focus/FocusOverlay';
 import { Greeting } from '../../features/greeting/Greeting';
+import { SettingsSheet } from '../../features/settings/SettingsSheet';
 import { Now } from './Now';
 import { Due } from './Due';
 import { Week } from './Week';
@@ -116,6 +117,7 @@ export function Phone() {
       <PlacePicker variant="phone" />
       <CaptureSheet variant="phone" />
       <FocusOverlay variant="phone" />
+      <SettingsSheet />
       <Greeting />
     </div>
   );

@@ -10,8 +10,10 @@ export default defineConfig({
     host: '127.0.0.1',
   },
   test: {
-    // Selectors and clock math are pure — no DOM, no jsdom dependency.
+    // Selectors and clock math are pure, so they run in node. Component tests opt into
+    // jsdom per file with a `@vitest-environment jsdom` docblock — the split keeps the
+    // fast suite fast.
     environment: 'node',
-    include: ['src/**/*.test.ts'],
+    include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
   },
 });

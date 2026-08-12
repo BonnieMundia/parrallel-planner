@@ -13,3 +13,13 @@ createRoot(root).render(
     <App />
   </StrictMode>,
 );
+
+// Registered only in a production build: in dev it would serve stale modules and
+// fight the HMR client. Secure-origin only, which localhost also satisfies.
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {
+      // No offline support then. Not worth interrupting the app over.
+    });
+  });
+}

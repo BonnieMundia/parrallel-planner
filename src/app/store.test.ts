@@ -14,6 +14,7 @@ const base: AppState = {
   captureOpen: false,
   pickerOpen: false,
   notifOpen: false,
+  settingsOpen: false,
   draft: EMPTY_DRAFT,
   newPlace: '',
   focus: null,

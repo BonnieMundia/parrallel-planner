@@ -449,3 +449,14 @@
   font: var(--f-list);
   color: var(--ink-quiet);
 }
+
+.settingsRow {
+  padding: 14px 0;
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: transparent;
+  color: var(--ink-quiet);
+  font: var(--f-label);
+  cursor: pointer;
+}

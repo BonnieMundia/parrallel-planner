@@ -4,6 +4,7 @@ import { CaptureSheet } from '../../features/capture/CaptureSheet';
 import { PlacePicker } from '../../features/places/PlacePicker';
 import { FocusOverlay } from '../../features/focus/FocusOverlay';
 import { NotificationTray } from '../../features/notify/NotificationTray';
+import { SettingsSheet } from '../../features/settings/SettingsSheet';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 import { Today } from './Today';
@@ -29,6 +30,7 @@ export function Desktop() {
       <PlacePicker variant="desktop" />
       <NotificationTray />
       <CaptureSheet variant="desktop" />
+      <SettingsSheet />
       <FocusOverlay variant="desktop" />
 
       {state.toast && (

@@ -1,0 +1,87 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.label {
+  font: var(--f-eyebrow);
+  letter-spacing: 0.02em;
+  color: var(--ink-3);
+}
+
+.note {
+  font: 400 11.5px/1.35 var(--font);
+  color: var(--ink-quiet);
+}
+
+.input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 12px;
+  min-height: 44px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--control-strong);
+  color: var(--ink);
+  font: var(--f-list);
+  outline: none;
+}
+
+.input:focus-visible {
+  border-color: var(--link);
+}
+
+.segments {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  background: rgba(110, 128, 132, 0.24);
+  border-radius: var(--r-control);
+  align-self: flex-start;
+}
+
+.segment {
+  padding: 7px 16px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  font: 590 13px/1.2 var(--font);
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 12px;
+  min-height: 44px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--control-strong);
+  cursor: pointer;
+}
+
+.toggleText {
+  font: var(--f-list);
+  color: var(--ink);
+}
+
+.track {
+  flex: none;
+  width: 40px;
+  height: 22px;
+  border-radius: 11px;
+  padding: 2px;
+  transition: background var(--t-color) ease;
+}
+
+.knob {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  transition: transform var(--t-color) var(--ease-lift);
+}

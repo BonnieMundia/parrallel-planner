@@ -74,7 +74,18 @@ export function ClockColumn() {
           opacity: streamFade(state.stream, task.stream),
           animation: rowAnimation(state.flash, task.id, tier),
         }}
+        // A row is a real control: it opens the detail panel, so it takes focus and
+        // answers Enter and Space like any button would.
+        role="button"
+        tabIndex={0}
+        aria-expanded={open}
         onClick={() => actions.select(open ? null : task.id)}
+        onKeyDown={(e) => {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          if (e.target !== e.currentTarget) return;
+          e.preventDefault();
+          actions.select(open ? null : task.id);
+        }}
       >
         <div className={styles.rowTop}>
           <span className={styles.rowTitleWrap}>
