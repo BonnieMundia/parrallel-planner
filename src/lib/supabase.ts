@@ -57,6 +57,10 @@ export async function checkReachability(): Promise<Reachability> {
   const { error } = await supabase.from('profiles').select('id').limit(1);
   // An empty table is a success; only a transport or permission failure is not.
   const data = !error || error.code === 'PGRST116';
+  // PGRST205 is PostgREST saying it looked and the table is not there — which means
+  // it authenticated the request. A missing schema and a refused key are different
+  // problems with different fixes, so they are never reported as the same thing.
+  const schemaMissing = error?.code === 'PGRST205';
 
   return {
     ok: auth && data,
@@ -64,8 +68,10 @@ export async function checkReachability(): Promise<Reachability> {
     data,
     detail: !auth
       ? 'Auth rejected the key — check VITE_SUPABASE_PUBLISHABLE_KEY.'
-      : !data
-        ? `Data API unreachable: ${error?.message ?? 'unknown'}. Check that the Data API is enabled and the migration has been applied.`
-        : 'Reachable.',
+      : schemaMissing
+        ? 'Connected, but the schema is missing. Apply supabase/migrations/0001_init.sql.'
+        : !data
+          ? `Data API refused the request: ${error?.message ?? 'unknown'}.`
+          : 'Reachable.',
   };
 }

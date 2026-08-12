@@ -36,35 +36,50 @@ if (!url || !key) {
 
 console.log(`project  ${url}`);
 
-const probe = async (path, label) => {
+const call = async (path) => {
   try {
     const res = await fetch(`${url}${path}`, {
       headers: { apikey: key, Authorization: `Bearer ${key}` },
     });
-    console.log(`${res.ok ? '✓' : '✗'} ${label.padEnd(22)} ${res.status}`);
-    return res.ok;
+    return { status: res.status, body: await res.text() };
   } catch (err) {
-    console.log(`✗ ${label.padEnd(22)} ${err.message}`);
-    return false;
+    return { status: 0, body: err.message };
   }
 };
 
-const auth = await probe('/auth/v1/settings', 'auth');
-const rest = await probe('/rest/v1/', 'data api');
-const tables = await probe('/rest/v1/profiles?select=id&limit=1', 'profiles table');
+const say = (ok, label, note) => console.log(`${ok ? '✓' : '✗'} ${label.padEnd(16)} ${note}`);
+
+// Auth validates the key: a bad one is rejected here, so this settles the credential.
+const auth = await call('/auth/v1/settings');
+say(auth.status === 200, 'key', auth.status === 200 ? 'accepted by auth' : `rejected (${auth.status})`);
+
+/*
+ * Do NOT probe /rest/v1/ to decide whether the Data API works. That root path serves
+ * the OpenAPI spec and is restricted for anon keys on a perfectly healthy project, so
+ * its 401 says nothing. Ask for a table that cannot exist instead: PostgREST answering
+ * PGRST205 "could not find the table" proves it authenticated the request and looked.
+ */
+const probe = await call('/rest/v1/_pp_probe_no_such_table?select=*');
+const restOk = probe.status !== 401 && probe.status !== 0;
+say(restOk, 'data api', restOk ? 'reachable and authenticating' : `refusing requests (${probe.status})`);
+
+const profiles = await call('/rest/v1/profiles?select=id&limit=1');
+const missing = profiles.body.includes('PGRST205');
+const schemaOk = profiles.status === 200;
+say(schemaOk, 'schema', schemaOk ? 'migration applied' : missing ? 'tables not created yet' : `unexpected (${profiles.status})`);
 
 console.log('');
-if (!auth) {
+if (auth.status !== 200) {
   console.log('The key is not valid for this project. Check Project Settings → API keys.');
-} else if (!rest) {
-  console.log('The key is valid — auth accepted it — but the Data API is refusing requests.');
-  console.log('Check Project Settings → Data API is enabled, and that the publishable');
-  console.log('key is permitted for it. Nothing in the app can read or write until it is.');
-} else if (!tables) {
-  console.log('Connected, but the schema is missing. Apply supabase/migrations/0001_init.sql');
-  console.log('in the SQL editor, or via the Supabase CLI.');
+} else if (!restOk) {
+  console.log('The Data API is refusing authenticated requests. Check it is enabled in');
+  console.log('Project Settings → Data API, and that `public` is an exposed schema.');
+} else if (!schemaOk) {
+  console.log('Connected. The schema is not there yet — apply:');
+  console.log('  supabase/migrations/0001_init.sql');
+  console.log('in the Supabase SQL editor, then run this again.');
 } else {
   console.log('Reachable, and the schema is present.');
 }
 
-process.exit(auth && rest && tables ? 0 : 1);
+process.exit(auth.status === 200 && restOk && schemaOk ? 0 : 1);
