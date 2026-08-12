@@ -10,7 +10,14 @@ Design spec lives in `design_handoff_parallel_planner/`. Read `SCREENS.md` and `
 
 ## Stack
 
-React + TypeScript + Vite. CSS Modules. `useReducer` + context for state — no Redux, no data-fetching library, no backend. Persistence is `localStorage` under `parallelPlanner.ios.v2`. Hosted static on Vercel.
+React + TypeScript + Vite. CSS Modules. `useReducer` + context for state — no Redux. Hosted static on Vercel.
+
+Persistence is `localStorage` under `parallelPlanner.ios.v2`, and Supabase is being added behind it per `docs/adr/ADR-001-sync-architecture.md`. Two rules survive that change:
+
+- **`localStorage` stays the read path.** The app hydrates from it and must open with no network. Sync is additive and must never be the reason the planner fails to start.
+- **`select.ts` must not learn a network exists.** It stays a pure function of `(state, clock)`. Anything async lives in the repository layer beneath it.
+
+Client configuration is `VITE_`-prefixed environment variables — Vite exposes nothing else to the client. `.env` is gitignored; `.env.example` documents the shape. Only the publishable key belongs there; the `service_role` key never does.
 
 ## Rules
 
@@ -18,7 +25,7 @@ React + TypeScript + Vite. CSS Modules. `useReducer` + context for state — no 
 - **Copy is final.** Every string in the prototype was written deliberately. Reproduce it verbatim. Do not "improve" microcopy, do not add helper text, do not add empty-state copy that isn't specified.
 - **Design tokens are final.** Use the values in `DESIGN_TOKENS.md` exactly — no new colors, no rounded-up spacing, no substituted fonts. If something isn't in the token list, ask rather than invent.
 - **Dark only.** There is no light theme. Do not add one.
-- **No new dependencies without asking.** No UI kit, no date library, no animation library, no icon pack. Date math is small and hand-written; the one mark is inline SVG.
+- **No new dependencies without asking.** No UI kit, no date library, no animation library, no icon pack. Date math is small and hand-written; the one mark is inline SVG. Agreed so far: `@supabase/supabase-js` for sync, and `jsdom` + `@testing-library/*` for component tests.
 - **No emoji anywhere in the UI.**
 - Selectors in `src/domain/select.ts` must be pure functions of `(state, now)` and unit-testable without React.
 - Tabular numerals (`font-variant-numeric: tabular-nums`) on every countdown, clock, and count.
